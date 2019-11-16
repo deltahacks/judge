@@ -114,17 +114,20 @@ export default {
   },
   methods: {
     openEditModal(todo) {
-      this.selectedTodo = todo;
+      this.selectedTodo = todo; 
       this.isEditModalActive = true;
     },
     onAddTodo(item) {
       // get the highest number rank to iterate on it
-      const highestId = Math.max.apply(Math, this.todos.map(item => item.rank));
+      var highestId = Math.max.apply(Math, this.todos.map(item => item.rank));
+      if(highestId <=0){
+        highestId = 0;
+      }
       // Add the item to the array
       this.todos.push({
         rank: highestId + 1,
         num: item.title,
-        name: "new item(will be fetched from firebase)",
+        name: "new item(will be fetched from firebase/ devpost link)",
         review: item.review,
       });
       // save the updated array in localstorage
@@ -153,6 +156,7 @@ export default {
           const index = this.todos.indexOf(item);
           this.todos.splice(index, 1);
           // save the updated array in localstorage
+          this.updateRank();
           this.saveLocalStorageTodos();
         },
       });
@@ -236,7 +240,32 @@ export default {
       todo.rank = todo.rank + 1;
       todoold.rank = todoold.rank -1;
       this.saveLocalStorageTodos();}
-    }
+    },
+    replace(item){
+      // alert(this.todos.indexOf(item)+1);
+      const todo = this.findTodoNum(item);
+      const index = this.todos.indexOf(item);
+      todo.rank = index;
+      this.saveLocalStorageTodos();
+    },
+    updateRank(){
+      let i=0;
+      let j=0;
+      while(i<this.todos.length+2){
+        try {
+        const todo = this.findTodofromRank(i);
+        todo.rank = j+1;
+        this.saveLocalStorageTodos();
+        i++;
+        j++;
+        // console.log("Replaced, i: "+i+" ,j: " + j);          
+        } catch (error) {
+        i++;
+        // console.log("Didn't find, i: "+i-1);
+        }
+      }
+      this.saveLocalStorageTodos();
+    },
     },
 };
 </script>
