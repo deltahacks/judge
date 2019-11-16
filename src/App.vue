@@ -6,21 +6,21 @@
 </template>
 
 <script>
-import TodoTable from "@/components/TodoTable.vue";
-import TodoHeader from "@/components/TodoHeader.vue";
+import TodoTable from '@/components/TodoTable.vue';
+import TodoHeader from '@/components/TodoHeader.vue';
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
     TodoTable,
-    TodoHeader
-  }
+    TodoHeader,
+  },
 };
 </script>
 
 <style lang="scss">
-.background{
-   background: linear-gradient(
+.background {
+  background: linear-gradient(
     269deg,
     #7c1078,
     #e8727c,
@@ -67,5 +67,4 @@ export default {
     background-position: 0% 50%;
   }
 }
-
 </style>

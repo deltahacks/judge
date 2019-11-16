@@ -5,17 +5,29 @@
     </header>
     <section class="modal-card-body">
       <b-field label="Application Number">
-        <b-input type="text" v-model="title" placeholder="Team/Table Number"></b-input>
+        <b-input
+          type="text"
+          v-model="title"
+          placeholder="Team/Table Number"
+        ></b-input>
       </b-field>
-      
+
       <b-field label="Review">
         <b-select placeholder="Select a review" v-model="review">
-          <option v-for="option in reviews" :value="option.name" :key="option.id">{{ option.name }}</option>
+          <option
+            v-for="option in reviews"
+            :value="option.name"
+            :key="option.id"
+          >
+            {{ option.name }}
+          </option>
         </b-select>
       </b-field>
     </section>
     <footer class="modal-card-foot">
-      <button class="button" type="button" @click="$parent.close()">Close</button>
+      <button class="button" type="button" @click="$parent.close()">
+        Close
+      </button>
       <button class="button is-primary" @click="addTodo">Save</button>
     </footer>
   </div>
