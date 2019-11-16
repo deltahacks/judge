@@ -4,6 +4,7 @@
 ```
 yarn install --ignore-engines
 ```
+##### **Takes painfully long time to install :( 
 
 ### Compiles and hot-reloads for development
 ```
@@ -24,7 +25,6 @@ yarn run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ### Inspired from
-[Prebuilt App](https://vuejsexamples.com/a-todo-app-using-vue-and-the-buefy-framework/)
+[This Template](https://vuejsexamples.com/a-todo-app-using-vue-and-the-buefy-framework/)
 
 ### Uses Buefy + Vue
-### Anant Jain - DHVI 
