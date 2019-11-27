@@ -14,7 +14,7 @@ export interface Table {
   name: string;
   devlink: string;
   categories: [category];
-  Reviews: [JudgeReviews];
+  reviews: [JudgeReviews];
 }
 export interface Questions {
   question: question;
