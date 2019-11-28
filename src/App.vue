@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="background">
+  <div id="app">
     <todo-header></todo-header>
     <todo-table></todo-table>
   </div>
