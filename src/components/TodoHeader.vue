@@ -18,7 +18,18 @@
       <h1 id="subtitle" class="header-title">Judging</h1>
       <img src="../assets/delta_logo.svg" height="50" width="50" alt="DeltaHacks Logo" />
     </div>
-    <div class="navicon">
+    <div class="nav" 
+      
+      :class="{open: showMenu}">
+      <ul>
+        <a href="/home"><li>Home</li></a>
+        <a href="/home"><li>Rubric</li></a>
+        <a href="/home"><li>Rankings</li></a>
+      </ul>
+    </div>
+    <div class="navicon"
+      @click="showMenu = !showMenu"
+      :class="{open: showMenu}">
       <div class="bar first"></div>
       <div class="bar middle"></div>
       <div class="bar last"></div>
@@ -27,7 +38,8 @@
 </template>
 
 <script>
-export default {
+import Vue from 'vue';
+export default Vue.extend({
   name: 'Header',
   props: {
     title: {
@@ -35,12 +47,17 @@ export default {
       default: 'DeltaHacks-VI Application Judging Platform',
     },
   },
-};
+  data() { return {
+    showMenu: false,
+    }
+  },
+});
 </script>
 
 <style>
 section {
   position: relative;
+  overflow: hidden;
 }
 
 #title-section {
@@ -68,7 +85,7 @@ section {
 .navicon{
   position:absolute;
   left: 91%;
-  width:100px;
+  width:150px;
   height:50px;
   top:3vw;
   background:#5565A1;
@@ -81,6 +98,7 @@ section {
   height:1px;
   position:relative;
   left: 30px;
+  transition:300ms all ease-in-out;
 }
 
 .navicon .bar.first{
@@ -93,5 +111,38 @@ section {
 
 .navicon .bar.last{
   top:30px;
+}
+
+.navicon.open .bar:first-child{transform:rotate(45deg);top:22px;}
+.navicon.open .bar:last-child{transform:rotate(-45deg);top:20px;}
+.navicon.open .bar.middle{
+  opacity:0;
+}
+
+.nav{
+  position: absolute;
+  left: 55%;
+  top: 3vw;
+  height: 50px;
+  width: 800px;
+  transition:all 300ms ease-in-out;
+  background:#5B79A5;
+  transform:scaleX(0);
+  border-radius:100px;
+}
+
+.open{
+  transform:scaleX(1);
+}
+
+.nav ul{
+  padding:0;margin:0;
+}
+.nav li{
+  display:inline-block;
+  color:#fff;
+  font-family:sans-serif;
+  padding:12px 12px 12px 30px;
+
 }
 </style>
