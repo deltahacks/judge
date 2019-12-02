@@ -7,15 +7,16 @@
     <div id="app" class="container">
       <ul id="example-1">
         <li v-for="(item,i) in teams" :key="(item,i)">
-          <div class="team" :style="'background: linear-gradient(90deg,' + colors[i][0] + ' 0%,' + colors[i][1] + ' 120%)'">
-            <div class="team-div">
-              <h1 class="team-name"><span style="font-weight: 600">Team</span>{{ item }}</h1>
+          <a href="/home">
+            <div class="team" :style="'background: linear-gradient(90deg,' + colors[i][0] + ' 0%,' + colors[i][1] + ' 120%)'">
+              <div class="team-div">
+                <h1 class="team-name"><span style="font-weight: 600">Team</span>{{ item }}</h1>
+              </div>
+              <div class="mark">
+                <h1 class="team-name">Mark</h1>
+              </div>
             </div>
-            <div class="mark">
-              <h1 class="team-name">Mark</h1>
-            </div>
-          </div>
-          
+          </a>
         </li>
       </ul>
     </div>
