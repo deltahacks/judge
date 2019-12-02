@@ -121,7 +121,7 @@ section {
 
 .nav{
   position: absolute;
-  left: 55%;
+  left: 50%;
   top: 3vw;
   height: 50px;
   width: 800px;
@@ -129,6 +129,7 @@ section {
   background:#5B79A5;
   transform:scaleX(0);
   border-radius:100px;
+  transform-origin: right;
 }
 
 .open{
@@ -142,7 +143,15 @@ section {
   display:inline-block;
   color:#fff;
   font-family:sans-serif;
-  padding:12px 12px 12px 30px;
+  padding:12px 12px 12px 50px;
 
+}
+
+@media only screen and (max-width: 900px) {
+  svg {  height: 100%; width: 200%; }
+  .navicon{ width: 100px; left: 80%; top: 4vw;}
+  .nav{ height: auto; border-radius: 10px; transform:scaleY(0); transform-origin: top;}
+  .nav li{ display: block;}
+  .open { transform:scaleY(1)}
 }
 </style>
