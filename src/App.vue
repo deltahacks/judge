@@ -1,19 +1,23 @@
 <template>
-  <div id="app" class="background">
+  <div id="app">
+    <Home></Home>
     <todo-header></todo-header>
     <todo-table></todo-table>
+    
   </div>
 </template>
 
 <script>
 import TodoTable from '@/components/TodoTable.vue';
 import TodoHeader from '@/components/TodoHeader.vue';
+import Home from '@/components/Home.vue';
 
 export default {
   name: 'app',
   components: {
     TodoTable,
     TodoHeader,
+    Home,
   },
 };
 </script>
