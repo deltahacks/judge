@@ -158,7 +158,7 @@ export default {
   },
   methods: {
     openEditModal(todo) {
-      this.selectedTodo = todo;
+      this.selectedTodo = todo; 
       this.isEditModalActive = true;
     },
     onAddTodo(item) {
@@ -167,12 +167,15 @@ export default {
         Math,
         this.todos.map(item => item.rank)
       );
+      if(highestId <=0){
+        highestId = 0;
+      }
       // Add the item to the array
       this.todos.push({
         rank: highestId + 1,
         num: item.title,
-        name: "new item(will be fetched from firebase)",
-        review: item.review
+        name: "new item(will be fetched from firebase/ devpost link)",
+        review: item.review,
       });
       // save the updated array in localstorage
       this.saveLocalStorageTodos();
@@ -200,6 +203,7 @@ export default {
           const index = this.todos.indexOf(item);
           this.todos.splice(index, 1);
           // save the updated array in localstorage
+          this.updateRank();
           this.saveLocalStorageTodos();
         }
       });
