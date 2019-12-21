@@ -55,7 +55,7 @@
 <script>
 import Vue from "vue";
 export default Vue.extend({
-  name: "Header",
+  name: "LoginHeader",
   props: {
     title: {
       type: String,

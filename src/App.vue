@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <todo-header></todo-header>
+    <login-header></login-header>
     <login></login>
     <!-- <todo-table></todo-table> -->
   </div>
@@ -8,15 +8,14 @@
 
 <script>
 import Login from "@/components/Login.vue";
-import TodoTable from "@/components/TodoTable.vue";
-import TodoHeader from "@/components/TodoHeader.vue";
+import LoginHeader from "@/components/LoginHeader.vue";
 
 export default {
   name: "app",
   components: {
     Login,
     // TodoTable,
-    TodoHeader
+    LoginHeader
   }
 };
 </script>
