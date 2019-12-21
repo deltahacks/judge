@@ -2,14 +2,13 @@
   <div id="app">
     <login-header></login-header>
     <login></login>
-    <!-- <todo-table></todo-table> -->
   </div>
 </template>
 
 <script>
 import Login from "@/components/Login.vue";
-import TodoTable from "@/components/TodoTable.vue";
 import LoginHeader from "@/components/LoginHeader.vue";
+
 export default {
   name: "app",
   components: {

@@ -52,7 +52,7 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
 export default Vue.extend({
   name: "LoginHeader",
@@ -62,10 +62,15 @@ export default Vue.extend({
       default: "DeltaHacks-VI Application Judging Platform"
     }
   },
-  data() {
+  data(): { showMenu: boolean } {
     return {
       showMenu: false
     };
+  },
+  methods: {
+    test() {
+      console.log("x");
+    }
   }
 });
 </script>
