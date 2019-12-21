@@ -8,13 +8,12 @@
 
 <script>
 import Login from "@/components/Login.vue";
+import TodoTable from "@/components/TodoTable.vue";
 import LoginHeader from "@/components/LoginHeader.vue";
-
 export default {
   name: "app",
   components: {
     Login,
-    // TodoTable,
     LoginHeader
   }
 };
