@@ -35,28 +35,28 @@
 
 <script>
 export default {
-  name: 'TodoAddModal',
+  name: "TodoAddModal",
   props: {
     reviews: {
       type: Array,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
-      review: '',
-      title: '',
+      review: "",
+      title: ""
     };
   },
   methods: {
     addTodo() {
       const payload = {
         review: this.review,
-        title: this.title,
+        title: this.title
       };
-      this.$emit('add-todo', payload);
-    },
-  },
+      this.$emit("add-todo", payload);
+    }
+  }
 };
 </script>
 

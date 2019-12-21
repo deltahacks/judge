@@ -7,17 +7,17 @@
 </template>
 
 <script>
-import Login from '@/components/Login.vue';
-import TodoTable from '@/components/TodoTable.vue';
-import TodoHeader from '@/components/TodoHeader.vue';
+import Login from "@/components/Login.vue";
+import TodoTable from "@/components/TodoTable.vue";
+import TodoHeader from "@/components/TodoHeader.vue";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
     Login,
-    TodoTable,
-    TodoHeader,
-  },
+    // TodoTable,
+    TodoHeader
+  }
 };
 </script>
 
