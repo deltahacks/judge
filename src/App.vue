@@ -1,20 +1,20 @@
 <template>
   <div id="app">
-    <todo-header></todo-header>
-    <todo-table></todo-table>
+    <login-header></login-header>
+    <login></login>
   </div>
 </template>
 
 <script>
-import TodoTable from '@/components/TodoTable.vue';
-import TodoHeader from '@/components/TodoHeader.vue';
+import Login from "@/components/Login.vue";
+import LoginHeader from "@/components/LoginHeader.vue";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    TodoTable,
-    TodoHeader,
-  },
+    Login,
+    LoginHeader
+  }
 };
 </script>
 

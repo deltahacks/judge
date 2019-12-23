@@ -5,17 +5,28 @@
     </header>
     <section class="modal-card-body">
       <b-field label="Title">
-        <b-input type="text" v-model="title" placeholder="Your todo title"></b-input>
+        <b-input
+          type="text"
+          v-model="title"
+          placeholder="Your todo title"
+        ></b-input>
       </b-field>
 
       <b-field label="Review">
         <b-select placeholder="Select a review" v-model="review">
-          <option v-for="option in reviews" :value="option.name" :key="option.rank">{{ option.name }}</option>
+          <option
+            v-for="option in reviews"
+            :value="option.name"
+            :key="option.rank"
+            >{{ option.name }}</option
+          >
         </b-select>
       </b-field>
     </section>
     <footer class="modal-card-foot">
-      <button class="button" type="button" @click="$parent.close()">Close</button>
+      <button class="button" type="button" @click="$parent.close()">
+        Close
+      </button>
       <button class="button is-primary" @click="editTodo">Save</button>
     </footer>
   </div>
@@ -23,21 +34,21 @@
 
 <script>
 export default {
-  name: 'TodoEditModal',
+  name: "TodoEditModal",
   props: {
     todo: {
       type: Object,
-      required: true,
+      required: true
     },
     reviews: {
       type: Array,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
-      title: '',
-      review: '',
+      title: "",
+      review: ""
     };
   },
   mounted() {
@@ -49,11 +60,11 @@ export default {
       const payload = {
         id: this.todo.id,
         todo: this.title,
-        review: this.review,
+        review: this.review
       };
-      this.$emit('edit-todo', payload);
-    },
-  },
+      this.$emit("edit-todo", payload);
+    }
+  }
 };
 </script>
 

@@ -52,20 +52,25 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from "vue";
 export default Vue.extend({
-  name: "Header",
+  name: "LoginHeader",
   props: {
     title: {
       type: String,
       default: "DeltaHacks-VI Application Judging Platform"
     }
   },
-  data() {
+  data(): { showMenu: boolean } {
     return {
       showMenu: false
     };
+  },
+  methods: {
+    test() {
+      console.log("x");
+    }
   }
 });
 </script>
