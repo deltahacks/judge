@@ -39,6 +39,6 @@ export interface JudgeReviews {
   questions: [Questions];
   final: number;
 }
-
-type category = string;
+export const categories = ["General", "JS", "Java", "Python"];
+type category = "General" | "JS" | "Java" | "Python";
 type question = string;

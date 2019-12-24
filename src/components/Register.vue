@@ -70,7 +70,7 @@
       </select>
 
       <div v-if="role === 'judge'" class="input-container">
-        <i class="fa fa-question icon"></i>
+        <i class="fa fa-building icon"></i>
         <input
           class="input-field"
           type="text"
@@ -81,7 +81,7 @@
         />
       </div>
       <div v-if="role === 'judge'" class="input-container">
-        <i class="fa fa-question icon"></i>
+        <i class="fa fa-phone-alt icon"></i>
         <input
           class="input-field"
           type="text"
@@ -97,19 +97,15 @@
             <span style="padding-bottom: 20px;"
               >Categories: ({{ categories.length }})</span
             >
-            <b-icon icon="menu-down"></b-icon>
+            <b-icon style="padding-bottom: 20px;" icon="menu-down"></b-icon>
           </button>
-
-          <b-dropdown-item value="option1" aria-role="listitem">
-            <span>Option 1</span>
-          </b-dropdown-item>
-
-          <b-dropdown-item value="option2" aria-role="listitem">
-            <span>Option 2</span>
-          </b-dropdown-item>
-
-          <b-dropdown-item value="option3" aria-role="listitem">
-            <span>Option 3</span>
+          <b-dropdown-item
+            v-for="category in getCategories()"
+            :key="category"
+            :value="category"
+            aria-role="listitem"
+          >
+            <span>{{ category }}</span>
           </b-dropdown-item>
         </b-dropdown>
       </div>
@@ -120,7 +116,7 @@
 </template>
 
 <script lang="ts">
-import { RegisterData } from "../types";
+import { RegisterData, categories } from "../types";
 
 export default {
   name: "Login",
@@ -136,6 +132,11 @@ export default {
       contact: "",
       categories: []
     };
+  },
+  methods: {
+    getCategories() {
+      return categories;
+    }
   }
 };
 </script>
