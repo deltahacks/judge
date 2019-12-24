@@ -12,6 +12,8 @@
           type="text"
           placeholder="Email"
           name="email"
+          v-model="email"
+          required
         />
       </div>
 
@@ -22,6 +24,8 @@
           type="password"
           placeholder="Password"
           name="password"
+          v-model="password"
+          required
         />
       </div>
 
@@ -33,12 +37,16 @@
           placeholder="First Name"
           name="first"
           style="margin-right: 20px"
+          v-model="first"
+          required
         />
         <input
           class="input-field"
           type="text"
           placeholder="Last Name"
           name="last"
+          v-model="last"
+          required
         />
       </div>
 
@@ -49,24 +57,86 @@
           type="text"
           placeholder="Secret"
           name="secret"
+          v-model="secret"
+          required
         />
       </div>
 
-      <select class="role-dropdown">
+      <select v-model="role" class="role-dropdown" required>
         <option disabled selected value="">Select desired role</option>
         <option value="volunteer">Volunteer</option>
         <option value="mentor">Mentor</option>
         <option value="judge">Judge</option>
       </select>
 
+      <div v-if="role === 'judge'" class="input-container">
+        <i class="fa fa-question icon"></i>
+        <input
+          class="input-field"
+          type="text"
+          placeholder="Organization"
+          name="organization"
+          v-model="organization"
+          required
+        />
+      </div>
+      <div v-if="role === 'judge'" class="input-container">
+        <i class="fa fa-question icon"></i>
+        <input
+          class="input-field"
+          type="text"
+          placeholder="Contact"
+          name="contact"
+          v-model="contact"
+          required
+        />
+      </div>
+      <div v-if="role === 'judge'" class="multi-container">
+        <b-dropdown v-model="categories" multiple aria-role="list" required>
+          <button class="button is-primary" type="button" slot="trigger">
+            <span style="padding-bottom: 20px;"
+              >Categories: ({{ categories.length }})</span
+            >
+            <b-icon icon="menu-down"></b-icon>
+          </button>
+
+          <b-dropdown-item value="option1" aria-role="listitem">
+            <span>Option 1</span>
+          </b-dropdown-item>
+
+          <b-dropdown-item value="option2" aria-role="listitem">
+            <span>Option 2</span>
+          </b-dropdown-item>
+
+          <b-dropdown-item value="option3" aria-role="listitem">
+            <span>Option 3</span>
+          </b-dropdown-item>
+        </b-dropdown>
+      </div>
+
       <button type="submit" class="btn">Register</button>
     </form>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { RegisterData } from "../types";
+
 export default {
-  name: "Login"
+  name: "Login",
+  data(): RegisterData {
+    return {
+      email: "",
+      password: "",
+      first: "",
+      last: "",
+      secret: "",
+      role: "",
+      organization: "",
+      contact: "",
+      categories: []
+    };
+  }
 };
 </script>
 
@@ -111,6 +181,10 @@ export default {
   border: 1px solid black;
   font-size: 15px;
   text-align: center;
+}
+
+.multi-container {
+  margin-top: 10px;
 }
 
 .icon {

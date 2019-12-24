@@ -31,9 +31,6 @@ export default {
     #5088cd
   );
   background-size: 800% 800%;
-  -webkit-animation: ApplyAnimation 180s ease infinite;
-  -moz-animation: ApplyAnimation 180s ease infinite;
-  animation: ApplyAnimation 180s ease infinite;
 }
 @-webkit-keyframes ApplyAnimation {
   0% {
