@@ -1,19 +1,20 @@
 <template>
   <div id="app">
     <login-header></login-header>
-    <login></login>
+    <register></register>
   </div>
 </template>
 
 <script>
 import Login from "@/components/Login.vue";
 import LoginHeader from "@/components/LoginHeader.vue";
+import Register from "@/components/Register.vue";
 
 export default {
   name: "app",
   components: {
-    Login,
-    LoginHeader
+    LoginHeader,
+    Register
   }
 };
 </script>
