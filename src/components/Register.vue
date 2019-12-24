@@ -2,43 +2,58 @@
   <div class="main">
     <span>
       <span class="txt1">Create</span>
-      <span class="txt2">Account</span><br>
+      <span class="txt2">Account</span><br />
     </span>
     <form style="max-width:500px;margin:auto">
-  <div class="input-container">
-    <i class="fa fa-user icon"></i>
-    <input class="input-field" type="text" placeholder="Username" name="usrnm">
-  </div>
+      <div class="input-container">
+        <i class="fa fa-user icon"></i>
+        <input
+          class="input-field"
+          type="text"
+          placeholder="Username"
+          name="usrnm"
+        />
+      </div>
 
-  <div class="input-container">
-    <i class="fa fa-envelope icon"></i>
-    <input class="input-field" type="text" placeholder="Email" name="email">
-  </div>
-  
-  <div class="input-container">
-    <i class="fa fa-key icon"></i>
-    <input class="input-field" type="password" placeholder="Password" name="psw">
-  </div>
+      <div class="input-container">
+        <i class="fa fa-envelope icon"></i>
+        <input
+          class="input-field"
+          type="text"
+          placeholder="Email"
+          name="email"
+        />
+      </div>
 
-  <button type="submit" class="btn">Register</button>
-</form>
+      <div class="input-container">
+        <i class="fa fa-key icon"></i>
+        <input
+          class="input-field"
+          type="password"
+          placeholder="Password"
+          name="psw"
+        />
+      </div>
+
+      <button type="submit" class="btn">Register</button>
+    </form>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Login',
+  name: "Login"
 };
 </script>
 
 <style lang="scss" scoped>
-@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,600&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:300,400,600&display=swap");
 
 .main {
   text-align: center;
   justify-content: center;
   align-items: center;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: black;
 }
 .txt1 {
@@ -59,24 +74,24 @@ export default {
 
 .icon {
   padding: 20px;
-//   background: dodgerblue;
+  //   background: dodgerblue;
   color: black;
-//   min-width: 50px;
+  //   min-width: 50px;
   text-align: center;
 }
 
 .input-field {
   width: 100%;
   padding: 10px;
-    border: 0;
+  border: 0;
   outline: 0;
   background: transparent;
   border-bottom: 1px solid black;
-    font-size: 1em;
+  font-size: 1em;
   font-weight: 400;
 }
-.input-field:hover{
-    cursor: pointer;
+.input-field:hover {
+  cursor: pointer;
 }
 
 .input-field:focus {
@@ -85,7 +100,7 @@ export default {
 
 /* Set a style for the submit button */
 .btn {
-        background-image: linear-gradient(90deg, #84fab0 0%, #8fd3f4 100%);
+  background-image: linear-gradient(90deg, #84fab0 0%, #8fd3f4 100%);
   color: black;
   margin-top: 30px;
   padding: 15px 0px;
@@ -93,7 +108,7 @@ export default {
   border-radius: 500px;
   width: 100%;
   opacity: 0.8;
-      font-size: 1em;
+  font-size: 1em;
   font-weight: 600;
 }
 
