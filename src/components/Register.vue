@@ -4,17 +4,7 @@
       <span class="txt1">Create</span>
       <span class="txt2">Account</span><br />
     </span>
-    <form style="max-width:500px;margin:auto">
-      <div class="input-container">
-        <i class="fa fa-user icon"></i>
-        <input
-          class="input-field"
-          type="text"
-          placeholder="Username"
-          name="usrnm"
-        />
-      </div>
-
+    <form class="register-form">
       <div class="input-container">
         <i class="fa fa-envelope icon"></i>
         <input
@@ -31,9 +21,43 @@
           class="input-field"
           type="password"
           placeholder="Password"
-          name="psw"
+          name="password"
         />
       </div>
+
+      <div class="input-container">
+        <i class="fa fa-id-card icon"></i>
+        <input
+          class="input-field"
+          type="text"
+          placeholder="First Name"
+          name="first"
+          style="margin-right: 20px"
+        />
+        <input
+          class="input-field"
+          type="text"
+          placeholder="Last Name"
+          name="last"
+        />
+      </div>
+
+      <div class="input-container">
+        <i class="fa fa-question icon"></i>
+        <input
+          class="input-field"
+          type="text"
+          placeholder="Secret"
+          name="secret"
+        />
+      </div>
+
+      <select class="role-dropdown">
+        <option disabled selected value="">Select desired role</option>
+        <option value="volunteer">Volunteer</option>
+        <option value="mentor">Mentor</option>
+        <option value="judge">Judge</option>
+      </select>
 
       <button type="submit" class="btn">Register</button>
     </form>
@@ -70,6 +94,23 @@ export default {
   display: flex;
   width: 100%;
   margin-bottom: 5px;
+}
+.register-form {
+  max-width: 400px;
+  margin: 25px auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.role-dropdown {
+  flex-grow: 1;
+  align-self: center;
+  width: 50%;
+  margin-top: 10px;
+  padding: 2%;
+  border: 1px solid black;
+  font-size: 15px;
+  text-align: center;
 }
 
 .icon {
