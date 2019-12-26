@@ -4,7 +4,7 @@
       <span class="txt1">Create</span>
       <span class="txt2">Account</span><br />
     </span>
-    <form class="register-form">
+    <form @submit.prevent="submit()" ref="form" class="register-form">
       <div class="input-container">
         <i class="fa fa-envelope icon"></i>
         <input
@@ -13,6 +13,9 @@
           placeholder="Email"
           name="email"
           v-model="email"
+          pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z0-9.-]{1,}[.]{1}[a-zA-Z0-9]{2,}"
+          oninvalid="setCustomValidity('Please enter a valid email')"
+          oninput="setCustomValidity('')"
           required
         />
       </div>
@@ -93,7 +96,7 @@
       </div>
       <div v-if="role === 'judge'" class="multi-container">
         <b-dropdown v-model="categories" multiple aria-role="list" required>
-          <button class="button is-primary" type="button" slot="trigger">
+          <button class="button is-dark" type="button" slot="trigger">
             <span style="padding-bottom: 20px;"
               >Categories: ({{ categories.length }})</span
             >
@@ -136,6 +139,18 @@ export default {
   methods: {
     getCategories() {
       return categories;
+    },
+    submit() {
+      if (
+        this.getForm().checkValidity() &&
+        (this.role !== "judge" || this.categories.length > 0)
+      ) {
+        console.log("Hey");
+      }
+      console.log("nay");
+    },
+    getForm(): HTMLFormElement {
+      return this.$refs.form as HTMLFormElement;
     }
   }
 };
