@@ -10,21 +10,21 @@
     </p>
     <div id="app" class="container">
       <ul id="example-1">
-        <li v-for="(item, i) in teams" :key="(item, i)">
+        <li v-for="(team, i) in teams" :key="(team, i)">
           <a href="/home">
             <div
               class="team"
               :style="
                 'background: linear-gradient(90deg,' +
-                  colors[i][0] +
+                  colors[i % 5][0] +
                   ' 0%,' +
-                  colors[i][1] +
+                  colors[i % 5][1] +
                   ' 120%)'
               "
             >
               <div class="team-div">
                 <h1 class="team-name">
-                  <span style="font-weight: 600">Team</span>{{ item }}
+                  <span style="font-weight: 600">Team</span>{{ team }}
                 </h1>
               </div>
               <div class="mark">
@@ -45,7 +45,7 @@ export default Vue.extend({
   props: {},
   data() {
     return {
-      teams: [1, 2, 3, 4, 5],
+      teams: Array,
       colors: [
         ["#FCE18A", "#F54FA1"],
         ["#F54FA1", "#fa96a8"],
@@ -54,6 +54,14 @@ export default Vue.extend({
         ["#42E596", "#42d7e5"]
       ]
     };
+  },
+  methods: {
+    getTeams() {
+      this.teams = [1, 2, 3, 4, 5, 6, 7];
+    }
+  },
+  async mounted() {
+    this.getTeams();
   }
 });
 </script>
