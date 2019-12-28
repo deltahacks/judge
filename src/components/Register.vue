@@ -126,6 +126,9 @@
       </div>
 
       <button type="submit" class="btn">Register</button>
+      <button type="submit" class="btn" @click="gotoLogin()">
+        Return to Login
+      </button>
     </form>
   </div>
 </template>
@@ -197,6 +200,9 @@ export default Vue.extend({
       } else {
         input.setCustomValidity("");
       }
+    },
+    gotoLogin() {
+      this.$router.push("Login");
     }
   }
 });

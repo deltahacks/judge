@@ -25,10 +25,7 @@ const router = new Router({
     {
       path: "/register",
       name: "Register",
-      component: Register,
-      meta: {
-        auth: true
-      }
+      component: Register
     },
     {
       path: "/status",

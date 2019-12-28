@@ -22,15 +22,24 @@
       </b-field>
       <a class="forgot">Forgot Password?</a><br /><br />
       <b-button rounded type="is-success" outlined>Submit</b-button><br /><br />
-      <b-button rounded type="is-primary" outlined>Create Account</b-button>
+      <b-button rounded type="is-primary" outlined @click="gotoRegister()"
+        >Create Account</b-button
+      >
     </span>
   </div>
 </template>
 
 <script lang="ts">
-export default {
-  name: "Login"
-};
+import Vue from "vue";
+
+export default Vue.extend({
+  name: "Login",
+  methods: {
+    gotoRegister() {
+      this.$router.push({ name: "Register" });
+    }
+  }
+});
 </script>
 
 <style lang="scss" scoped>
