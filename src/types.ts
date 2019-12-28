@@ -3,6 +3,18 @@ interface name {
   last: string;
 }
 
+export interface RegisterData {
+  email: string;
+  password: string;
+  first: string;
+  last: string;
+  secret: string;
+  role: string;
+  organization?: string;
+  contact?: string;
+  categories: string[];
+}
+
 export interface Judge {
   name: name;
   contact: string;
@@ -27,6 +39,6 @@ export interface JudgeReviews {
   questions: [Questions];
   final: number;
 }
-
-type category = string;
+export const categories = ["General", "JS", "Java", "Python"];
+type category = "General" | "JS" | "Java" | "Python";
 type question = string;
