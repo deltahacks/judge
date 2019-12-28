@@ -6,6 +6,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import Login from "./components/Login.vue";
 import Empty from "./components/Empty.vue";
+import Register from "./components/Register.vue";
 import db from "./firebaseinit";
 
 Vue.use(Router);
@@ -19,6 +20,14 @@ const router = new Router({
       component: Login,
       meta: {
         loginRedir: true
+      }
+    },
+    {
+      path: "/register",
+      name: "Register",
+      component: Register,
+      meta: {
+        auth: true
       }
     },
     {
@@ -44,16 +53,16 @@ router.beforeEach((to, from, next) => {
       // If user is logged in
       if (user) {
         // Proceed to next page
-        // console.log('Authorized user: ', user);
+        console.log("Authorized user: ", user.email);
         next();
       } else {
         // Otherwise redirect to login
-        // console.log('Not authorized');
+        console.log("Not authorized");
         next({ name: "Login" });
       }
     });
   } else if (to.matched.some(rec => rec.meta.adminAuth)) {
-    // console.log('Protected route detected');
+    console.log("Protected route detected");
     firebase.auth().onAuthStateChanged(user => {
       // If user is logged in
       if (user) {
