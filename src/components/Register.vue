@@ -165,7 +165,7 @@ export default Vue.extend({
         try {
           const signupRequest = await firebase
             .functions()
-            .httpsCallable("createAdminUser")({
+            .httpsCallable("judgeSignup")({
             email: this.email,
             password: this.password,
             secret: this.secret,
@@ -179,17 +179,13 @@ export default Vue.extend({
           console.log("RESPONSE: ", signupRequest.data);
           if (signupRequest.data.createdUser) {
             console.log("Success created");
-            /*this.$router.push({
-              name: "Login",
-              params: { successFeedback: true }
-            } as { name: string; params: any }); */
+            this.$router.push("Status");
           }
         } catch (err) {
           // this.feedback = "There was an error :(";
           console.log("Error: ", err);
         }
       }
-      console.log("nay");
     },
     getForm(): HTMLFormElement {
       return this.$refs.form as HTMLFormElement;
