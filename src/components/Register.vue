@@ -33,6 +33,18 @@
       </div>
 
       <div class="input-container">
+        <i class="fa fa-key icon"></i>
+        <input
+          class="input-field"
+          type="password"
+          placeholder="Confirm Password"
+          name="confirm"
+          @input="e => confirmCheck(e.target)"
+          required
+        />
+      </div>
+
+      <div class="input-container">
         <i class="fa fa-id-card icon"></i>
         <input
           class="input-field"
@@ -120,8 +132,10 @@
 
 <script lang="ts">
 import { RegisterData, categories } from "../types";
+import firebase from "firebase";
+import Vue from "vue";
 
-export default {
+export default Vue.extend({
   name: "Login",
   data(): RegisterData {
     return {
@@ -140,20 +154,52 @@ export default {
     getCategories() {
       return categories;
     },
-    submit() {
+    async submit() {
       if (
         this.getForm().checkValidity() &&
         (this.role !== "judge" || this.categories.length > 0)
       ) {
-        console.log("Hey");
+        try {
+          const signupRequest = await firebase
+            .functions()
+            .httpsCallable("createAdminUser")({
+            email: this.email,
+            password: this.password,
+            secret: this.secret,
+            first: this.first,
+            last: this.last,
+            role: this.role,
+            organization: this.organization,
+            contact: this.contact,
+            categories: this.categories
+          });
+          console.log("RESPONSE: ", signupRequest.data);
+          if (signupRequest.data.createdUser) {
+            console.log("Success created");
+            /*this.$router.push({
+              name: "Login",
+              params: { successFeedback: true }
+            } as { name: string; params: any }); */
+          }
+        } catch (err) {
+          // this.feedback = "There was an error :(";
+          console.log("Error: ", err);
+        }
       }
       console.log("nay");
     },
     getForm(): HTMLFormElement {
       return this.$refs.form as HTMLFormElement;
+    },
+    confirmCheck(input: HTMLInputElement) {
+      if (input.value !== this.password) {
+        input.setCustomValidity("Password does not match");
+      } else {
+        input.setCustomValidity("");
+      }
     }
   }
-};
+});
 </script>
 
 <style lang="scss" scoped>
