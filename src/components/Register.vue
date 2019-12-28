@@ -28,6 +28,9 @@
           placeholder="Password"
           name="password"
           v-model="password"
+          pattern=".{6,}"
+          oninvalid="setCustomValidity('Password must be at least 6 characters')"
+          oninput="setCustomValidity('')"
           required
         />
       </div>
@@ -179,7 +182,7 @@ export default Vue.extend({
           console.log("RESPONSE: ", signupRequest.data);
           if (signupRequest.data.createdUser) {
             console.log("Success created");
-            this.$router.push("Status");
+            this.$router.push("Login");
           }
         } catch (err) {
           // this.feedback = "There was an error :(";
