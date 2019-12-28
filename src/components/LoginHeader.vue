@@ -38,6 +38,7 @@
         <a href="/home"><li>Home</li></a>
         <a href="/home"><li>Rubric</li></a>
         <a href="/home"><li>Rankings</li></a>
+        <a href="#" @click="logout()"><li>Logout</li></a>
       </ul>
     </div>
     <div
@@ -54,6 +55,8 @@
 
 <script lang="ts">
 import Vue from "vue";
+import * as firebase from "firebase";
+import { auth } from "firebase/app";
 export default Vue.extend({
   name: "LoginHeader",
   props: {
@@ -70,6 +73,10 @@ export default Vue.extend({
   methods: {
     test() {
       console.log("x");
+    },
+    logout() {
+      auth().signOut();
+      this.$router.push({ name: "Login" });
     }
   }
 });
