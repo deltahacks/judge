@@ -21,6 +21,15 @@
           v-model="password"
         ></b-input>
       </b-field>
+      <b-notification
+        type="is-danger"
+        :active.sync="showError"
+        aria-close-label="Close notification"
+        role="alert"
+        style="margin-top: 30px; width: 50%; margin-left: auto; margin-right: auto;"
+      >
+        {{ this.error }}
+      </b-notification>
       <a class="forgot">Forgot Password?</a><br /><br />
       <b-button rounded type="is-success" outlined @click="login()"
         >Submit</b-button
@@ -42,7 +51,9 @@ export default Vue.extend({
   data(): LoginData {
     return {
       email: "",
-      password: ""
+      password: "",
+      showError: false,
+      error: ""
     };
   },
   methods: {
@@ -58,6 +69,8 @@ export default Vue.extend({
 
         if (!signupRequest.data.judge) {
           console.log("User is not a judge!");
+          this.error = "User is not a judge!";
+          this.showError = true;
           return;
         }
 
@@ -66,6 +79,8 @@ export default Vue.extend({
         this.$router.push({ name: "Status" });
       } catch (e) {
         console.log(e);
+        this.error = "An error occured. Please reload the page.";
+        this.showError = true;
       }
     }
   }
