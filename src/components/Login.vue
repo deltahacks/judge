@@ -34,7 +34,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import { auth } from "firebase/app";
+import { auth, functions } from "firebase/app";
 import { LoginData } from "../types";
 
 export default Vue.extend({
@@ -52,6 +52,15 @@ export default Vue.extend({
     async login() {
       try {
         console.log(this.email);
+        const signupRequest = await functions().httpsCallable("isJudge")({
+          email: this.email
+        });
+
+        if (!signupRequest.data.judge) {
+          console.log("User is not a judge!");
+          return;
+        }
+
         await auth().signInWithEmailAndPassword(this.email, this.password);
         console.log("Successfuly logged in");
         this.$router.push({ name: "Status" });
