@@ -6,7 +6,10 @@ interface name {
 export interface LoginData {
   email: string;
   password: string;
+  showError: boolean;
+  error: string;
 }
+
 export interface RegisterData {
   email: string;
   password: string;
@@ -17,6 +20,8 @@ export interface RegisterData {
   organization?: string;
   contact?: string;
   categories: string[];
+  showError: boolean;
+  error: string;
 }
 
 export interface Judge {

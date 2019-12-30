@@ -127,6 +127,15 @@
           </b-dropdown-item>
         </b-dropdown>
       </div>
+      <b-notification
+        type="is-danger"
+        :active.sync="showError"
+        aria-close-label="Close notification"
+        role="alert"
+        style="margin-top: 30px;"
+      >
+        {{ this.error }}
+      </b-notification>
 
       <button type="submit" class="btn">Register</button>
       <button type="submit" class="btn" @click="gotoLogin()">
@@ -153,7 +162,9 @@ export default Vue.extend({
       role: "",
       organization: "",
       contact: "",
-      categories: []
+      categories: [],
+      showError: false,
+      error: ""
     };
   },
   methods: {
@@ -183,10 +194,15 @@ export default Vue.extend({
           if (signupRequest.data.createdUser) {
             console.log("Success created");
             this.$router.push("Login");
+          } else {
+            this.error = signupRequest.data.error;
+            this.showError = true;
           }
-        } catch (err) {
+        } catch (e) {
           // this.feedback = "There was an error :(";
-          console.log("Error: ", err);
+          console.log("Error: ", e);
+          this.error = e;
+          this.showError = true;
         }
       }
     },
