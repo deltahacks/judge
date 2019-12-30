@@ -79,7 +79,7 @@ export default Vue.extend({
         this.$router.push({ name: "Status" });
       } catch (e) {
         console.log(e);
-        this.error = "An error occured. Please reload the page.";
+        this.error = e;
         this.showError = true;
       }
     }

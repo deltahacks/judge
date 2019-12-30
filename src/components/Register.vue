@@ -201,7 +201,7 @@ export default Vue.extend({
         } catch (e) {
           // this.feedback = "There was an error :(";
           console.log("Error: ", e);
-          this.error = "An error occured. Please reload the page.";
+          this.error = e;
           this.showError = true;
         }
       }
