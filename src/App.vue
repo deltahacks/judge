@@ -1,20 +1,18 @@
 <template>
   <div id="app">
     <login-header></login-header>
-    <login></login>
+    <router-view />
     <home></home>
   </div>
 </template>
 
 <script>
-import Login from "@/components/Login.vue";
 import LoginHeader from "@/components/LoginHeader.vue";
 import Home from "@/components/Home.vue";
 
 export default {
   name: "app",
   components: {
-    Login,
     LoginHeader,
     Home
   }
@@ -33,9 +31,6 @@ export default {
     #5088cd
   );
   background-size: 800% 800%;
-  -webkit-animation: ApplyAnimation 180s ease infinite;
-  -moz-animation: ApplyAnimation 180s ease infinite;
-  animation: ApplyAnimation 180s ease infinite;
 }
 @-webkit-keyframes ApplyAnimation {
   0% {
