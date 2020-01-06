@@ -27,9 +27,11 @@
                   <span style="font-weight: 600">Team</span>{{ team }}
                 </h1>
               </div>
-              <div class="mark">
-                <h1 class="team-name">Mark</h1>
-              </div>
+              <router-link :to="{ name: 'Marking', params: { teamId: team } }">
+                <div class="mark">
+                  <h1 class="team-name">Mark</h1>
+                </div>
+              </router-link>
             </div>
           </a>
         </li>

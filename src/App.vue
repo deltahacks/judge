@@ -2,19 +2,16 @@
   <div id="app">
     <login-header></login-header>
     <router-view />
-    <home></home>
   </div>
 </template>
 
 <script>
 import LoginHeader from "@/components/LoginHeader.vue";
-import Home from "@/components/Home.vue";
 
 export default {
   name: "app",
   components: {
-    LoginHeader,
-    Home
+    LoginHeader
   }
 };
 </script>
