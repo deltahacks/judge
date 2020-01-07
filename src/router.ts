@@ -7,6 +7,7 @@ import "firebase/firestore";
 import Login from "./components/Login.vue";
 import Empty from "./components/Empty.vue";
 import Register from "./components/Register.vue";
+import Home from "./components/Home.vue";
 import db from "./firebaseinit";
 
 Vue.use(Router);
@@ -34,6 +35,20 @@ const router = new Router({
       meta: {
         auth: true
       }
+    },
+    {
+      path: "/teams",
+      name: "Judging",
+      component: Home,
+      meta: {
+        auth: true
+      }
+    },
+    {
+      path: "/marking/team/:teamId/",
+      name: "Marking",
+      component: Empty,
+      props: true
     },
     {
       path: "*",
@@ -99,7 +114,7 @@ router.beforeEach((to, from, next) => {
           firebase.auth().currentUser!.metadata.lastSignInTime
         ) {
           next({ name: "Status", params: { firstTime: "yes" } });
-        } else next({ name: "Status", params: { firstTime: "no" } });
+        } else next({ name: "Judging", params: { firstTime: "no" } });
       } else {
         // Otherwise redirect to login
         // console.log('Not authorized');
