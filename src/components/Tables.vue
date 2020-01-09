@@ -12,7 +12,7 @@
       <ul id="example-1">
         <li v-for="(team, i) in teams" :key="(team, i)">
             <div v-if="i%2==0">  <!-- Useless logic -->
-          <a href="/Tables">
+          <router-link :to="{ name: 'Marking', params: { teamId: teams[i] } }">
             <div
               class="team"
               :style="
@@ -29,7 +29,7 @@
                   <span style="font-weight: 600" v-if="i%2==0">{{ teams[i] }}</span>
                 </h1>
               </div>
-              <router-link :to="{ name: 'Marking', params: { teamId: team } }">
+              <router-link :to="{ name: 'Marking', params: { teamId: teams[i+1] } }">
                 <div class="mark">
                     <h1 class="team-name">
                   <!-- Could just put in the selected teams inside the selected tables list -->
@@ -39,7 +39,7 @@
                 </div>
               </router-link>
             </div>
-          </a>
+          </router-link>
           </div> <!-- Useless logic div end -->
         </li>
       </ul>
