@@ -90,9 +90,5 @@ export default Vue.extend({
 .team {
   height: 100px;
 }
-.blurb {
-  font-size: 20px;
-  text-align: center;
-  padding: 50px;
-}
+
 </style>

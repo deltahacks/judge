@@ -6,31 +6,24 @@
     <div id="app">
       <ul id="example-1">
         <li v-for="(category,i) in categories" :key="(category,i)">
-          <a href="/home">
-            <div
-              class="team"
-              :style="
-                'background: linear-gradient(90deg,' +
-                  colors[i][0] +
-                  ' 0%,' +
-                  colors[i][1] +
-                  ' 120%)'
-              "
-            >
-              <div class="team-div">
-                <h1 class="category name">
-                  <span style="font-weight: 600"></span>{{ category.type }}
-                </h1>
-                <p class="category subheading"> {{ category.desc }} </p>
-              </div>
-              <p class="mark">2</p>
-              <!-- <router-link :to="{ name: 'Marking', params: { teamId: team } }">
-                <div class="mark">
-                  <h1 class="team-name">Mark</h1>
-                </div>
-              </router-link> -->
+          <div
+            class="marking-category"
+            :style="
+              'background: linear-gradient(90deg,' +
+                colors[i][0] +
+                ' 0%,' +
+                colors[i][1] +
+                ' 120%)'
+            "
+          >
+            <div class="team-div">
+              <h1 class="category name">
+                <span style="font-weight: 600"></span>{{ category.type }}
+              </h1>
+              <p class="category subheading"> {{ category.desc }} </p>
             </div>
-          </a>
+            <div class="mark-field"><input type="text" placeholder="1" maxlength="1"/></div>
+          </div>
         </li>
       </ul>
     </div>
@@ -89,12 +82,13 @@ export default Vue.extend({
 <style>
 .team-div {
   float: left;
+  width: 70%;
 }
-.mark {
+.mark-field {
   top: 0;
-  background: rgba(255, 255, 255, 0.2);
-  width: 20px;
+  width: 50px;
   float: right;
+  margin-right: 20px;
 }
 .team-name {
   font-size: 30px;
@@ -104,22 +98,17 @@ export default Vue.extend({
   font-family: "Montserrat", sans-serif;
   font-weight: 300;
 }
-.team {
+.marking-category {
   height: 100px;
   padding-top: 20px;
 }
-.blurb {
-  font-size: 20px;
-  text-align: center;
-  padding: 50px;
-}
+
 .category {
   font-size: 16px;
   margin-bottom: 0;
   margin: 0 40px;
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
-  width: 70%;
 }
 
 .name {
@@ -132,6 +121,26 @@ export default Vue.extend({
 .subheading {
   font-size: 14px;
   color: white;
-  width: 70%;
 }
+
+input {
+  border: none;
+  outline: none;
+  border-radius: 0;
+  text-align: center;
+  background-color: transparent;
+  width: 60px;
+  height: 60px;
+  font-weight: 700;
+  font-family: 'Lato', georgia;
+  font-size: 60px;
+  /* padding: 1rem; */
+  color: rgba(255,255,255,0.6);
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgba(255,255,255,0.6);
+  opacity: 1; /* Firefox */
+}
+
 </style>
