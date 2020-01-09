@@ -1,17 +1,20 @@
 <template>
   <div id="app">
     <login-header></login-header>
+    <marking></marking>
     <router-view />
   </div>
 </template>
 
 <script>
 import LoginHeader from "@/components/LoginHeader.vue";
+import Marking from "@/components/Marking.vue";
 
 export default {
   name: "app",
   components: {
-    LoginHeader
+    LoginHeader,
+    Marking
   }
 };
 </script>

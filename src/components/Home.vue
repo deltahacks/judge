@@ -1,13 +1,9 @@
 <template>
   <div id="app">
-    <link
-      href="https://fonts.googleapis.com/css?family=Montserrat:300,400&display=swap"
-      rel="stylesheet"
-    />
-    <p class="blurb">
-      Here are the teams you will be judging today. Click on a group to see
-      their rubric and start marking.
-    </p>
+    <Blurb :content="
+      'Here are the teams you will be judging today. \
+      Click on a group to see their rubric and start marking.'
+    "></Blurb>
     <div id="app" class="container">
       <ul id="example-1">
         <li v-for="(team, i) in teams" :key="(team, i)">
@@ -42,8 +38,13 @@
 
 <script>
 import Vue from "vue";
+import Blurb from "@/components/Blurb.vue";
+
 export default Vue.extend({
   name: "Home",
+  components: {
+    Blurb
+  },
   props: {},
   data() {
     return {
