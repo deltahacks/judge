@@ -11,7 +11,7 @@
     <div id="app" class="container">
       <ul id="example-1">
         <li v-for="(team, i) in teams" :key="(team, i)">
-            <div v-if="i%2==0">
+            <div v-if="i%2==0">  <!-- Useless logic -->
           <a href="/Tables">
             <div
               class="team"
@@ -30,12 +30,14 @@
               </div>
               <router-link :to="{ name: 'Marking', params: { teamId: team } }">
                 <div class="mark">
-                  <h1 class="team-name" v-if="i%2==0">{{teams[i+1]}}</h1>
+                    <h1 class="team-name">
+                  <span style="font-weight: 600" v-if="i%2==0">{{ teams[i+1] }}</span> <!-- Could just put in the selected teams inside the selected tables list -->
+                        </h1>
                 </div>
               </router-link>
             </div>
           </a>
-          </div>
+          </div> <!-- Useless logic div end -->
         </li>
       </ul>
     </div>
@@ -61,7 +63,7 @@ export default Vue.extend({
   },
   methods: {
     getTeams() {
-      this.teams = [1, 2, 3, 4, 5, 6, 7];
+      this.teams = [13,21, 32, 43, 5, 16, 7,33,2,2,131, 1];
     }
   },
   async mounted() {
