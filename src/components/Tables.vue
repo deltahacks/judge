@@ -11,6 +11,7 @@
     <div id="app" class="container">
       <ul id="example-1">
         <li v-for="(team, i) in teams" :key="(team, i)">
+            <div v-if="i%2==0">
           <a href="/Tables">
             <div
               class="team"
@@ -34,6 +35,7 @@
               </router-link>
             </div>
           </a>
+          </div>
         </li>
       </ul>
     </div>
