@@ -79,8 +79,8 @@ export default Vue.extend({
 .mark {
   top: 0;
   background: rgba(255, 255, 255, 0.2);
-  width: 50vw;
-  float: right;
+  /* float: right; */
+  width: 50% !important;
 }
 .team-name {
   font-size: 30px;
