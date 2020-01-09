@@ -24,12 +24,12 @@
             >
               <div class="team-div">
                 <h1 class="team-name">
-                  <span style="font-weight: 600"></span>{{ team }}
+                  <span style="font-weight: 600" v-if="i%2==0">{{ teams[i] }}</span>
                 </h1>
               </div>
               <router-link :to="{ name: 'Marking', params: { teamId: team } }">
                 <div class="mark">
-                  <h1 class="team-name">{{team}}</h1>
+                  <h1 class="team-name" v-if="i%2==0">{{teams[i+1]}}</h1>
                 </div>
               </router-link>
             </div>
