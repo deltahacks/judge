@@ -25,13 +25,16 @@
             >
               <div class="team-div">
                 <h1 class="team-name">
+                  <span>Table: </span>
                   <span style="font-weight: 600" v-if="i%2==0">{{ teams[i] }}</span>
                 </h1>
               </div>
               <router-link :to="{ name: 'Marking', params: { teamId: team } }">
                 <div class="mark">
                     <h1 class="team-name">
-                  <span style="font-weight: 600" v-if="i%2==0">{{ teams[i+1] }}</span> <!-- Could just put in the selected teams inside the selected tables list -->
+                  <!-- Could just put in the selected teams inside the selected tables list -->
+                  <span>Table: </span>
+                  <span style="font-weight: 600" v-if="i%2==0">{{ teams[i+1] }}</span>
                         </h1>
                 </div>
               </router-link>
@@ -63,7 +66,7 @@ export default Vue.extend({
   },
   methods: {
     getTeams() {
-      this.teams = [13,21, 32, 43, 5, 16, 7,33,2,2,131, 1];
+      this.teams = [1,2,3,4,5,6,7,8];
     }
   },
   async mounted() {
@@ -73,6 +76,9 @@ export default Vue.extend({
 </script>
 
 <style>
+.container{
+  height: 98vh;
+}
 .team-div {
   float: left;
 }
@@ -83,7 +89,7 @@ export default Vue.extend({
   width: 50% !important;
 }
 .team-name {
-  font-size: 30px;
+  font-size: 1.5em;
   color: white;
   line-height: 150px;
   margin: 0 40px;
