@@ -3,36 +3,55 @@
     <Blurb :content="
         'Please assign marks to every category appropriately.'
     "></Blurb>
-    <div id="app">
-      <ul>
-        <li v-for="(category,i) in categories" :key="(category,i)">
-          <div
-            class="marking-category"
-            :style="
-              'background: linear-gradient(90deg,' +
-                colors[i][0] +
-                ' 0%,' +
-                colors[i][1] +
-                ' 120%)'
-            "
-          >
-            <div class="marking-div">
-              <h1 class="category name">
-                <span style="font-weight: 600"></span>{{ category.type }}
-              </h1>
-              <p class="category subheading"> {{ category.desc }} </p>
-            </div>
-            <div class="mark-field"><input type="text" placeholder="1" maxlength="1"/></div>
+    <b-dropdown aria-role="list">
+      <button class="button is-primary" slot="trigger">
+          <span>Click me!</span>
+          <b-icon icon="menu-down"></b-icon>
+      </button>
+      <b-dropdown-item aria-role="listitem" v-for="category in submission_categories" :key="category"> category </b-dropdown-item>
+      <!-- <b-dropdown-item aria-role="listitem">category </b-dropdown-item>
+      <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
+      <b-dropdown-item aria-role="listitem">Something else</b-dropdown-item> -->
+    </b-dropdown>
+    <ul>
+      <li>
+        <div
+          class="marking-category"
+          :style="
+            'background: linear-gradient(90deg, pink 0%, white 120%)'"
+        ><p class="large"> Team Name </p></div>
+      </li>
+      <li v-for="(category,i) in categories" :key="(category,i)">
+        <div
+          class="marking-category"
+          :style="
+            'background: linear-gradient(90deg,' +
+              colors[i][0] +
+              ' 0%,' +
+              colors[i][1] +
+              ' 120%)'
+          "
+        >
+          <div class="marking-div">
+            <h1 class="category name">
+              <span style="font-weight: 600"></span>{{ category.type }}
+            </h1>
+            <p class="category subheading"> {{ category.desc }} </p>
           </div>
-        </li>
-      </ul>
-    </div>
+          <div class="mark-field"><input type="text" placeholder="1" maxlength="1"/></div>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
 import Vue from "vue";
 import Blurb from "@/components/Blurb.vue";
+import * as firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
+import db from '../firebaseinit';
 
 export default Vue.extend({
   name: "Home",
@@ -43,6 +62,7 @@ export default Vue.extend({
   data() {
     return {
       teams: Array,
+      submission_categories: Array,
       colors: [
         ["#FF9DA0", "#FACFC3"],
         ["#FF9DA0", "#FACFC3"],
@@ -75,6 +95,20 @@ export default Vue.extend({
     };
   },
   methods: {
+    getSubmissions() {
+      this.submission_categories
+      let stuff = db
+        .collection('DH6')
+        .doc('applications')
+        .get();
+      console.log(stuff);
+      
+    }
+  },
+  async mounted() {
+    const hack = db.collection('DH6').doc('hackathon').collection('projects').doc('test0@test.com');
+    console.log(hack);
+    // this.getSubmissions();
   }
 });
 </script>
@@ -90,14 +124,7 @@ export default Vue.extend({
   float: right;
   margin-right: 20px;
 }
-/* .team-name {
-  font-size: 30px;
-  color: white;
-  line-height: 100px;
-  margin: 0 40px;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 300;
-} */
+
 .marking-category {
   height: 100px;
   padding-top: 20px;
@@ -115,7 +142,6 @@ export default Vue.extend({
   text-transform: uppercase;
   color: #f2f2f2;
   line-height: 20px;
-  
 }
 
 .subheading {
@@ -143,4 +169,12 @@ export default Vue.extend({
   opacity: 1; /* Firefox */
 }
 
+.team-name {
+  font-size: 30px;
+  color: white;
+  line-height: 100px;
+  margin: 0 40px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 300;
+}
 </style>
