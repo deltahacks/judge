@@ -12,40 +12,29 @@
     <br>
         <b-dropdown
             v-model="selectedOptions"
-            multiple
-            aria-role="list">
+            dark
+            >
             <button class="button is-primary" type="button" slot="trigger">
-                <span>Select Challenges to Judge ({{ selectedOptions.length }}/4)</span>
+                <span> {{ selectedOptions }} </span>
                 <b-icon icon="menu-down"></b-icon>
             </button>
-
-            <b-dropdown-item value="Arcelor Mittal Dofasco" aria-role="listitem">
+            
+            <b-dropdown-item value="Arcelor Mittal Dofasco">
                 <span>Arcelor Mittal Dofasco</span>
             </b-dropdown-item>
 
-            <b-dropdown-item value="CIBC" aria-role="listitem">
+            <b-dropdown-item value="CIBC">
                 <span>CIBC</span>
             </b-dropdown-item>
 
-            <b-dropdown-item value="Deloitte" aria-role="listitem">
+            <b-dropdown-item value="Deloitte">
                 <span>Deloitte</span>
             </b-dropdown-item>
 
-            <b-dropdown-item value="Loyalty One" aria-role="listitem">
+            <b-dropdown-item value="Loyalty One">
                 <span>Loyalty One</span>
             </b-dropdown-item>
         </b-dropdown>
-        <div class="selecteditems"><br>
-        <span><b>Selected: <br></b></span>
-        <span v-for="(item) in selectedOptions" :key="(item)">{{ item }}<br></span>
-        </div>
-    <!-- <select class="dropdown">
-      <option value="select">Select One</option>
-      <option value="cibc">CIBC</option>
-      <option value="arcelor">Arcelor Mittal</option>
-      <option value="loyalty">Loyalty One</option>
-      <option value="deloitte">Deloitte</option>
-       </select> -->
     </div>
     <div id="app" class="container">
       <ul id="example-1">
@@ -99,7 +88,7 @@ export default Vue.extend({
   props: {},
   data() {
     return {
-      selectedOptions: [],
+      selectedOptions: "Select a Challenge to Judge",
       teams: Array,
       colors: [
         ["#FCE18A", "#F54FA1"],
@@ -123,9 +112,6 @@ export default Vue.extend({
 </script>
 
 <style>
-.selecteditems{
-  display: inline;
-}
 .container{
   height: 98vh;
 }
