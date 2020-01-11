@@ -24,6 +24,6 @@ export default Vue.extend({
 .blurb {
   font-size: 20px;
   text-align: center;
-  padding: 50px;
+  padding: 30px;
 }
 </style>

@@ -3,24 +3,29 @@
     <Blurb :content="
         'Please assign marks to every category appropriately.'
     "></Blurb>
-    <b-dropdown aria-role="list">
-      <button class="button is-primary" slot="trigger">
-          <span>Click me!</span>
-          <b-icon icon="menu-down"></b-icon>
-      </button>
-      <b-dropdown-item aria-role="listitem" v-for="category in submission_categories" :key="category"> {{category}} </b-dropdown-item>
-      <!-- <b-dropdown-item aria-role="listitem">category </b-dropdown-item>
-      <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
-      <b-dropdown-item aria-role="listitem">Something else</b-dropdown-item> -->
-    </b-dropdown>
+    <div class="center submission-info">
+      <h1>TeamName</h1>
+      <h2>Table 3</h2>
+      <p>Members:</p>
+      <p v-for="member in ['A','B','C']" :key="member">
+        {{member}}
+      </p>
+      <a href="https://devpost.com">Devpost link</a>
+    </div>
+    <div class="center">
+      <b-dropdown v-model="selectedOptions" dark>
+        <button class="button is-primary" type="button" slot="trigger">
+            <span> {{ selectedOptions }}</span>
+            <b-icon icon="menu-down"></b-icon>
+        </button>
+        <div v-for="category in submission_categories" :key="category">
+        <b-dropdown-item :value="category"> 
+            {{category}} 
+        </b-dropdown-item>
+        </div>
+      </b-dropdown>
+    </div>
     <ul>
-      <li>
-        <div
-          class="marking-category"
-          :style="
-            'background: linear-gradient(90deg, pink 0%, white 120%)'"
-        ><p class="large"> Team Name </p></div>
-      </li>
       <li v-for="(criteria,i) in marking_criteria" :key="(criteria,i)">
         <div
           class="marking-category"
@@ -61,7 +66,6 @@ export default Vue.extend({
   props: {},
   data() {
     return {
-      teams: Array,
       submission_categories: Array,
       colors: [
         ["#FF9DA0", "#FACFC3"],
@@ -91,7 +95,8 @@ export default Vue.extend({
           type: "Social Impact",
           desc: "Does the hack have a positive impact for the targeted audience?"
         },
-      ]
+      ],
+      selectedOptions: "Select a category to judge"
     };
   },
   methods: {
@@ -168,12 +173,17 @@ export default Vue.extend({
   opacity: 1; /* Firefox */
 }
 
-.team-name {
-  font-size: 30px;
-  color: white;
-  line-height: 100px;
-  margin: 0 40px;
+.center {
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+.submission-info {
   font-family: "Montserrat", sans-serif;
-  font-weight: 300;
+}
+
+.submission-info h1 {
+    font-weight: 700;
+    font-size: 30px;
 }
 </style>
