@@ -8,7 +8,7 @@
           <span>Click me!</span>
           <b-icon icon="menu-down"></b-icon>
       </button>
-      <b-dropdown-item aria-role="listitem" v-for="category in submission_categories" :key="category"> category </b-dropdown-item>
+      <b-dropdown-item aria-role="listitem" v-for="category in submission_categories" :key="category"> {{category}} </b-dropdown-item>
       <!-- <b-dropdown-item aria-role="listitem">category </b-dropdown-item>
       <b-dropdown-item aria-role="listitem">Another action</b-dropdown-item>
       <b-dropdown-item aria-role="listitem">Something else</b-dropdown-item> -->
@@ -21,7 +21,7 @@
             'background: linear-gradient(90deg, pink 0%, white 120%)'"
         ><p class="large"> Team Name </p></div>
       </li>
-      <li v-for="(category,i) in categories" :key="(category,i)">
+      <li v-for="(criteria,i) in marking_criteria" :key="(criteria,i)">
         <div
           class="marking-category"
           :style="
@@ -34,9 +34,9 @@
         >
           <div class="marking-div">
             <h1 class="category name">
-              <span style="font-weight: 600"></span>{{ category.type }}
+              <span style="font-weight: 600"></span>{{ criteria.type }}
             </h1>
-            <p class="category subheading"> {{ category.desc }} </p>
+            <p class="category subheading"> {{ criteria.desc }} </p>
           </div>
           <div class="mark-field"><input type="text" placeholder="1" maxlength="1"/></div>
         </div>
@@ -70,7 +70,7 @@ export default Vue.extend({
         ["#649C9F", "#FACFC3"],
         ["#649C9F", "#FACFC3"]
       ],
-      categories: [
+      marking_criteria: [
         {
           type: "Technical",
           desc: "How technically impressive is the hack?"
@@ -95,20 +95,19 @@ export default Vue.extend({
     };
   },
   methods: {
-    getSubmissions() {
-      this.submission_categories
-      let stuff = db
-        .collection('DH6')
-        .doc('applications')
-        .get();
-      console.log(stuff);
-      
+    getSubmissionCategories() { 
+      db.collection('DH6')
+        .doc('hackathon')
+        .collection('projects')
+        .doc('test0@test.com')
+        .onSnapshot((snap) => {
+          this.submission_categories = 
+            snap.data().responses.challenges;
+        });     
     }
   },
   async mounted() {
-    const hack = db.collection('DH6').doc('hackathon').collection('projects').doc('test0@test.com');
-    console.log(hack);
-    // this.getSubmissions();
+    this.getSubmissionCategories();
   }
 });
 </script>
