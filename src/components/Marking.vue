@@ -1,32 +1,34 @@
 <template>
   <div id="app">
-    <Blurb :content="
-        'Please assign marks to every category appropriately.'
-    "></Blurb>
+    <Blurb
+      content="
+        Please assign marks to every category appropriately.
+    "
+    ></Blurb>
     <div class="center submission-info">
       <h1>TeamName</h1>
       <h2>Table 3</h2>
       <p>Members:</p>
-      <p v-for="member in ['A','B','C']" :key="member">
-        {{member}}
+      <p v-for="member in ['A', 'B', 'C']" :key="member">
+        {{ member }}
       </p>
       <a href="https://devpost.com">Devpost link</a>
     </div>
     <div class="center">
       <b-dropdown v-model="selectedOptions" dark>
         <button class="button is-primary" type="button" slot="trigger">
-            <span> {{ selectedOptions }}</span>
-            <b-icon icon="menu-down"></b-icon>
+          <span> {{ selectedOptions }}</span>
+          <b-icon icon="menu-down"></b-icon>
         </button>
         <div v-for="category in submission_categories" :key="category">
-        <b-dropdown-item :value="category"> 
-            {{category}} 
-        </b-dropdown-item>
+          <b-dropdown-item :value="category">
+            {{ category }}
+          </b-dropdown-item>
         </div>
       </b-dropdown>
     </div>
     <ul>
-      <li v-for="(criteria,i) in marking_criteria" :key="(criteria,i)">
+      <li v-for="(criteria, i) in marking_criteria" :key="(criteria, i)">
         <div
           class="marking-category"
           :style="
@@ -41,9 +43,11 @@
             <h1 class="category name">
               <span style="font-weight: 600"></span>{{ criteria.type }}
             </h1>
-            <p class="category subheading"> {{ criteria.desc }} </p>
+            <p class="category subheading">{{ criteria.desc }}</p>
           </div>
-          <div class="mark-field"><input type="text" placeholder="1" maxlength="1"/></div>
+          <div class="mark-field">
+            <input type="text" placeholder="1" maxlength="1" />
+          </div>
         </div>
       </li>
     </ul>
@@ -53,15 +57,15 @@
 <script>
 import Vue from "vue";
 import Blurb from "@/components/Blurb.vue";
-import * as firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
-import db from '../firebaseinit';
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+import db from "../firebaseinit";
 
 export default Vue.extend({
   name: "Home",
   components: {
-      Blurb
+    Blurb
   },
   props: {},
   data() {
@@ -93,22 +97,22 @@ export default Vue.extend({
         },
         {
           type: "Social Impact",
-          desc: "Does the hack have a positive impact for the targeted audience?"
-        },
+          desc:
+            "Does the hack have a positive impact for the targeted audience?"
+        }
       ],
       selectedOptions: "Select a category to judge"
     };
   },
   methods: {
-    getSubmissionCategories() { 
-      db.collection('DH6')
-        .doc('hackathon')
-        .collection('projects')
-        .doc('test0@test.com')
-        .onSnapshot((snap) => {
-          this.submission_categories = 
-            snap.data().responses.challenges;
-        });     
+    getSubmissionCategories() {
+      db.collection("DH6")
+        .doc("hackathon")
+        .collection("projects")
+        .doc("test0@test.com")
+        .onSnapshot(snap => {
+          this.submission_categories = snap.data().responses.challenges;
+        });
     }
   },
   async mounted() {
@@ -162,14 +166,15 @@ export default Vue.extend({
   width: 60px;
   height: 60px;
   font-weight: 700;
-  font-family: 'Lato', georgia;
+  font-family: "Lato", georgia;
   font-size: 60px;
   /* padding: 1rem; */
-  color: rgba(255,255,255,0.6);
+  color: rgba(255, 255, 255, 0.6);
 }
 
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: rgba(255,255,255,0.6);
+/* Chrome, Firefox, Opera, Safari 10.1+ */
+::placeholder {
+  color: rgba(255, 255, 255, 0.6);
   opacity: 1; /* Firefox */
 }
 
@@ -183,7 +188,7 @@ export default Vue.extend({
 }
 
 .submission-info h1 {
-    font-weight: 700;
-    font-size: 30px;
+  font-weight: 700;
+  font-size: 30px;
 }
 </style>

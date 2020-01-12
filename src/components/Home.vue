@@ -1,9 +1,11 @@
 <template>
   <div id="app">
-    <Blurb :content="
-      'Here are the teams you will be judging today. \
+    <Blurb
+      :content="
+        'Here are the teams you will be judging today. \
       Click on a group to see their rubric and start marking.'
-    "></Blurb>
+      "
+    ></Blurb>
     <div id="app">
       <ul id="example-1">
         <li v-for="(team, i) in teams" :key="(team, i)">
@@ -23,7 +25,9 @@
                   <span style="font-weight: 600">Team</span>{{ team }}
                 </h1>
               </div>
-              <router-link :to="{ name: 'Marking', params: { tableNumber: team } }">
+              <router-link
+                :to="{ name: 'Marking', params: { tableNumber: team } }"
+              >
                 <div class="mark">
                   <h1 class="team-name">Mark</h1>
                 </div>
@@ -90,5 +94,4 @@ export default Vue.extend({
 .team {
   height: 100px;
 }
-
 </style>

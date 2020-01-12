@@ -11,7 +11,7 @@ import LoginHeader from "@/components/LoginHeader.vue";
 export default {
   name: "app",
   components: {
-    LoginHeader,
+    LoginHeader
   }
 };
 </script>
