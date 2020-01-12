@@ -8,6 +8,7 @@ import Login from "./components/Login.vue";
 import Empty from "./components/Empty.vue";
 import Register from "./components/Register.vue";
 import Home from "./components/Home.vue";
+import Marking from "./components/Marking.vue";
 import db from "./firebaseinit";
 
 Vue.use(Router);
@@ -37,17 +38,17 @@ const router = new Router({
       }
     },
     {
-      path: "/teams",
-      name: "Judging",
+      path: "/submissions",
+      name: "Submissions",
       component: Home,
       meta: {
         auth: true
       }
     },
     {
-      path: "/marking/team/:teamId/",
+      path: "/submission/:tableNumber/",
       name: "Marking",
-      component: Empty,
+      component: Marking,
       props: true
     },
     {
@@ -114,7 +115,7 @@ router.beforeEach((to, from, next) => {
           firebase.auth().currentUser!.metadata.lastSignInTime
         ) {
           next({ name: "Status", params: { firstTime: "yes" } });
-        } else next({ name: "Judging", params: { firstTime: "no" } });
+        } else next({ name: "Submissions", params: { firstTime: "no" } });
       } else {
         // Otherwise redirect to login
         // console.log('Not authorized');

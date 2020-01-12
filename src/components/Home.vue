@@ -1,14 +1,12 @@
 <template>
   <div id="app">
-    <link
-      href="https://fonts.googleapis.com/css?family=Montserrat:300,400&display=swap"
-      rel="stylesheet"
-    />
-    <p class="blurb">
-      Here are the teams you will be judging today. Click on a group to see
-      their rubric and start marking.
-    </p>
-    <div id="app" class="container">
+    <Blurb
+      :content="
+        'Here are the teams you will be judging today. \
+      Click on a group to see their rubric and start marking.'
+      "
+    ></Blurb>
+    <div id="app">
       <ul id="example-1">
         <li v-for="(team, i) in teams" :key="(team, i)">
           <a href="/home">
@@ -27,7 +25,9 @@
                   <span style="font-weight: 600">Team</span>{{ team }}
                 </h1>
               </div>
-              <router-link :to="{ name: 'Marking', params: { teamId: team } }">
+              <router-link
+                :to="{ name: 'Marking', params: { tableNumber: team } }"
+              >
                 <div class="mark">
                   <h1 class="team-name">Mark</h1>
                 </div>
@@ -42,8 +42,13 @@
 
 <script>
 import Vue from "vue";
+import Blurb from "@/components/Blurb.vue";
+
 export default Vue.extend({
   name: "Home",
+  components: {
+    Blurb
+  },
   props: {},
   data() {
     return {
@@ -88,10 +93,5 @@ export default Vue.extend({
 }
 .team {
   height: 100px;
-}
-.blurb {
-  font-size: 20px;
-  text-align: center;
-  padding: 50px;
 }
 </style>
