@@ -1,9 +1,11 @@
 <template>
   <div id="app">
-    <Blurb :content="
-      'Here are the teams you will be judging today. \
+    <Blurb
+      :content="
+        'Here are the teams you will be judging today. \
       Click on a group to see their rubric and start marking.'
-    "></Blurb>
+      "
+    ></Blurb>
     <div id="app" class="container">
       <ul id="example-1">
         <li v-for="(team, i) in teams" :key="(team, i)">
@@ -90,5 +92,4 @@ export default Vue.extend({
 .team {
   height: 100px;
 }
-
 </style>

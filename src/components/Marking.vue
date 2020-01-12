@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <Blurb :content="
-        'Please assign marks to every category appropriately.'
-    "></Blurb>
+    <Blurb
+      :content="'Please assign marks to every category appropriately.'"
+    ></Blurb>
     <div id="app">
       <ul id="example-1">
-        <li v-for="(category,i) in categories" :key="(category,i)">
+        <li v-for="(category, i) in categories" :key="(category, i)">
           <div
             class="marking-category"
             :style="
@@ -20,24 +20,32 @@
               <h1 class="category name">
                 <span style="font-weight: 600"></span>{{ category.type }}
               </h1>
-              <p class="category subheading"> {{ category.desc }} </p>
+              <p class="category subheading">{{ category.desc }}</p>
             </div>
-            <div class="mark-field"><input type="text" placeholder="1" maxlength="1"/></div>
+            <div class="mark-field">
+              <input type="text" placeholder="1" maxlength="1" class="marks" />
+            </div>
           </div>
         </li>
       </ul>
     </div>
+    <button style="width=100px;height=100px;" @click="onSubmit()"></button>
   </div>
 </template>
 
 <script>
 import Vue from "vue";
 import Blurb from "@/components/Blurb.vue";
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+import "firebase/storage";
+import db from "../firebaseinit";
 
 export default Vue.extend({
   name: "Home",
   components: {
-      Blurb
+    Blurb
   },
   props: {},
   data() {
@@ -69,12 +77,58 @@ export default Vue.extend({
         },
         {
           type: "Social Impact",
-          desc: "Does the hack have a positive impact for the targeted audience?"
-        },
+          desc:
+            "Does the hack have a positive impact for the targeted audience?"
+        }
       ]
     };
   },
   methods: {
+    onSubmit() {
+      let marks = document.getElementsByClassName("marks");
+      let rubric = {};
+      for (let i = 0; i < this.categories.length; i++) {
+        rubric[this.categories[i].desc] = marks[i].value;
+      }
+      const judgeEmail = firebase.auth().currentUser.email;
+      const category = "A";
+      const project = "test1@test.com";
+      const underscore = "_";
+      let arrayIndex = 0;
+      db.collection("DH6")
+        .doc("hackathon")
+        .collection("projects")
+        .doc(project)
+        .get()
+        .then(doc => {
+          console.log(doc.data());
+          let data = doc.data();
+          data = data["_"]["categories"][category];
+          arrayIndex = data.findIndex(x => x.email == "judge@gmail.com");
+        });
+      console.log(arrayIndex);
+      let queryString =
+        underscore + ".categories." + category + ".[" + arrayIndex + "].rubric";
+      console.log(queryString);
+      let updateNested = db
+        .collection("DH6")
+        .doc("hackathon")
+        .collection("projects")
+        .doc(project)
+        .update({
+          _: {
+            categories: {
+              [category]: {
+                [arrayIndex]: {
+                  email: "jugde@gmail.com",
+                  name: "bob",
+                  rubric: rubric
+                }
+              }
+            }
+          }
+        });
+    }
   }
 });
 </script>
@@ -115,7 +169,6 @@ export default Vue.extend({
   text-transform: uppercase;
   color: #f2f2f2;
   line-height: 20px;
-  
 }
 
 .subheading {
@@ -132,15 +185,15 @@ input {
   width: 60px;
   height: 60px;
   font-weight: 700;
-  font-family: 'Lato', georgia;
+  font-family: "Lato", georgia;
   font-size: 60px;
   /* padding: 1rem; */
-  color: rgba(255,255,255,0.6);
+  color: rgba(255, 255, 255, 0.6);
 }
 
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: rgba(255,255,255,0.6);
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgba(255, 255, 255, 0.6);
   opacity: 1; /* Firefox */
 }
-
 </style>
