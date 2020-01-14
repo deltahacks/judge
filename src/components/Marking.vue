@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <Blurb
-
       content="
         Please assign marks to every category appropriately.
     "
@@ -66,7 +65,6 @@ import "firebase/storage";
 import db from "../firebaseinit";
 import { LoginData } from "../types";
 
-
 export default Vue.extend({
   name: "Home",
   components: {
@@ -105,7 +103,6 @@ export default Vue.extend({
           desc:
             "Does the hack have a positive impact for the targeted audience?"
         }
-
       ],
       selectedOptions: "Select a category to judge"
     };
@@ -119,7 +116,7 @@ export default Vue.extend({
         .onSnapshot(snap => {
           this.submission_categories = snap.data().responses.challenges;
         });
-    }
+    },
     onSubmit() {
       const marks = document.getElementsByClassName("marks");
       let rubric = {};
@@ -159,9 +156,9 @@ export default Vue.extend({
             });
         });
     },
-      async mounted() {
-    this.getSubmissionCategories();
-  }
+    async mounted() {
+      this.getSubmissionCategories();
+    }
   }
 });
 </script>
@@ -216,7 +213,6 @@ export default Vue.extend({
   /* padding: 1rem; */
   color: rgba(255, 255, 255, 0.6);
 }
-
 
 /* Chrome, Firefox, Opera, Safari 10.1+ */
 ::placeholder {
