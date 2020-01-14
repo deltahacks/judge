@@ -106,7 +106,7 @@ export default Vue.extend({
             "Does the hack have a positive impact for the targeted audience?"
         }
 
-      ]
+      ],
       selectedOptions: "Select a category to judge"
     };
   },
