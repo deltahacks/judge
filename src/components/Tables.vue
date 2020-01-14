@@ -83,9 +83,8 @@
                           ><span style="font-weight:300">Table:</span>
                           {{ teams[i + 1] }}</strike
                         >
-                      <span style="color: #7FFF00;"> ✔</span>
-                        </span
-                      >
+                        <span style="color: #7FFF00;"> ✔</span>
+                      </span>
                       <span
                         style="font-weight: 600"
                         v-if="i % 2 == 0 && teams2[i + 1] == 0"
@@ -119,19 +118,19 @@ export default Vue.extend({
         ["#F54FA1", "#fa96a8"],
         ["#18BDD9", "#267aed"],
         ["#7419E6", "#e619ce"],
-        ["#42E596", "#42d7e5"],
-      ],
+        ["#42E596", "#42d7e5"]
+      ]
     };
   },
   methods: {
     getTeams() {
       this.teams = [1, 2, 3, 4, 5, 6, 7, 8];
       this.teams2 = [0, 0, 1, 1, 0, 1, 1, 0];
-    },
+    }
   },
   async mounted() {
     this.getTeams();
-  },
+  }
 });
 </script>
 
