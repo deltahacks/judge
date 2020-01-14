@@ -296,6 +296,9 @@ export default Vue.extend({
   border-bottom: 1px solid dodgerblue;
 }
 
+input::placeholder {
+  color: black;
+}
 /* Set a style for the submit button */
 .btn {
   background-image: linear-gradient(90deg, #84fab0 0%, #8fd3f4 100%);

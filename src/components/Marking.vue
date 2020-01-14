@@ -20,7 +20,10 @@
           <span> {{ selectedOptions }}</span>
           <b-icon icon="menu-down"></b-icon>
         </button>
-        <div v-for="category in submission.responses.challenges" :key="category">
+        <div
+          v-for="category in submission.responses.challenges"
+          :key="category"
+        >
           <b-dropdown-item :value="category">
             {{ category }}
           </b-dropdown-item>
@@ -60,7 +63,10 @@ import Blurb from "@/components/Blurb.vue";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+
+import "firebase/storage";
 import db from "../firebaseinit";
+import { LoginData } from "../types";
 
 export default Vue.extend({
   name: "Home",
@@ -115,19 +121,58 @@ export default Vue.extend({
         .get()
         .then(snapshot => {
           if (snapshot.empty) {
-            console.log('Submission not found');
+            console.log("Submission not found");
             return;
-           }
+          }
           this.submission = snapshot.docs[0].data();
         })
         .catch(err => {
-          console.log('Error getting documents', err);
+          console.log("Error getting documents", err);
+        });
+    },
+    onSubmit() {
+      const marks = document.getElementsByClassName("marks");
+      let rubric = {};
+      let totalScore = 0;
+      let judgeEmail = firebase.auth().currentUser.email;
+      const category = "A";
+      const project = "test1@test.com";
+      for (let i = 0; i < this.categories.length; i++) {
+        rubric[this.categories[i].desc] = marks[i].value;
+        totalScore += Number(marks[i].value);
+      }
+      totalScore = totalScore / this.categories.length;
+      rubric["score"] = totalScore;
+
+      judgeEmail = "judge@gmail.com";
+
+      db.collection("DH6")
+        .doc("hackathon")
+        .collection("projects")
+        .doc(project)
+        .get()
+        .then(doc => {
+          let data = doc.data()._;
+          console.log(data.categories[category][0].rubric);
+          let arrayIndex = data.categories[category].findIndex(
+            x => x.email === judgeEmail
+          );
+          data.categories[category][arrayIndex].rubric = rubric;
+
+          let updateNested = db
+            .collection("DH6")
+            .doc("hackathon")
+            .collection("projects")
+            .doc(project)
+            .update({
+              _: data
+            });
         });
     }
   },
   async created() {
     this.getSubmission();
-  },
+  }
 });
 </script>
 

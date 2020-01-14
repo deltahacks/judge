@@ -8,6 +8,7 @@ import Login from "./components/Login.vue";
 import Empty from "./components/Empty.vue";
 import Register from "./components/Register.vue";
 import Home from "./components/Home.vue";
+import Tables from "./components/Tables.vue";
 import Marking from "./components/Marking.vue";
 import db from "./firebaseinit";
 
@@ -50,6 +51,11 @@ const router = new Router({
       name: "Marking",
       component: Marking,
       props: true
+    },
+    {
+      path: "/tables",
+      name: "Tables",
+      component: Tables
     },
     {
       path: "*",

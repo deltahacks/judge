@@ -6,12 +6,11 @@
       Click on a group to see their rubric and start marking.'
       "
     ></Blurb>
+
     <div id="app">
       <ul id="example-1">
         <li v-for="(team, i) in teams" :key="(team, i)">
-          <router-link
-              :to="{ name: 'Marking', params: { tableNumber: team } }"
-            >
+          <router-link :to="{ name: 'Marking', params: { tableNumber: team } }">
             <div
               class="team"
               :style="
@@ -27,7 +26,7 @@
                   <span style="font-weight: 600">Team</span>{{ team }}
                 </h1>
               </div>
-            
+
               <div class="mark">
                 <h1 class="team-name">Mark</h1>
               </div>
@@ -73,16 +72,16 @@ export default Vue.extend({
         .get()
         .then(snapshot => {
           if (snapshot.empty) {
-            console.log('No matching documents.');
+            console.log("No matching documents.");
             return;
-          }  
+          }
 
           snapshot.forEach(doc => {
             this.teams.push(doc.data()._.table);
           });
         })
         .catch(err => {
-          console.log('Error getting documents', err);
+          console.log("Error getting documents", err);
         });
     }
   },
