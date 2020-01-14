@@ -6,7 +6,8 @@
       Click on a group to see their rubric and start marking.'
       "
     ></Blurb>
-    <div id="app" class="container">
+
+    <div id="app">
       <ul id="example-1">
         <li v-for="(team, i) in teams" :key="(team, i)">
           <a href="/home">
@@ -25,7 +26,9 @@
                   <span style="font-weight: 600">Team</span>{{ team }}
                 </h1>
               </div>
-              <router-link :to="{ name: 'Marking', params: { teamId: team } }">
+              <router-link
+                :to="{ name: 'Marking', params: { tableNumber: team } }"
+              >
                 <div class="mark">
                   <h1 class="team-name">Mark</h1>
                 </div>

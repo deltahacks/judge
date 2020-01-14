@@ -1,35 +1,57 @@
 <template>
   <div id="app">
     <Blurb
-      :content="'Please assign marks to every category appropriately.'"
+
+      content="
+        Please assign marks to every category appropriately.
+    "
     ></Blurb>
-    <div id="app">
-      <ul id="example-1">
-        <li v-for="(category, i) in categories" :key="(category, i)">
-          <div
-            class="marking-category"
-            :style="
-              'background: linear-gradient(90deg,' +
-                colors[i][0] +
-                ' 0%,' +
-                colors[i][1] +
-                ' 120%)'
-            "
-          >
-            <div class="team-div">
-              <h1 class="category name">
-                <span style="font-weight: 600"></span>{{ category.type }}
-              </h1>
-              <p class="category subheading">{{ category.desc }}</p>
-            </div>
-            <div class="mark-field">
-              <input type="text" placeholder="1" maxlength="1" class="marks" />
-            </div>
-          </div>
-        </li>
-      </ul>
+    <div class="center submission-info">
+      <h1>TeamName</h1>
+      <h2>Table 3</h2>
+      <p>Members:</p>
+      <p v-for="member in ['A', 'B', 'C']" :key="member">
+        {{ member }}
+      </p>
+      <a href="https://devpost.com">Devpost link</a>
     </div>
-    <button style="width=100px;height=100px;" @click="onSubmit()"></button>
+    <div class="center">
+      <b-dropdown v-model="selectedOptions" dark>
+        <button class="button is-primary" type="button" slot="trigger">
+          <span> {{ selectedOptions }}</span>
+          <b-icon icon="menu-down"></b-icon>
+        </button>
+        <div v-for="category in submission_categories" :key="category">
+          <b-dropdown-item :value="category">
+            {{ category }}
+          </b-dropdown-item>
+        </div>
+      </b-dropdown>
+    </div>
+    <ul>
+      <li v-for="(criteria, i) in marking_criteria" :key="(criteria, i)">
+        <div
+          class="marking-category"
+          :style="
+            'background: linear-gradient(90deg,' +
+              colors[i][0] +
+              ' 0%,' +
+              colors[i][1] +
+              ' 120%)'
+          "
+        >
+          <div class="marking-div">
+            <h1 class="category name">
+              <span style="font-weight: 600"></span>{{ criteria.type }}
+            </h1>
+            <p class="category subheading">{{ criteria.desc }}</p>
+          </div>
+          <div class="mark-field">
+            <input type="text" placeholder="1" maxlength="1" />
+          </div>
+        </div>
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -39,9 +61,11 @@ import Blurb from "@/components/Blurb.vue";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+
 import "firebase/storage";
 import db from "../firebaseinit";
 import { LoginData } from "../types";
+
 
 export default Vue.extend({
   name: "Home",
@@ -51,7 +75,7 @@ export default Vue.extend({
   props: {},
   data() {
     return {
-      teams: Array,
+      submission_categories: Array,
       colors: [
         ["#FF9DA0", "#FACFC3"],
         ["#FF9DA0", "#FACFC3"],
@@ -59,7 +83,7 @@ export default Vue.extend({
         ["#649C9F", "#FACFC3"],
         ["#649C9F", "#FACFC3"]
       ],
-      categories: [
+      marking_criteria: [
         {
           type: "Technical",
           desc: "How technically impressive is the hack?"
@@ -81,10 +105,21 @@ export default Vue.extend({
           desc:
             "Does the hack have a positive impact for the targeted audience?"
         }
+
       ]
+      selectedOptions: "Select a category to judge"
     };
   },
   methods: {
+    getSubmissionCategories() {
+      db.collection("DH6")
+        .doc("hackathon")
+        .collection("projects")
+        .doc("test0@test.com")
+        .onSnapshot(snap => {
+          this.submission_categories = snap.data().responses.challenges;
+        });
+    }
     onSubmit() {
       const marks = document.getElementsByClassName("marks");
       let rubric = {};
@@ -123,13 +158,16 @@ export default Vue.extend({
               _: data
             });
         });
-    }
+    },
+      async mounted() {
+    this.getSubmissionCategories();
+  }
   }
 });
 </script>
 
 <style>
-.team-div {
+.marking-div {
   float: left;
   width: 70%;
 }
@@ -139,14 +177,7 @@ export default Vue.extend({
   float: right;
   margin-right: 20px;
 }
-.team-name {
-  font-size: 30px;
-  color: white;
-  line-height: 100px;
-  margin: 0 40px;
-  font-family: "Montserrat", sans-serif;
-  font-weight: 300;
-}
+
 .marking-category {
   height: 100px;
   padding-top: 20px;
@@ -171,7 +202,7 @@ export default Vue.extend({
   color: white;
 }
 
-input {
+.mark-field input {
   border: none;
   outline: none;
   border-radius: 0;
@@ -186,9 +217,24 @@ input {
   color: rgba(255, 255, 255, 0.6);
 }
 
+
+/* Chrome, Firefox, Opera, Safari 10.1+ */
 ::placeholder {
-  /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: rgba(255, 255, 255, 0.6);
   opacity: 1; /* Firefox */
+}
+
+.center {
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+.submission-info {
+  font-family: "Montserrat", sans-serif;
+}
+
+.submission-info h1 {
+  font-weight: 700;
+  font-size: 30px;
 }
 </style>

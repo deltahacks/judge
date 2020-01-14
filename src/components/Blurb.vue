@@ -15,7 +15,7 @@ import Vue from "vue";
 export default Vue.extend({
   name: "Home",
   props: {
-      content: String
+    content: String
   }
 });
 </script>
@@ -24,6 +24,6 @@ export default Vue.extend({
 .blurb {
   font-size: 20px;
   text-align: center;
-  padding: 50px;
+  padding: 30px;
 }
 </style>
