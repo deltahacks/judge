@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Blurb
+
       content="
         Please assign marks to every category appropriately.
     "
@@ -60,7 +61,11 @@ import Blurb from "@/components/Blurb.vue";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+
+import "firebase/storage";
 import db from "../firebaseinit";
+import { LoginData } from "../types";
+
 
 export default Vue.extend({
   name: "Home",
@@ -100,7 +105,8 @@ export default Vue.extend({
           desc:
             "Does the hack have a positive impact for the targeted audience?"
         }
-      ],
+
+      ]
       selectedOptions: "Select a category to judge"
     };
   },
@@ -114,9 +120,48 @@ export default Vue.extend({
           this.submission_categories = snap.data().responses.challenges;
         });
     }
-  },
-  async mounted() {
+    onSubmit() {
+      const marks = document.getElementsByClassName("marks");
+      let rubric = {};
+      let totalScore = 0;
+      let judgeEmail = firebase.auth().currentUser.email;
+      const category = "A";
+      const project = "test1@test.com";
+      for (let i = 0; i < this.categories.length; i++) {
+        rubric[this.categories[i].desc] = marks[i].value;
+        totalScore += Number(marks[i].value);
+      }
+      totalScore = totalScore / this.categories.length;
+      rubric["score"] = totalScore;
+
+      judgeEmail = "judge@gmail.com";
+
+      db.collection("DH6")
+        .doc("hackathon")
+        .collection("projects")
+        .doc(project)
+        .get()
+        .then(doc => {
+          let data = doc.data()._;
+          console.log(data.categories[category][0].rubric);
+          let arrayIndex = data.categories[category].findIndex(
+            x => x.email === judgeEmail
+          );
+          data.categories[category][arrayIndex].rubric = rubric;
+
+          let updateNested = db
+            .collection("DH6")
+            .doc("hackathon")
+            .collection("projects")
+            .doc(project)
+            .update({
+              _: data
+            });
+        });
+    },
+      async mounted() {
     this.getSubmissionCategories();
+  }
   }
 });
 </script>
@@ -171,6 +216,7 @@ export default Vue.extend({
   /* padding: 1rem; */
   color: rgba(255, 255, 255, 0.6);
 }
+
 
 /* Chrome, Firefox, Opera, Safari 10.1+ */
 ::placeholder {

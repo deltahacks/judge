@@ -6,6 +6,7 @@
       Click on a group to see their rubric and start marking.'
       "
     ></Blurb>
+
     <div id="app">
       <ul id="example-1">
         <li v-for="(team, i) in teams" :key="(team, i)">
