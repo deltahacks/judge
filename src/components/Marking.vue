@@ -6,8 +6,8 @@
     "
     ></Blurb>
     <div class="center submission-info">
-      <h1>TeamName</h1>
-      <h2>Table 3</h2>
+      <h1>{{ submission.name.project }}</h1>
+      <h2>Table {{ submission._.table }}</h2>
       <p>Members:</p>
       <p v-for="member in ['A', 'B', 'C']" :key="member">
         {{ member }}
@@ -20,7 +20,7 @@
           <span> {{ selectedOptions }}</span>
           <b-icon icon="menu-down"></b-icon>
         </button>
-        <div v-for="category in submission_categories" :key="category">
+        <div v-for="category in submission.responses.challenges" :key="category">
           <b-dropdown-item :value="category">
             {{ category }}
           </b-dropdown-item>
@@ -67,10 +67,12 @@ export default Vue.extend({
   components: {
     Blurb
   },
-  props: {},
+  props: {
+    tableNumber: String
+  },
   data() {
     return {
-      submission_categories: Array,
+      submission: Array,
       colors: [
         ["#FF9DA0", "#FACFC3"],
         ["#FF9DA0", "#FACFC3"],
@@ -105,19 +107,27 @@ export default Vue.extend({
     };
   },
   methods: {
-    getSubmissionCategories() {
+    async getSubmission() {
       db.collection("DH6")
         .doc("hackathon")
         .collection("projects")
-        .doc("test0@test.com")
-        .onSnapshot(snap => {
-          this.submission_categories = snap.data().responses.challenges;
+        .where("_.table", "==", Number(this.tableNumber))
+        .get()
+        .then(snapshot => {
+          if (snapshot.empty) {
+            console.log('Submission not found');
+            return;
+           }
+          this.submission = snapshot.docs[0].data();
+        })
+        .catch(err => {
+          console.log('Error getting documents', err);
         });
     }
   },
-  async mounted() {
-    this.getSubmissionCategories();
-  }
+  async created() {
+    this.getSubmission();
+  },
 });
 </script>
 

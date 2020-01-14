@@ -9,7 +9,9 @@
     <div id="app">
       <ul id="example-1">
         <li v-for="(team, i) in teams" :key="(team, i)">
-          <a href="/home">
+          <router-link
+              :to="{ name: 'Marking', params: { tableNumber: team } }"
+            >
             <div
               class="team"
               :style="
@@ -25,15 +27,12 @@
                   <span style="font-weight: 600">Team</span>{{ team }}
                 </h1>
               </div>
-              <router-link
-                :to="{ name: 'Marking', params: { tableNumber: team } }"
-              >
-                <div class="mark">
-                  <h1 class="team-name">Mark</h1>
-                </div>
-              </router-link>
+            
+              <div class="mark">
+                <h1 class="team-name">Mark</h1>
+              </div>
             </div>
-          </a>
+          </router-link>
         </li>
       </ul>
     </div>
@@ -43,6 +42,10 @@
 <script>
 import Vue from "vue";
 import Blurb from "@/components/Blurb.vue";
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+import db from "../firebaseinit";
 
 export default Vue.extend({
   name: "Home",
@@ -52,7 +55,7 @@ export default Vue.extend({
   props: {},
   data() {
     return {
-      teams: Array,
+      teams: [],
       colors: [
         ["#FCE18A", "#F54FA1"],
         ["#F54FA1", "#fa96a8"],
@@ -64,7 +67,23 @@ export default Vue.extend({
   },
   methods: {
     getTeams() {
-      this.teams = [1, 2, 3, 4, 5, 6, 7];
+      db.collection("DH6")
+        .doc("hackathon")
+        .collection("projects")
+        .get()
+        .then(snapshot => {
+          if (snapshot.empty) {
+            console.log('No matching documents.');
+            return;
+          }  
+
+          snapshot.forEach(doc => {
+            this.teams.push(doc.data()._.table);
+          });
+        })
+        .catch(err => {
+          console.log('Error getting documents', err);
+        });
     }
   },
   async mounted() {
