@@ -152,7 +152,6 @@ export default Vue.extend({
       this.currentProjects = projects
         .map(proj => proj.data())
         .sort((proja, projb) => proja._.table - projb._.table);
-      console.log(this.currentProjects);
     }
   },
   async mounted() {
