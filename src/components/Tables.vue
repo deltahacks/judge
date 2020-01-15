@@ -39,7 +39,7 @@
       <ul id="example-1">
         <li v-for="(team, i) in currentProjects" :key="(team, i)">
           <router-link
-            :to="{ name: 'Marking', params: { teamId: team._.table } }"
+            :to="{ name: 'Marking', params: { tableNumber: team._.table } }"
           >
             <div
               class="team"
@@ -51,13 +51,26 @@
                   ' 120%)'
               "
             >
-              <div class="team-div">
+              <div v-if="team._.score === 0" class="team-div">
                 <h1 class="team-name">
                   <span style="font-weight: 600"
                     ><span style="font-weight:300"
                       >{{ team.name.project }} Table:</span
                     >
                     {{ team._.table }}
+                  </span>
+                </h1>
+              </div>
+              <div v-else class="team-div">
+                <h1 class="team-name">
+                  <span style="font-weight: 600"
+                    ><strike
+                      ><span style="font-weight:300"
+                        >{{ team.name.project }} Table:</span
+                      >
+                      {{ team._.table }}</strike
+                    >
+                    <span style="color: #7FFF00;"> ✔</span>
                   </span>
                 </h1>
               </div>
@@ -136,7 +149,9 @@ export default Vue.extend({
             ).length
         );
       });
-      this.currentProjects = projects.map(proj => proj.data());
+      this.currentProjects = projects
+        .map(proj => proj.data())
+        .sort((proja, projb) => proja._.table - projb._.table);
       console.log(this.currentProjects);
     }
   },
