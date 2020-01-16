@@ -51,7 +51,7 @@
                   ' 120%)'
               "
             >
-              <div v-if="team._.score === 0" class="team-div">
+              <div v-if="getProjectScore(team._.table) === 0" class="team-div">
                 <h1 class="team-name">
                   <span style="font-weight: 600"
                     ><span style="font-weight:300"
@@ -152,13 +152,23 @@ export default Vue.extend({
       this.currentProjects = projects
         .map(proj => proj.data())
         .sort((proja, projb) => proja._.table - projb._.table);
+    },
+    getProjectScore(num) {
+      let score = 0;
+      for (let tab of this.currentProjects) {
+        if (tab._.table === num) {
+          for (let judge of tab._.categories[this.selectedCat.toLowerCase()]) {
+            if (judge.email === this.getUUID()) score = judge.rubric.score;
+          }
+        }
+      }
+      return score;
     }
   },
   async mounted() {
     this.getTeams();
     this.getJudge();
-    console.log(this.getUUID());
-    console.log(await this.getTables());
+    await this.getTables();
   }
 });
 </script>
