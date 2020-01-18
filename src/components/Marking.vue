@@ -104,17 +104,24 @@ export default Vue.extend({
             "Does the hack have a positive impact for the targeted audience?"
         }
       ],
-      selectedOptions: "Select a category to judge"
+      selectedOptions: "Select a category to judge",
+      table: -1
     };
   },
   methods: {
-    getSubmissionCategories() {
+    async getSubmissionCategories() {
       db.collection("DH6")
         .doc("hackathon")
         .collection("projects")
-        .doc("test0@test.com")
+        .where("_.table", "==", Number(this.table))
         .onSnapshot(snap => {
-          this.submission_categories = snap.data().responses.challenges;
+          if (snap.empty) return;
+          this.submission_categories = Object.keys(
+            snap.docs[0].data()._.categories
+          ).map(
+            cat =>
+              cat.substring(0, 1).toUpperCase() + cat.substring(1, cat.length)
+          );
         });
     },
     onSubmit() {
@@ -155,10 +162,11 @@ export default Vue.extend({
               _: data
             });
         });
-    },
-    async mounted() {
-      this.getSubmissionCategories();
     }
+  },
+  async mounted() {
+    this.table = this.$route.params.tableNumber;
+    await this.getSubmissionCategories();
   }
 });
 </script>
