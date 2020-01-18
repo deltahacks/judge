@@ -153,10 +153,10 @@ export default Vue.extend({
         .map(proj => proj.data())
         .sort((proja, projb) => proja._.table - projb._.table);
     },
-    getProjectScore(num) {
+    getProjectScore(tabnum) {
       let score = 0;
       for (let tab of this.currentProjects) {
-        if (tab._.table === num) {
+        if (tab._.table === tabnum) {
           for (let judge of tab._.categories[this.selectedCat.toLowerCase()]) {
             if (judge.email === this.getUUID()) score = judge.rubric.score;
           }
