@@ -19,7 +19,11 @@
       Click on a group to see their rubric if you want to make any adjustments in score.'
       "
     ></Blurb>
-
+    <button
+      class="button is-primary"
+      type="button"
+      @click="getJudgesCategories()"
+    ></button>
     <div id="app">
       <ul id="example-1">
         <li v-for="(team, i) in teams" :key="(team, i)">
@@ -68,7 +72,7 @@ export default Vue.extend({
   props: {},
   data() {
     return {
-      submission_categories: ["js", "general", "cibc"],
+      submission_categories: ["A", "B", "C"],
       selectedOptions: "Select a category to judge",
       teams: [],
       judgeEmail: firebase.auth().currentUser.email,
@@ -82,6 +86,32 @@ export default Vue.extend({
     };
   },
   methods: {
+    getJudgesCategories() {
+      db.collection("DH6")
+        .doc("hackathon")
+        .collection("projects")
+        .get()
+        .then(snapshot => {
+          snapshot.forEach(element => {
+            try {
+              let projectCategories = element.data()._.categories;
+              Object.keys(projectCategories).forEach(category => {
+                for (let i = 0; i < projectCategories[category].length; i++) {
+                  const email = projectCategories[category][i].email;
+                  if (email == this.judgeEmail) {
+                    if (this.submission_categories.indexOf(category) == -1) {
+                      this.submission_categories.push(category);
+                    }
+                  }
+                }
+                console.log(this.submission_categories);
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          });
+        });
+    },
     getTeams() {
       let scoreArray = [];
       let category = this.selectedOptions;
@@ -123,6 +153,7 @@ export default Vue.extend({
     }
   },
   async mounted() {
+    this.getJudgesCategories();
     this.getTeams();
   },
   watch: {
