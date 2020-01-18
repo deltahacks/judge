@@ -46,7 +46,7 @@
             <p class="category subheading">{{ criteria.desc }}</p>
           </div>
           <div class="mark-field">
-            <input type="text" placeholder="1" maxlength="1" />
+            <input type="text" placeholder="1" maxlength="1" class="marks" />
           </div>
         </div>
       </li>
@@ -58,12 +58,7 @@
 import Vue from "vue";
 import Blurb from "@/components/Blurb.vue";
 import * as firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-
-import "firebase/storage";
 import db from "../firebaseinit";
-import { LoginData } from "../types";
 
 export default Vue.extend({
   name: "Home",
@@ -73,7 +68,7 @@ export default Vue.extend({
   props: {},
   data() {
     return {
-      submission_categories: Array,
+      submission_categories: ["A", "B", "C"],
       colors: [
         ["#FF9DA0", "#FACFC3"],
         ["#FF9DA0", "#FACFC3"],
@@ -122,16 +117,15 @@ export default Vue.extend({
       let rubric = {};
       let totalScore = 0;
       let judgeEmail = firebase.auth().currentUser.email;
-      const category = "A";
+      const category = "general";
       const project = "test1@test.com";
-      for (let i = 0; i < this.categories.length; i++) {
-        rubric[this.categories[i].desc] = marks[i].value;
+      for (let i = 0; i < this.marking_criteria.length; i++) {
+        rubric[this.marking_criteria[i].desc] = marks[i].value;
         totalScore += Number(marks[i].value);
       }
-      totalScore = totalScore / this.categories.length;
+      totalScore = totalScore / this.marking_criteria.length;
       rubric["score"] = totalScore;
-
-      judgeEmail = "judge@gmail.com";
+      judgeEmail = "gzsalam7@gmail.comm";
 
       db.collection("DH6")
         .doc("hackathon")
