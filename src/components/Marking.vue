@@ -1,5 +1,6 @@
 <template>
   <div id="marking">
+    <timer></timer>
     <Blurb
       content="
         Please assign marks to every category appropriately.
@@ -57,6 +58,7 @@
 <script>
 import Vue from "vue";
 import Blurb from "@/components/Blurb.vue";
+import Timer from "@/components/Timer.vue";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
@@ -68,7 +70,8 @@ import { LoginData } from "../types";
 export default Vue.extend({
   name: "Home",
   components: {
-    Blurb
+    Blurb,
+    Timer
   },
   props: {},
   data() {

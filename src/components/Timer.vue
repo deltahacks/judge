@@ -10,7 +10,8 @@
     </div>
     <div>
       <b-button @click="reset">Reset</b-button>
-      <b-button @click="start">Start</b-button>
+      <b-button v-if="!started" @click="start">Start</b-button>
+			<b-button v-if="started" @click="pause">Pause</b-button>
     </div>
   </div>
 </template>
@@ -22,31 +23,38 @@ export default Vue.extend({
   data() {
 		return {
 			time_left: 300000,
-			interval: 0
+			interval: 0,
+			started: false
 		}
   },
   methods: {
     reset() {
 			this.time_left = 300000;
-			clearInterval(this.interval);
+			this.interval = clearInterval(this.interval);
+			this.started = false;
     },
     start() {
-			this.time_left = 300000; // 5 minutes
+			this.started = true;
 			this.interval = setInterval(() => this.countdown(), 1000);
 		},
 		countdown() {
 			this.time_left = this.time_left - 1000;
 			if (this.time_left === 0) {
-				clearInterval(this.interval); 
+				this.interval = clearInterval(this.interval); 
+				this.started = false;
+				this.time_left = 300000;
 			}
 		},
 		two_digits(seconds) {
 			return (seconds < 10 ? '0' : '') + seconds;
+		},
+		pause() {
+			this.interval = clearInterval(this.interval);
+			this.started = false;
 		}
 	},
 	computed: {
 		minutes() {
-			
 			return Math.floor(this.time_left / 1000 / 60);
 		},
 		seconds() {

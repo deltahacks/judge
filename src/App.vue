@@ -2,19 +2,16 @@
   <div id="app">
     <login-header></login-header>
     <router-view />
-    <timer></timer>
   </div>
 </template>
 
 <script>
 import LoginHeader from "@/components/LoginHeader.vue";
-import Timer from "@/components/Timer.vue";
 
 export default {
   name: "app",
   components: {
-    LoginHeader,
-    Timer
+    LoginHeader
   }
 };
 </script>
