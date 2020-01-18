@@ -28,7 +28,10 @@ const router = new Router({
     {
       path: "/register",
       name: "Register",
-      component: Register
+      component: Register,
+      meta: {
+        loginRedir: true
+      }
     },
     {
       path: "/status",
@@ -41,7 +44,7 @@ const router = new Router({
     {
       path: "/submissions",
       name: "Submissions",
-      component: Home,
+      component: Tables,
       meta: {
         auth: true
       }
@@ -53,13 +56,8 @@ const router = new Router({
       props: true
     },
     {
-      path: "/tables",
-      name: "Tables",
-      component: Tables
-    },
-    {
       path: "*",
-      component: Login
+      component: Tables
     }
   ]
 });

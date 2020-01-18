@@ -10,6 +10,7 @@
         their rubric and start marking.
       </p>
       <br />
+      <!--
       <b-dropdown v-model="selectedCat" dark>
         <button class="button is-primary" type="button" slot="trigger">
           <span>
@@ -34,6 +35,7 @@
           }}</span>
         </b-dropdown-item>
       </b-dropdown>
+      -->
     </div>
     <div id="app" class="container">
       <ul id="example-1">
@@ -51,13 +53,16 @@
                   ' 120%)'
               "
             >
-              <div v-if="getProjectScore(team._.table) === 0" class="team-div">
+              <div v-if="!doneMarking(team._.table)" class="team-div">
                 <h1 class="team-name">
                   <span style="font-weight: 600"
                     ><span style="font-weight:300"
                       >{{ team.name.project }} Table:</span
                     >
                     {{ team._.table }}
+                  </span>
+                  <span style="float: right; font-weight: 600">
+                    {{ getProjectCatsNames(team) }}
                   </span>
                 </h1>
               </div>
@@ -71,6 +76,9 @@
                       {{ team._.table }}</strike
                     >
                     <span style="color: #7FFF00;"> ✔</span>
+                    <span style="float: right; font-weight: 600">
+                      {{ getProjectCatsNames(team) }}
+                    </span>
                   </span>
                 </h1>
               </div>
@@ -103,14 +111,11 @@ export default Vue.extend({
       ],
       judge: {},
       selectedCat: "general",
-      currentProjects: []
+      currentProjects: [],
+      categories: []
     };
   },
   methods: {
-    getTeams() {
-      this.teams = [1, 2, 3, 4, 5, 6, 7, 8];
-      this.teams2 = [0, 0, 1, 1, 0, 1, 1, 0];
-    },
     async getJudge() {
       let doc = await db
         .collection("DH6")
@@ -131,6 +136,23 @@ export default Vue.extend({
         ? this.judge.categories.map(cat => cat.toLowerCase())
         : [];
     },
+    getProjectCatsNames(team) {
+      return Object.keys(team._.categories)
+        .filter(each => {
+          return (
+            this.getCategories().includes(each.toLowerCase()) &&
+            team._.categories[each.toLowerCase()].filter(judge => {
+              return judge.email === this.getUUID();
+            }).length
+          );
+        })
+        .map(
+          each =>
+            each.substring(0, 1).toUpperCase() +
+            each.substring(1, each.length).toLowerCase()
+        )
+        .join(", ");
+    },
     async getTables() {
       let doc = await db
         .collection("DH6")
@@ -138,26 +160,45 @@ export default Vue.extend({
         .collection("projects")
         .get();
       let projects = doc.docs.filter(project => {
-        return (
-          Object.keys(project.data()._.categories).includes(
-            this.selectedCat.toLowerCase()
-          ) &&
-          project
-            .data()
-            ._.categories[this.selectedCat.toLowerCase()].filter(
-              judge => judge.email === this.getUUID()
-            ).length
-        );
+        return Object.keys(project.data()._.categories).filter(each => {
+          return (
+            this.getCategories().includes(each) &&
+            project
+              .data()
+              ._.categories[each].filter(
+                judge => judge.email === this.getUUID()
+              ).length
+          );
+        }).length;
       });
       this.currentProjects = projects
         .map(proj => proj.data())
         .sort((proja, projb) => proja._.table - projb._.table);
+      console.log(this.currentProjects);
     },
-    getProjectScore(num) {
+    doneMarking(tabnum) {
+      for (let cat of this.getCategories()) {
+        for (let tab of this.currentProjects) {
+          if (
+            tab._.table === tabnum &&
+            Object.keys(tab._.categories).includes(cat)
+          ) {
+            for (let judge of tab._.categories[cat.toLowerCase()]) {
+              if (judge.email === this.getUUID()) {
+                console.log(judge.rubric.score);
+                if (judge.rubric.score === 0) return false;
+              }
+            }
+          }
+        }
+      }
+      return true;
+    },
+    getProjectScore(tabnum, category) {
       let score = 0;
       for (let tab of this.currentProjects) {
-        if (tab._.table === num) {
-          for (let judge of tab._.categories[this.selectedCat.toLowerCase()]) {
+        if (tab._.table === tabnum) {
+          for (let judge of tab._.categories[category.toLowerCase()]) {
             if (judge.email === this.getUUID()) score = judge.rubric.score;
           }
         }
@@ -166,9 +207,9 @@ export default Vue.extend({
     }
   },
   async mounted() {
-    this.getTeams();
-    this.getJudge();
+    await this.getJudge();
     await this.getTables();
+    this.categories = this.getCategories();
   }
 });
 </script>
@@ -179,6 +220,7 @@ export default Vue.extend({
 }
 .team-div {
   float: left;
+  width: 100%;
 }
 .mark {
   top: 0;
@@ -193,6 +235,7 @@ export default Vue.extend({
   margin: 0 40px;
   font-family: "Montserrat", sans-serif;
   font-weight: 300;
+  width: 90%;
 }
 .team {
   height: 150px;
