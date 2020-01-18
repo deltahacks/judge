@@ -4,9 +4,9 @@
       <h1>Timer</h1>
     </div>
     <div id="clock">
-			<span id="minutes">{{ minutes }}</span>
-			<span id="middle">:</span>
-			<span id="seconds">{{ seconds }}</span>
+			<span>{{ minutes }}</span>
+			<span>:</span>
+			<span>{{ seconds }}</span>
     </div>
     <div>
       <b-button @click="reset">Reset</b-button>
@@ -36,7 +36,6 @@ export default Vue.extend({
 		},
 		countdown() {
 			this.time_left = this.time_left - 1000;
-			console.log("time");
 			if (this.time_left === 0) {
 				clearInterval(this.interval); 
 			}
@@ -88,5 +87,11 @@ export default Vue.extend({
 
 #clock {
   padding: 20px;
+}
+
+@media only screen and (max-width: 600px) {
+  #timer button {
+		height: 49%;
+	}
 }
 </style>
