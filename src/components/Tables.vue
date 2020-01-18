@@ -10,94 +10,72 @@
         their rubric and start marking.
       </p>
       <br />
-      <b-dropdown v-model="selectedOptions" dark>
+      <b-dropdown v-model="selectedCat" dark>
         <button class="button is-primary" type="button" slot="trigger">
-          <span> {{ selectedOptions }} </span>
+          <span>
+            {{
+              selectedCat.substring(0, 1).toUpperCase() +
+                selectedCat.substring(1, selectedCat.length).toLowerCase()
+            }}
+          </span>
           <b-icon icon="menu-down"></b-icon>
         </button>
 
-        <b-dropdown-item value="Arcelor Mittal Dofasco">
-          <span>Arcelor Mittal Dofasco</span>
-        </b-dropdown-item>
-
-        <b-dropdown-item value="CIBC">
-          <span>CIBC</span>
-        </b-dropdown-item>
-
-        <b-dropdown-item value="Deloitte">
-          <span>Deloitte</span>
-        </b-dropdown-item>
-
-        <b-dropdown-item value="Loyalty One">
-          <span>Loyalty One</span>
+        <b-dropdown-item
+          v-for="category in getCategories()"
+          :key="category"
+          :value="category"
+          @click="getTables()"
+          aria-role="listitem"
+        >
+          <span>{{
+            category.substring(0, 1).toUpperCase() +
+              category.substring(1, category.length).toLowerCase()
+          }}</span>
         </b-dropdown-item>
       </b-dropdown>
     </div>
     <div id="app" class="container">
       <ul id="example-1">
-        <li v-for="(team, i) in teams" :key="(team, i)">
-          <div v-if="i % 2 == 0">
-            <!-- Useless logic -->
-            <router-link
-              :to="{ name: 'Marking', params: { teamId: teams[i] } }"
+        <li v-for="(team, i) in currentProjects" :key="(team, i)">
+          <router-link
+            :to="{ name: 'Marking', params: { tableNumber: team._.table } }"
+          >
+            <div
+              class="team"
+              :style="
+                'background: linear-gradient(90deg,' +
+                  colors[i % 5][0] +
+                  ' 0%,' +
+                  colors[i % 5][1] +
+                  ' 120%)'
+              "
             >
-              <div
-                class="team"
-                :style="
-                  'background: linear-gradient(90deg,' +
-                    colors[i % 5][0] +
-                    ' 0%,' +
-                    colors[i % 5][1] +
-                    ' 120%)'
-                "
-              >
-                <div class="team-div">
-                  <h1 class="team-name">
-                    <span
-                      style="font-weight: 600"
-                      v-if="i % 2 == 0 && teams2[i] == 1"
-                      ><strike
-                        ><span style="font-weight:300">Table:</span>
-                        {{ teams[i] }}</strike
-                      >
-                      <span style="color: #7FFF00;"> ✔</span>
-                    </span>
-                    <span
-                      style="font-weight: 600"
-                      v-if="i % 2 == 0 && teams2[i] == 0"
-                      ><span style="font-weight:300">Table:</span>
-                      {{ teams[i] }}
-                    </span>
-                  </h1>
-                </div>
-                <router-link
-                  :to="{ name: 'Marking', params: { teamId: teams[i + 1] } }"
-                >
-                  <div class="mark">
-                    <h1 class="team-name">
-                      <!-- Could just put in the selected teams inside the selected tables list -->
-                      <span
-                        style="font-weight: 600"
-                        v-if="i % 2 == 0 && teams2[i + 1] == 1"
-                        ><strike
-                          ><span style="font-weight:300">Table:</span>
-                          {{ teams[i + 1] }}</strike
-                        >
-                      <span style="color: #7FFF00;"> ✔</span>
-                        </span
-                      >
-                      <span
-                        style="font-weight: 600"
-                        v-if="i % 2 == 0 && teams2[i + 1] == 0"
-                        ><span style="font-weight:300">Table:</span>
-                        {{ teams[i + 1] }}</span
-                      >
-                    </h1>
-                  </div>
-                </router-link>
+              <div v-if="getProjectScore(team._.table) === 0" class="team-div">
+                <h1 class="team-name">
+                  <span style="font-weight: 600"
+                    ><span style="font-weight:300"
+                      >{{ team.name.project }} Table:</span
+                    >
+                    {{ team._.table }}
+                  </span>
+                </h1>
               </div>
-            </router-link>
-          </div>
+              <div v-else class="team-div">
+                <h1 class="team-name">
+                  <span style="font-weight: 600"
+                    ><strike
+                      ><span style="font-weight:300"
+                        >{{ team.name.project }} Table:</span
+                      >
+                      {{ team._.table }}</strike
+                    >
+                    <span style="color: #7FFF00;"> ✔</span>
+                  </span>
+                </h1>
+              </div>
+            </div>
+          </router-link>
           <!-- Useless logic div end -->
         </li>
       </ul>
@@ -107,6 +85,8 @@
 
 <script>
 import Vue from "vue";
+import { auth } from "firebase/app";
+import db from "../firebaseinit";
 export default Vue.extend({
   name: "Home",
   props: {},
@@ -119,8 +99,11 @@ export default Vue.extend({
         ["#F54FA1", "#fa96a8"],
         ["#18BDD9", "#267aed"],
         ["#7419E6", "#e619ce"],
-        ["#42E596", "#42d7e5"],
+        ["#42E596", "#42d7e5"]
       ],
+      judge: {},
+      selectedCat: "general",
+      currentProjects: []
     };
   },
   methods: {
@@ -128,10 +111,65 @@ export default Vue.extend({
       this.teams = [1, 2, 3, 4, 5, 6, 7, 8];
       this.teams2 = [0, 0, 1, 1, 0, 1, 1, 0];
     },
+    async getJudge() {
+      let doc = await db
+        .collection("DH6")
+        .doc("hackathon")
+        .collection("judges")
+        .doc(this.getUUID())
+        .get();
+      this.judge = doc.data();
+      this.selectedCat = this.judge.categories.length
+        ? this.judge.categories[0]
+        : "general";
+    },
+    getUUID() {
+      return auth().currentUser.email;
+    },
+    getCategories() {
+      return this.judge.categories
+        ? this.judge.categories.map(cat => cat.toLowerCase())
+        : [];
+    },
+    async getTables() {
+      let doc = await db
+        .collection("DH6")
+        .doc("hackathon")
+        .collection("projects")
+        .get();
+      let projects = doc.docs.filter(project => {
+        return (
+          Object.keys(project.data()._.categories).includes(
+            this.selectedCat.toLowerCase()
+          ) &&
+          project
+            .data()
+            ._.categories[this.selectedCat.toLowerCase()].filter(
+              judge => judge.email === this.getUUID()
+            ).length
+        );
+      });
+      this.currentProjects = projects
+        .map(proj => proj.data())
+        .sort((proja, projb) => proja._.table - projb._.table);
+    },
+    getProjectScore(num) {
+      let score = 0;
+      for (let tab of this.currentProjects) {
+        if (tab._.table === num) {
+          for (let judge of tab._.categories[this.selectedCat.toLowerCase()]) {
+            if (judge.email === this.getUUID()) score = judge.rubric.score;
+          }
+        }
+      }
+      return score;
+    }
   },
   async mounted() {
     this.getTeams();
-  },
+    this.getJudge();
+    await this.getTables();
+  }
 });
 </script>
 
