@@ -19,11 +19,7 @@
       Click on a group to see their rubric if you want to make any adjustments in score.'
       "
     ></Blurb>
-    <button
-      class="button is-primary"
-      type="button"
-      @click="getJudgesCategories()"
-    ></button>
+
     <div id="app">
       <ul id="example-1">
         <li v-for="(team, i) in teams" :key="(team, i)">
