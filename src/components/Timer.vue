@@ -97,7 +97,7 @@ export default Vue.extend({
   padding: 20px;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 495px) {
   #timer button {
 		height: 49%;
 	}
