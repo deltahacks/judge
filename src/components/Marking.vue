@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="marking">
     <Blurb
       content="
         Please assign marks to every category appropriately.
@@ -164,11 +164,11 @@ export default Vue.extend({
 </script>
 
 <style>
-.marking-div {
+#marking .marking-div {
   float: left;
   width: 70%;
 }
-.mark-field {
+#marking .mark-field {
   top: 0;
   width: 50px;
   float: right;
@@ -188,7 +188,7 @@ export default Vue.extend({
   font-weight: 700;
 }
 
-.name {
+#marking .name {
   text-transform: uppercase;
   color: #f2f2f2;
   line-height: 20px;
@@ -208,7 +208,7 @@ export default Vue.extend({
   width: 60px;
   height: 60px;
   font-weight: 700;
-  font-family: "Lato", georgia;
+  font-family: "Montserrat", sans-serif;
   font-size: 60px;
   /* padding: 1rem; */
   color: rgba(255, 255, 255, 0.6);
