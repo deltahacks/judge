@@ -212,13 +212,15 @@ section {
   .navicon {
     width: 100px;
     left: 80%;
-    top: 4vw;
+    margin-top: 45px;
   }
   .nav {
-    height: auto;
+    margin-top: -120px;
+    position: relative;
+    height: 210px;
     border-radius: 10px;
-    transform: scaleY(0);
-    transform-origin: top;
+    /* transform: scaleY(0);
+    transform-origin: top; */
   }
   .nav li {
     display: block;
