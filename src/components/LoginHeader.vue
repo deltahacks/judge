@@ -204,7 +204,7 @@ section {
   padding: 12px 12px 12px 50px;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 765px) {
   svg {
     height: 100%;
     width: 200%;
@@ -230,4 +230,31 @@ section {
     transform: scaleY(1);
   }
 }
+@media only screen and (max-width: 900px) {
+  svg {
+    height: 100%;
+    width: 200%;
+  }
+  .navicon {
+    width: 100px;
+    left: 80%;
+    margin-top: 35px;
+  }
+  .nav {
+    margin-top: -41%;
+    position: relative;
+    height: auto;
+    border-radius: 10px;
+    padding-bottom:5vh;
+    /* transform: scaleY(0);
+    transform-origin: top; */
+  }
+  .nav li {
+    display: block;
+  }
+  .open {
+    transform: scaleY(1);
+  }
+}
+
 </style>
