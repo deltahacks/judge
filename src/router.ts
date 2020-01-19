@@ -10,6 +10,7 @@ import Register from "./components/Register.vue";
 import Home from "./components/Home.vue";
 import Tables from "./components/Tables.vue";
 import Marking from "./components/Marking.vue";
+import TopTen from "./components/TopTen.vue";
 import db from "./firebaseinit";
 
 Vue.use(Router);
@@ -54,6 +55,11 @@ const router = new Router({
       name: "Marking",
       component: Marking,
       props: true
+    },
+    {
+      path: "/topTen",
+      name: "TopTen",
+      component: TopTen
     },
     {
       path: "*",
