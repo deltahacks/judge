@@ -31,7 +31,14 @@
         height="50"
         width="50"
         alt="DeltaHacks Logo"
-      />
+      /><br>
+      <div class="goback">
+        <div class="backbutton">
+      <ul>
+        <a href="/home" style="color: silver;"><li>BACK</li></a>
+      </ul>
+      </div>
+    </div>
     </div>
     <div class="nav" :class="{ open: showMenu }">
       <ul>
@@ -166,6 +173,21 @@ section {
   border-radius: 100px;
   transform-origin: right;
 }
+.goback{
+    position: absolute;
+  left: -30%;
+  height: 50px;
+  width: 70px;
+  transition: all 300ms ease-in-out;
+  background: #5b79a5;
+  border-top-right-radius : 10px;
+  border-bottom-right-radius : 10px;
+}
+
+.backbutton{
+  margin-top:10px;
+  margin-left:20%!important;
+}  
 
 .open {
   transform: scaleX(1);
