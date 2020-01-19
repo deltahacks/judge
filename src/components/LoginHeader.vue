@@ -35,7 +35,7 @@
       <div class="goback">
         <div class="backbutton">
       <ul>
-        <a href="/home" style="color: silver;"><li>BACK</li></a>
+        <a href="/home" style="color: silver; font-size:1.5em;"><li>⬅</li></a>
       </ul>
       </div>
     </div>
@@ -185,8 +185,8 @@ section {
 }
 
 .backbutton{
-  margin-top:10px;
-  margin-left:20%!important;
+  margin-top:5px;
+  margin-left:30%!important;
 }  
 
 .open {
