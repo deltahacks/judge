@@ -215,7 +215,7 @@ section {
     margin-top: 45px;
   }
   .nav {
-    margin-top: -120px;
+    margin-top: -35%;
     position: relative;
     height: 210px;
     border-radius: 10px;
