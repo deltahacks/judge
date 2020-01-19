@@ -217,8 +217,9 @@ section {
   .nav {
     margin-top: -35%;
     position: relative;
-    height: 210px;
+    height: auto;
     border-radius: 10px;
+    padding-bottom:5vh;
     /* transform: scaleY(0);
     transform-origin: top; */
   }
