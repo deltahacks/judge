@@ -124,8 +124,9 @@ section {
   background: rgb(160, 157, 157);
   width: 20px;
   height: 1px;
+  margin: 0 auto;
+  right:5px;
   position: relative;
-  left: 30px;
   transition: 300ms all ease-in-out;
 }
 
