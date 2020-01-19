@@ -122,7 +122,7 @@ section {
   left: 91%;
   width: 150px;
   height: 50px;
-  top: 3vw;
+  top: 6vw;
   background: #5565a1;
   border-radius: 10px;
 }
@@ -164,7 +164,7 @@ section {
 .nav {
   position: absolute;
   left: 50%;
-  top: 3vw;
+  top: 6vw;
   height: 50px;
   width: 800px;
   transition: all 300ms ease-in-out;
