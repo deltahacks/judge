@@ -175,8 +175,8 @@ section {
   transform-origin: right;
 }
 .goback{
-    position: absolute;
-  left: -30%;
+  position: absolute;
+  left: -40%;
   height: 50px;
   width: 70px;
   transition: all 300ms ease-in-out;
