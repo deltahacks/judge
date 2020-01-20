@@ -16,7 +16,7 @@
             {{ member }}
           </p>
           <p><a href="https://devpost.com">Devpost link</a></p>
-          <div >
+          <div>
             <b-dropdown v-model="selectedOptions" dark>
               <button class="button is-primary" type="button" slot="trigger">
                 <span> {{ selectedOptions }}</span>
@@ -31,10 +31,15 @@
           </div>
         </div>
         <div class="column">
-          <b-input class="notes" maxlength="200" type="textarea" placeholder="Add your notes here..."></b-input>
+          <b-input
+            class="notes"
+            maxlength="200"
+            type="textarea"
+            placeholder="Add your notes here..."
+          ></b-input>
         </div>
         <div class="column">
-            <h2 class="score">Overall score: <span id="score-val">69</span></h2>
+          <h2 class="score">Overall score: <span id="score-val">69</span></h2>
         </div>
       </div>
     </div>
@@ -251,7 +256,7 @@ export default Vue.extend({
 
 .submission-info {
   font-family: "Montserrat", sans-serif;
-  background: linear-gradient(90deg, #469E9A 0%,#2B408A 90%);
+  background: linear-gradient(90deg, #469e9a 0%, #2b408a 90%);
   color: white;
 }
 
@@ -264,7 +269,8 @@ export default Vue.extend({
   font-size: 30px;
 }
 
-.submission-info h2, .submission-info p {
+.submission-info h2,
+.submission-info p {
   font-weight: 700;
   font-size: 20px;
 }
@@ -274,7 +280,7 @@ export default Vue.extend({
 }
 
 .submission-info textarea {
-  background: rgba(255,255,255,0.3);
+  background: rgba(255, 255, 255, 0.3);
   height: 100%;
   border: none;
   border-radius: 20px;
@@ -288,14 +294,20 @@ export default Vue.extend({
   width: 55vw;
 }
 .button {
-  background-color: rgba(255,255,255,0.2) !important;
-  border-radius:20px !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 20px !important;
   margin-top: 10px;
 }
 
 @media only screen and (max-width: 768px) {
-  .notes { width: 100vw; padding-top: 0; float: none;}
-  .left { text-align: center; }
+  .notes {
+    width: 100vw;
+    padding-top: 0;
+    float: none;
+  }
+  .left {
+    text-align: center;
+  }
 }
 
 .score {
