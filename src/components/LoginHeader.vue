@@ -119,7 +119,8 @@ section {
 
 .navicon {
   position: absolute;
-  left: 91%;
+  /* left: 91%; */
+  right:-2%;
   width: 150px;
   height: 50px;
   top: 6vw;
