@@ -33,7 +33,13 @@
         Submit
       </button>
     </div>
-    <ul v-if="selectedOptions !== 'Select a category to judge'">
+    <ul
+      v-if="
+        selectedOptions !== 'Select a category to judge' &&
+          tableDoc._ &&
+          tableDoc._.categories[selectedOptions.toLowerCase()].score !== 0
+      "
+    >
       <li v-for="(criteria, i) in marking_criteria" :key="(criteria, i)">
         <div
           class="marking-category"
@@ -52,7 +58,12 @@
             <p class="category subheading">{{ criteria.desc }}</p>
           </div>
           <div class="mark-field">
-            <input type="text" placeholder="1" maxlength="1" />
+            <input
+              type="text"
+              placeholder="1"
+              maxlength="1"
+              v-model="marks[i]"
+            />
           </div>
         </div>
       </li>
@@ -113,7 +124,8 @@ export default Vue.extend({
       tableDoc: {},
       tableNumber: -1,
       judge: {},
-      cats: []
+      cats: [],
+      marks: [0, 0, 0, 0, 0]
     };
   },
   methods: {
@@ -146,18 +158,20 @@ export default Vue.extend({
         });
     },
     onSubmit() {
-      const marks = document.getElementsByClassName("marks");
       let rubric = {};
       let totalScore = 0;
       let judgeEmail = firebase.auth().currentUser.email;
       const category = this.selectedOptions.toLowerCase();
+      const criteria = this.marking_criteria;
       const project = this.tableID;
-      for (let i = 0; i < this.cats.length; i++) {
-        rubric[this.cats[i].desc] = marks[i].value;
-        totalScore += Number(marks[i].value);
+
+      for (let i = 0; i < criteria.length; i++) {
+        rubric[criteria[i].desc] = Number(this.marks[i]);
+        totalScore += Number(this.marks[i]);
       }
-      totalScore = totalScore / this.categories.length;
-      rubric["score"] = totalScore;
+
+      totalScore = totalScore / criteria.length;
+      rubric.score = totalScore;
 
       judgeEmail = this.getUUID();
 
@@ -173,7 +187,6 @@ export default Vue.extend({
             x => x.email === judgeEmail
           );
           data.categories[category][arrayIndex].rubric = rubric;
-
           let updateNested = db
             .collection("DH6")
             .doc("hackathon")
@@ -181,7 +194,8 @@ export default Vue.extend({
             .doc(project)
             .update({
               _: data
-            });
+            })
+            .then(() => window.location.reload());
         });
     },
     getUUID() {
@@ -220,6 +234,24 @@ export default Vue.extend({
     },
     changeCategory() {
       console.log(this.selectedOptions);
+      this.marks = [0, 0, 0, 0, 0];
+      for (let i = 0; i < this.marking_criteria.length; i++) {
+        let judgeIndex = this.tableDoc._.categories[
+          this.selectedOptions.toLowerCase()
+        ].findIndex(x => x.email === this.getUUID());
+        let criteria = this.marking_criteria[i].desc;
+        if (
+          Object.keys(
+            this.tableDoc._.categories[this.selectedOptions.toLowerCase()][
+              judgeIndex
+            ].rubric
+          ).includes(criteria)
+        ) {
+          this.marks[i] = this.tableDoc._.categories[
+            this.selectedOptions.toLowerCase()
+          ][judgeIndex].rubric[criteria];
+        }
+      }
     }
   },
   async mounted() {
