@@ -59,9 +59,9 @@
           </div>
           <div class="mark-field">
             <input
-              type="text"
+              type="number"
               placeholder="1"
-              maxlength="1"
+              max="10"
               v-model="marks[i]"
             />
           </div>
