@@ -233,6 +233,7 @@ export default Vue.extend({
         );
     },
     changeCategory() {
+      // TODO: Clean this... lol
       console.log(this.selectedOptions);
       this.marks = [0, 0, 0, 0, 0];
       for (let i = 0; i < this.marking_criteria.length; i++) {
