@@ -6,13 +6,13 @@
     "
     ></Blurb>
     <div class="center submission-info">
-      <h1>TeamName</h1>
-      <h2>Table 3</h2>
+      <h1>{{ tableDoc.name ? tableDoc.name.project : "" }}</h1>
+      <h2>Table {{ tableNumber }}</h2>
       <p>Members:</p>
-      <p v-for="member in ['A', 'B', 'C']" :key="member">
-        {{ member }}
+      <p v-for="(member, i) in tableDoc.group ? tableDoc.group : []" :key="i">
+        <span v-if="member.email">{{ member.email }}</span>
       </p>
-      <a href="https://devpost.com">Devpost link</a>
+      <a :href="tableDoc.name ? tableDoc.name.devpost : ''">Devpost link</a>
     </div>
     <div class="center">
       <b-dropdown v-model="selectedOptions" dark>
@@ -20,14 +20,20 @@
           <span> {{ selectedOptions }}</span>
           <b-icon icon="menu-down"></b-icon>
         </button>
-        <div v-for="category in submission_categories" :key="category">
-          <b-dropdown-item :value="category">
+        <div v-for="category in cats" :key="category">
+          <b-dropdown-item :value="category" @click="changeCategory()">
             {{ category }}
           </b-dropdown-item>
         </div>
       </b-dropdown>
+      <button
+        v-if="selectedOptions !== 'Select a category to judge'"
+        @click="onSubmit()"
+      >
+        Submit
+      </button>
     </div>
-    <ul>
+    <ul v-if="selectedOptions !== 'Select a category to judge'">
       <li v-for="(criteria, i) in marking_criteria" :key="(criteria, i)">
         <div
           class="marking-category"
@@ -60,7 +66,6 @@ import Blurb from "@/components/Blurb.vue";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-
 import "firebase/storage";
 import db from "../firebaseinit";
 import { LoginData } from "../types";
@@ -73,7 +78,6 @@ export default Vue.extend({
   props: {},
   data() {
     return {
-      submission_categories: Array,
       colors: [
         ["#FF9DA0", "#FACFC3"],
         ["#FF9DA0", "#FACFC3"],
@@ -104,10 +108,34 @@ export default Vue.extend({
             "Does the hack have a positive impact for the targeted audience?"
         }
       ],
-      selectedOptions: "Select a category to judge"
+      selectedOptions: "Select a category to judge",
+      tableID: "",
+      tableDoc: {},
+      tableNumber: -1,
+      judge: {},
+      cats: []
     };
   },
   methods: {
+    async getTableID() {
+      let table = this.$route.params.tableNumber;
+      let doc = await db
+        .collection("DH6")
+        .doc("hackathon")
+        .collection("projects")
+        .where("_.table", "==", Number(table))
+        .onSnapshot(snap => {
+          if (snap.empty) {
+            console.log("empty");
+            return;
+          }
+          this.tableID = snap.docs[0].id;
+          console.log(this.tableID);
+          this.tableDoc = snap.docs[0].data();
+        });
+      this.tableNumber = table;
+      console.log(this.tableNumber);
+    },
     getSubmissionCategories() {
       db.collection("DH6")
         .doc("hackathon")
@@ -122,16 +150,16 @@ export default Vue.extend({
       let rubric = {};
       let totalScore = 0;
       let judgeEmail = firebase.auth().currentUser.email;
-      const category = "A";
-      const project = "test1@test.com";
-      for (let i = 0; i < this.categories.length; i++) {
-        rubric[this.categories[i].desc] = marks[i].value;
+      const category = this.selectedOptions.toLowerCase();
+      const project = this.tableID;
+      for (let i = 0; i < this.cats.length; i++) {
+        rubric[this.cats[i].desc] = marks[i].value;
         totalScore += Number(marks[i].value);
       }
       totalScore = totalScore / this.categories.length;
       rubric["score"] = totalScore;
 
-      judgeEmail = "judge@gmail.com";
+      judgeEmail = this.getUUID();
 
       db.collection("DH6")
         .doc("hackathon")
@@ -156,9 +184,48 @@ export default Vue.extend({
             });
         });
     },
-    async mounted() {
-      this.getSubmissionCategories();
+    getUUID() {
+      return firebase.auth().currentUser.email;
+    },
+    async getJudge() {
+      let doc = await db
+        .collection("DH6")
+        .doc("hackathon")
+        .collection("judges")
+        .doc(this.getUUID())
+        .get();
+      if (!doc.exists) return;
+      this.judge = doc.data();
+    },
+    getCategories() {
+      return this.judge.categories
+        ? this.judge.categories.map(cat => cat.toLowerCase())
+        : [];
+    },
+    setJudgeableCats() {
+      this.cats = Object.keys(this.tableDoc._.categories)
+        .filter(each => {
+          return (
+            this.getCategories().includes(each.toLowerCase()) &&
+            this.tableDoc._.categories[each.toLowerCase()].filter(judge => {
+              return judge.email === this.getUUID();
+            }).length
+          );
+        })
+        .map(
+          each =>
+            each.substring(0, 1).toUpperCase() +
+            each.substring(1, each.length).toLowerCase()
+        );
+    },
+    changeCategory() {
+      console.log(this.selectedOptions);
     }
+  },
+  async mounted() {
+    await this.getTableID();
+    await this.getJudge();
+    await this.setJudgeableCats();
   }
 });
 </script>
