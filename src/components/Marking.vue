@@ -1,5 +1,6 @@
 <template>
-  <div id="app">
+  <div id="marking">
+    <timer></timer>
     <Blurb
       content="
         Please assign marks to every category appropriately.
@@ -57,13 +58,15 @@
 <script>
 import Vue from "vue";
 import Blurb from "@/components/Blurb.vue";
+import Timer from "@/components/Timer.vue";
 import * as firebase from "firebase/app";
 import db from "../firebaseinit";
 
 export default Vue.extend({
   name: "Home",
   components: {
-    Blurb
+    Blurb,
+    Timer
   },
   props: {},
   data() {
@@ -99,17 +102,24 @@ export default Vue.extend({
             "Does the hack have a positive impact for the targeted audience?"
         }
       ],
-      selectedOptions: "Select a category to judge"
+      selectedOptions: "Select a category to judge",
+      table: -1
     };
   },
   methods: {
-    getSubmissionCategories() {
+    async getSubmissionCategories() {
       db.collection("DH6")
         .doc("hackathon")
         .collection("projects")
-        .doc("test0@test.com")
+        .where("_.table", "==", Number(this.table))
         .onSnapshot(snap => {
-          this.submission_categories = snap.data().responses.challenges;
+          if (snap.empty) return;
+          this.submission_categories = Object.keys(
+            snap.docs[0].data()._.categories
+          ).map(
+            cat =>
+              cat.substring(0, 1).toUpperCase() + cat.substring(1, cat.length)
+          );
         });
     },
     onSubmit() {
@@ -149,20 +159,21 @@ export default Vue.extend({
               _: data
             });
         });
-    },
-    async mounted() {
-      this.getSubmissionCategories();
     }
+  },
+  async mounted() {
+    this.table = this.$route.params.tableNumber;
+    await this.getSubmissionCategories();
   }
 });
 </script>
 
 <style>
-.marking-div {
+#marking .marking-div {
   float: left;
   width: 70%;
 }
-.mark-field {
+#marking .mark-field {
   top: 0;
   width: 50px;
   float: right;
@@ -182,7 +193,7 @@ export default Vue.extend({
   font-weight: 700;
 }
 
-.name {
+#marking .name {
   text-transform: uppercase;
   color: #f2f2f2;
   line-height: 20px;
@@ -202,7 +213,7 @@ export default Vue.extend({
   width: 60px;
   height: 60px;
   font-weight: 700;
-  font-family: "Lato", georgia;
+  font-family: "Montserrat", sans-serif;
   font-size: 60px;
   /* padding: 1rem; */
   color: rgba(255, 255, 255, 0.6);

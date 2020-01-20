@@ -76,7 +76,7 @@ export default Vue.extend({
 
         await auth().signInWithEmailAndPassword(this.email, this.password);
         console.log("Successfuly logged in");
-        this.$router.push({ name: "Status" });
+        this.$router.push({ name: "Submissions" });
       } catch (e) {
         console.log(e);
         this.error = e;

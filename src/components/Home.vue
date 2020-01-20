@@ -1,18 +1,5 @@
 <template>
-  <div id="app">
-    <div class="center">
-      <b-dropdown v-model="selectedOptions" dark>
-        <button class="button is-primary" type="button" slot="trigger">
-          <span> {{ selectedOptions }}</span>
-          <b-icon icon="menu-down"></b-icon>
-        </button>
-        <div v-for="category in submission_categories" :key="category">
-          <b-dropdown-item :value="category" id="category">
-            {{ category }}
-          </b-dropdown-item>
-        </div>
-      </b-dropdown>
-    </div>
+  <div id="home">
     <Blurb
       :content="
         'Here are the top 10 teams in the category you selected based on your marking. \
@@ -161,16 +148,16 @@ export default Vue.extend({
 </script>
 
 <style>
-.team-div {
+#home .team-div {
   float: left;
 }
-.mark {
+#home .mark {
   top: 0;
   background: rgba(255, 255, 255, 0.2);
   width: 150px;
   float: right;
 }
-.team-name {
+#home .team-name {
   font-size: 30px;
   color: white;
   line-height: 100px;
@@ -178,7 +165,7 @@ export default Vue.extend({
   font-family: "Montserrat", sans-serif;
   font-weight: 300;
 }
-.team {
+#home .team {
   height: 100px;
 }
 </style>
