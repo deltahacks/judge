@@ -58,12 +58,7 @@
             <p class="category subheading">{{ criteria.desc }}</p>
           </div>
           <div class="mark-field">
-            <input
-              type="number"
-              placeholder="1"
-              max="10"
-              v-model="marks[i]"
-            />
+            <input type="tel" pattern="[0-9]*" v-model="marks[i]" />
           </div>
         </div>
       </li>
