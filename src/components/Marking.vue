@@ -5,27 +5,30 @@
         Please assign marks to every category appropriately.
     "
     ></Blurb>
-    <div class="center submission-info">
-      <h1>TeamName</h1>
-      <h2>Table 3</h2>
-      <p>Members:</p>
-      <p v-for="member in ['A', 'B', 'C']" :key="member">
-        {{ member }}
-      </p>
-      <a href="https://devpost.com">Devpost link</a>
-    </div>
-    <div class="center">
-      <b-dropdown v-model="selectedOptions" dark>
-        <button class="button is-primary" type="button" slot="trigger">
-          <span> {{ selectedOptions }}</span>
-          <b-icon icon="menu-down"></b-icon>
-        </button>
-        <div v-for="category in submission_categories" :key="category">
-          <b-dropdown-item :value="category">
-            {{ category }}
-          </b-dropdown-item>
+    <div class="submission-info">
+      <div class="thing">
+        <h1>TeamName</h1>
+        <h2>Table 3</h2>
+        <p>Members:</p>
+        <p v-for="member in ['A', 'B', 'C']" :key="member">
+          {{ member }}
+        </p>
+        <p><a href="https://devpost.com">Devpost link</a></p>
+        <div >
+          <b-dropdown v-model="selectedOptions" dark>
+            <button class="button is-primary" type="button" slot="trigger">
+              <span> {{ selectedOptions }}</span>
+              <b-icon icon="menu-down"></b-icon>
+            </button>
+            <div v-for="category in submission_categories" :key="category">
+              <b-dropdown-item :value="category">
+                {{ category }}
+              </b-dropdown-item>
+            </div>
+          </b-dropdown>
         </div>
-      </b-dropdown>
+      </div>
+      <b-input class="notes" maxlength="200" type="textarea"></b-input>
     </div>
     <ul>
       <li v-for="(criteria, i) in marking_criteria" :key="(criteria, i)">
@@ -235,10 +238,48 @@ export default Vue.extend({
 
 .submission-info {
   font-family: "Montserrat", sans-serif;
+  background: linear-gradient(90deg, #469E9A 0%,#2B408A 90%);
+  color: white;
+  display: flex;
 }
 
+.submission-info .thing {
+  /* padding: 30px;
+  float: left;
+  width: 400px;
+  height: 14vw;
+  margin-right: 8px; */
+  flex: 1;
+  /* width: 30%; */
+}
 .submission-info h1 {
+  opacity: 60%;
   font-weight: 700;
   font-size: 30px;
+}
+
+.submission-info h2, .submission-info p {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.submission-info a {
+  text-decoration: none;
+  color: white;
+}
+
+.submission-info textarea {
+  background: rgba(255,255,255,0.5);
+  height: 300px;
+}
+
+.notes {
+  /* display: inline-block;
+  width: 50%; */
+  flex: 1;
+  padding: 30px;
+  height: 300px;
+
+
 }
 </style>
