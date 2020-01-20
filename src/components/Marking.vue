@@ -33,6 +33,9 @@
         <div class="column">
           <b-input class="notes" maxlength="200" type="textarea" placeholder="Add your notes here..."></b-input>
         </div>
+        <div class="column">
+            <h2 class="score">Overall score: <span id="score-val">69</span></h2>
+        </div>
       </div>
     </div>
     <ul>
@@ -282,8 +285,7 @@ export default Vue.extend({
 .notes {
   padding: 30px;
   height: 100%;
-  width: 69vw;
-  /* float: right; */
+  width: 55vw;
 }
 .button {
   background-color: rgba(255,255,255,0.2) !important;
@@ -294,5 +296,16 @@ export default Vue.extend({
 @media only screen and (max-width: 768px) {
   .notes { width: 100vw; padding-top: 0; float: none;}
   .left { text-align: center; }
+}
+
+.score {
+  padding: 30px;
+  bottom: 0;
+}
+
+#score-val {
+  font-size: 100px;
+  font-weight: 700;
+  opacity: 69%;
 }
 </style>
