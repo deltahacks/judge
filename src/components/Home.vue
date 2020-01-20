@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="home">
     <Blurb
       :content="
         'Here are the teams you will be judging today. \
@@ -75,16 +75,16 @@ export default Vue.extend({
 </script>
 
 <style>
-.team-div {
+#home .team-div {
   float: left;
 }
-.mark {
+#home .mark {
   top: 0;
   background: rgba(255, 255, 255, 0.2);
   width: 150px;
   float: right;
 }
-.team-name {
+#home .team-name {
   font-size: 30px;
   color: white;
   line-height: 100px;
@@ -92,7 +92,7 @@ export default Vue.extend({
   font-family: "Montserrat", sans-serif;
   font-weight: 300;
 }
-.team {
+#home .team {
   height: 100px;
 }
 </style>
