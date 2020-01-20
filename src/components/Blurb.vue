@@ -25,5 +25,7 @@ export default Vue.extend({
   font-size: 20px;
   text-align: center;
   padding: 30px;
+  background: linear-gradient(90deg, #469e9a 0%, #2b408a 90%);
+  color: white;
 }
 </style>
