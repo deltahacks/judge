@@ -22,10 +22,10 @@
       <!-- <text x="600" y="120" fill="white">Delta</text><text x="675" y="120" fill="white">Delta</text> -->
     </svg>
     <div id="title-section">
-      <h1 id="title" class="header-title">
+      <a href="/home"><h1 id="title" class="header-title">
         Delta<span style="font-weight: 300">Hacks</span>
-      </h1>
-      <h1 id="subtitle" class="header-title">Judging</h1>
+      </h1></a>
+      <a href="/home"><h1 id="subtitle" class="header-title">Judging</h1></a>
       <img
         src="../assets/delta_logo.svg"
         height="50"
