@@ -175,6 +175,9 @@ export default Vue.extend({
 </script>
 
 <style>
+#marking {
+  padding-bottom: 100px;
+}
 #marking .marking-div {
   float: left;
   width: 70%;
