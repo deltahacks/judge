@@ -152,9 +152,15 @@ export default Vue.extend({
       db.collection("DH6")
         .doc("hackathon")
         .collection("projects")
-        .doc("test0@test.com")
+        .where("_.table", "==", Number(this.table))
         .onSnapshot(snap => {
-          this.submission_categories = snap.data().responses.challenges;
+          if (snap.empty) return;
+          this.submission_categories = Object.keys(
+            snap.docs[0].data()._.categories
+          ).map(
+            cat =>
+              cat.substring(0, 1).toUpperCase() + cat.substring(1, cat.length)
+          );
         });
     },
     onSubmit() {
