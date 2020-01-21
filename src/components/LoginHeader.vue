@@ -35,7 +35,7 @@
       <div class="goback" v-if="showLogout==1">
         <div class="backbutton">
       <ul>
-        <a href="/home" style="color: silver; font-size:1.5em;"><li>⬅</li></a>
+        <a @click="goBack()" style="color: silver; font-size:1.5em;"><li>⬅</li></a>
       </ul>
       </div>
     </div>
@@ -86,6 +86,9 @@ export default Vue.extend({
       auth().signOut();
       this.$router.push({ name: "Login" });
     },
+    goBack(){
+      window.history.back();
+    }
   },
   watch: {
  '$route' (to, from) {
