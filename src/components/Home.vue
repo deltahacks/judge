@@ -2,8 +2,8 @@
   <div id="home">
     <Blurb
       :content="
-        'Here are the top 10 teams in the category you selected based on your marking. \
-      Click on a group to see their rubric if you want to make any adjustments in score.'
+        'Here are the teams you will be judging today. \
+      Click on a group to see their rubric and start marking.'
       "
     ></Blurb>
 
@@ -44,9 +44,6 @@
 <script>
 import Vue from "vue";
 import Blurb from "@/components/Blurb.vue";
-import db from "../firebaseinit";
-import * as firebase from "firebase/app";
-
 export default Vue.extend({
   name: "Home",
   components: {
@@ -55,10 +52,7 @@ export default Vue.extend({
   props: {},
   data() {
     return {
-      submission_categories: ["A", "B", "C"],
-      selectedOptions: "Select a category to judge",
-      teams: [],
-      judgeEmail: firebase.auth().currentUser.email,
+      teams: Array,
       colors: [
         ["#FCE18A", "#F54FA1"],
         ["#F54FA1", "#fa96a8"],
@@ -69,80 +63,12 @@ export default Vue.extend({
     };
   },
   methods: {
-    getJudgesCategories() {
-      db.collection("DH6")
-        .doc("hackathon")
-        .collection("projects")
-        .get()
-        .then(snapshot => {
-          snapshot.forEach(element => {
-            try {
-              let projectCategories = element.data()._.categories;
-              Object.keys(projectCategories).forEach(category => {
-                for (let i = 0; i < projectCategories[category].length; i++) {
-                  const email = projectCategories[category][i].email;
-                  if (email == this.judgeEmail) {
-                    if (this.submission_categories.indexOf(category) == -1) {
-                      this.submission_categories.push(category);
-                    }
-                  }
-                }
-                console.log(this.submission_categories);
-              });
-            } catch (error) {
-              console.log(error);
-            }
-          });
-        });
-    },
     getTeams() {
-      let scoreArray = [];
-      let category = this.selectedOptions;
-      db.collection("DH6")
-        .doc("hackathon")
-        .collection("projects")
-        .get()
-        .then(snapshot => {
-          snapshot.forEach(element => {
-            try {
-              let projectCategories = element.data()._.categories;
-              let projectCategoriesKeys = Object.keys(projectCategories);
-              for (let i = 0; i < projectCategories[category].length; i++) {
-                const email = projectCategories[category][i].email;
-                if (email == this.judgeEmail) {
-                  scoreArray.push([
-                    element.id,
-                    element.data(),
-                    element.data()._.categories[category][i].rubric.score
-                  ]);
-                }
-              }
-            } catch (error) {
-              console.log(element.id);
-            }
-            scoreArray.sort(function(a, b) {
-              return a[2] < b[2] ? 1 : -1;
-            });
-          });
-          try {
-            for (let i = 0; i < 10; i++) {
-              this.teams.push(scoreArray[i][1].name.project);
-              console.log(scoreArray);
-            }
-          } catch (error) {
-            console.log(error);
-          }
-        });
+      this.teams = [1, 2, 3, 4, 5, 6, 7];
     }
   },
   async mounted() {
-    this.getJudgesCategories();
     this.getTeams();
-  },
-  watch: {
-    selectedOptions: function() {
-      this.getTeams();
-    }
   }
 });
 </script>
