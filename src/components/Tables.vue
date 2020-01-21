@@ -146,11 +146,20 @@ export default Vue.extend({
             }).length
           );
         })
-        .map(
-          each =>
+        .map(each => {
+          if (each.length > 8)
+            each =
+              each.split(" ").length >= 2
+                ? each
+                    .split(" ")
+                    .slice(0, 2)
+                    .join(" ")
+                : each.split(" ")[0];
+          return (
             each.substring(0, 1).toUpperCase() +
             each.substring(1, each.length).toLowerCase()
-        )
+          );
+        })
         .join(", ");
     },
     async getTables() {
