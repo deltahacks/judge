@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <login-header></login-header>
     <link
       href="https://fonts.googleapis.com/css?family=Montserrat:300,400&display=swap"
       rel="stylesheet"
@@ -95,8 +96,13 @@
 import Vue from "vue";
 import { auth } from "firebase/app";
 import db from "../firebaseinit";
+import LoginHeader from "@/components/LoginHeader.vue";
+
 export default Vue.extend({
   name: "Home",
+  components: {
+    LoginHeader
+  },
   props: {},
   data() {
     return {
@@ -244,5 +250,6 @@ export default Vue.extend({
   font-size: 20px;
   text-align: center;
   padding: 50px;
+  background: white;
 }
 </style>

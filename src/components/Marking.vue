@@ -1,5 +1,6 @@
 <template>
   <div id="marking">
+    <Header></Header>
     <timer></timer>
     <Blurb
       content="
@@ -77,6 +78,7 @@ import Timer from "@/components/Timer.vue";
 import * as firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import Header from "@/components/Header.vue";
 
 import "firebase/storage";
 import db from "../firebaseinit";
@@ -86,7 +88,8 @@ export default Vue.extend({
   name: "Home",
   components: {
     Blurb,
-    Timer
+    Timer,
+    Header
   },
   props: {},
   data() {
