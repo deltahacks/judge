@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section id="header">
     <div id="title-section">
       <h1 id="title" class="header-title">
         Delta<span style="font-weight: 300">Hacks</span>
@@ -62,11 +62,11 @@ export default Vue.extend({
 </script>
 
 <style>
-section {
+#header {
   position: relative;
   overflow: hidden;
   background: linear-gradient(90deg, #469e9a 0%, #2b408a 90%);
-  height: 150px;
+  height: 180px;
 }
 
 #title-section {
@@ -93,8 +93,8 @@ section {
 
 .navicon {
   position: absolute;
-  left: 91%;
-  width: 150px;
+  left: 93%;
+  width: 80px;
   height: 50px;
   top: 3vw;
   background: #5565a1;
@@ -107,7 +107,7 @@ section {
   width: 20px;
   height: 1px;
   position: relative;
-  left: 30px;
+  left: 2px;
   transition: 300ms all ease-in-out;
 }
 
@@ -137,10 +137,10 @@ section {
 
 .nav {
   position: absolute;
-  left: 50%;
+  left: 40%;
   top: 3vw;
   height: 50px;
-  width: 800px;
+  width: 1200px;
   transition: all 300ms ease-in-out;
   background: #5b79a5;
   transform: scaleX(0);
@@ -163,27 +163,35 @@ section {
   padding: 12px 12px 12px 50px;
 }
 
-@media only screen and (max-width: 900px) {
-  svg {
-    height: 100%;
-    width: 200%;
-  }
+@media only screen and (max-width: 768px) {
   .navicon {
-    width: 100px;
-    left: 80%;
-    top: 4vw;
+    left: 90%;
   }
   .nav {
-    height: auto;
+
     border-radius: 10px;
-    transform: scaleY(0);
-    transform-origin: top;
+    top: 371px;
+  }
+  /* .nav li {
+    display: block;
+    height: 10px;
+  } */
+}
+
+@media only screen and (max-width: 400px) {
+  .navicon {
+    left: 80%;
+  }
+  .nav {
+    left: 50%;
+    border-radius: 10px;
+    top: 201px;
+    background: none;
   }
   .nav li {
     display: block;
-  }
-  .open {
-    transform: scaleY(1);
+    height: 15px;
   }
 }
+
 </style>

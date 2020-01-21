@@ -68,7 +68,7 @@ export default Vue.extend({
 #timer {
   display: grid;
   grid-auto-flow: column;
-  background: linear-gradient(90deg, #469e9a 0%, #2b408a 90%);
+  background-image: linear-gradient(90deg, #469e9a 0%, #2b408a 90%);
   height: 100px;
   width: 100%;
   position: fixed;
@@ -76,7 +76,7 @@ export default Vue.extend({
   font-size: 40px;
   color: white;
   font-family: "Montserrat", sans-serif;
-	opacity: 100%;
+  
 }
 
 #timer h1 {

@@ -7,44 +7,52 @@
         Please assign marks to every category appropriately.
     "
     ></Blurb>
-    <div class="submission-info">
-      <div class="columns">
-        <div class="column left">
-          <h1>TeamName</h1>
-          <h2>Table 3</h2>
-          <p>Members:</p>
-          <p v-for="member in ['A', 'B', 'C']" :key="member">
-            {{ member }}
-          </p>
-          <p><a href="https://devpost.com">Devpost link</a></p>
-          <div>
-            <b-dropdown v-model="selectedOptions" dark>
-              <button class="button is-primary" type="button" slot="trigger">
-                <span> {{ selectedOptions }}</span>
-                <b-icon icon="menu-down"></b-icon>
-              </button>
-              <div v-for="category in submission_categories" :key="category">
-                <b-dropdown-item :value="category">
-                  {{ category }}
-                </b-dropdown-item>
-              </div>
-            </b-dropdown>
+    <div class="columns submission-info">
+      <div class="column left">
+        <h1>{{ tableDoc.name ? tableDoc.name.project : "" }}</h1>
+        <h2>Table {{ tableNumber }}</h2>
+        <p>Members:</p>
+        <p v-for="(member, i) in tableDoc.group ? tableDoc.group : []" :key="i">
+          <span v-if="member.email">{{ member.email }}</span>
+        </p>
+        <a class="devpost" :href="tableDoc.name ? tableDoc.name.devpost : ''">Devpost link</a>
+        <b-dropdown v-model="selectedOptions" dark>
+          <button class="button is-primary" type="button" slot="trigger">
+            <span> {{ selectedOptions }}</span>
+            <b-icon icon="menu-down"></b-icon>
+          </button>
+          <div v-for="category in cats" :key="category">
+            <b-dropdown-item :value="category" @click="changeCategory()">
+              {{ category }}
+            </b-dropdown-item>
           </div>
-        </div>
-        <div class="column">
-          <b-input
-            class="notes"
-            maxlength="200"
-            type="textarea"
-            placeholder="Add your notes here..."
-          ></b-input>
-        </div>
-        <div class="column">
-          <h2 class="score">Overall score: <span id="score-val">69</span></h2>
-        </div>
+        </b-dropdown>
+        <button
+          v-if="selectedOptions !== 'Select a category to judge'"
+          @click="onSubmit()"
+        >
+          Submit
+        </button>
+      </div>
+      <div class="column">
+        <b-input
+          class="notes"
+          maxlength="200"
+          type="textarea"
+          placeholder="Add your notes here..."
+        ></b-input>
+      </div>
+      <div class="column">
+        <h2 class="score">Overall score: <span id="score-val">69</span></h2>
       </div>
     </div>
-    <ul>
+    <ul
+      v-if="
+        selectedOptions !== 'Select a category to judge' &&
+          tableDoc._ &&
+          tableDoc._.categories[selectedOptions.toLowerCase()].score !== 0
+      "
+    >
       <li v-for="(criteria, i) in marking_criteria" :key="(criteria, i)">
         <div
           class="marking-category"
@@ -63,7 +71,7 @@
             <p class="category subheading">{{ criteria.desc }}</p>
           </div>
           <div class="mark-field">
-            <input type="text" placeholder="1" maxlength="1" />
+            <input type="tel" pattern="[0-9]*" v-model="marks[i]" />
           </div>
         </div>
       </li>
@@ -94,7 +102,6 @@ export default Vue.extend({
   props: {},
   data() {
     return {
-      submission_categories: Array,
       colors: [
         ["#FF9DA0", "#FACFC3"],
         ["#FF9DA0", "#FACFC3"],
@@ -126,11 +133,35 @@ export default Vue.extend({
         }
       ],
       selectedOptions: "Select a category to judge",
-      table: -1
+      tableID: "",
+      tableDoc: {},
+      tableNumber: -1,
+      judge: {},
+      cats: [],
+      marks: [0, 0, 0, 0, 0]
     };
   },
   methods: {
-    async getSubmissionCategories() {
+    async getTableID() {
+      let table = this.$route.params.tableNumber;
+      let doc = await db
+        .collection("DH6")
+        .doc("hackathon")
+        .collection("projects")
+        .where("_.table", "==", Number(table))
+        .onSnapshot(snap => {
+          if (snap.empty) {
+            console.log("empty");
+            return;
+          }
+          this.tableID = snap.docs[0].id;
+          console.log(this.tableID);
+          this.tableDoc = snap.docs[0].data();
+        });
+      this.tableNumber = table;
+      console.log(this.tableNumber);
+    },
+    getSubmissionCategories() {
       db.collection("DH6")
         .doc("hackathon")
         .collection("projects")
@@ -146,20 +177,22 @@ export default Vue.extend({
         });
     },
     onSubmit() {
-      const marks = document.getElementsByClassName("marks");
       let rubric = {};
       let totalScore = 0;
       let judgeEmail = firebase.auth().currentUser.email;
-      const category = "A";
-      const project = "test1@test.com";
-      for (let i = 0; i < this.categories.length; i++) {
-        rubric[this.categories[i].desc] = marks[i].value;
-        totalScore += Number(marks[i].value);
-      }
-      totalScore = totalScore / this.categories.length;
-      rubric["score"] = totalScore;
+      const category = this.selectedOptions.toLowerCase();
+      const criteria = this.marking_criteria;
+      const project = this.tableID;
 
-      judgeEmail = "judge@gmail.com";
+      for (let i = 0; i < criteria.length; i++) {
+        rubric[criteria[i].desc] = Number(this.marks[i]);
+        totalScore += Number(this.marks[i]);
+      }
+
+      totalScore = totalScore / criteria.length;
+      rubric.score = totalScore;
+
+      judgeEmail = this.getUUID();
 
       db.collection("DH6")
         .doc("hackathon")
@@ -173,7 +206,6 @@ export default Vue.extend({
             x => x.email === judgeEmail
           );
           data.categories[category][arrayIndex].rubric = rubric;
-
           let updateNested = db
             .collection("DH6")
             .doc("hackathon")
@@ -181,13 +213,71 @@ export default Vue.extend({
             .doc(project)
             .update({
               _: data
-            });
+            })
+            .then(() => window.location.reload());
         });
+    },
+    getUUID() {
+      return firebase.auth().currentUser.email;
+    },
+    async getJudge() {
+      let doc = await db
+        .collection("DH6")
+        .doc("hackathon")
+        .collection("judges")
+        .doc(this.getUUID())
+        .get();
+      if (!doc.exists) return;
+      this.judge = doc.data();
+    },
+    getCategories() {
+      return this.judge.categories
+        ? this.judge.categories.map(cat => cat.toLowerCase())
+        : [];
+    },
+    setJudgeableCats() {
+      this.cats = Object.keys(this.tableDoc._.categories)
+        .filter(each => {
+          return (
+            this.getCategories().includes(each.toLowerCase()) &&
+            this.tableDoc._.categories[each.toLowerCase()].filter(judge => {
+              return judge.email === this.getUUID();
+            }).length
+          );
+        })
+        .map(
+          each =>
+            each.substring(0, 1).toUpperCase() +
+            each.substring(1, each.length).toLowerCase()
+        );
+    },
+    changeCategory() {
+      // TODO: Clean this... lol
+      console.log(this.selectedOptions);
+      this.marks = [0, 0, 0, 0, 0];
+      for (let i = 0; i < this.marking_criteria.length; i++) {
+        let judgeIndex = this.tableDoc._.categories[
+          this.selectedOptions.toLowerCase()
+        ].findIndex(x => x.email === this.getUUID());
+        let criteria = this.marking_criteria[i].desc;
+        if (
+          Object.keys(
+            this.tableDoc._.categories[this.selectedOptions.toLowerCase()][
+              judgeIndex
+            ].rubric
+          ).includes(criteria)
+        ) {
+          this.marks[i] = this.tableDoc._.categories[
+            this.selectedOptions.toLowerCase()
+          ][judgeIndex].rubric[criteria];
+        }
+      }
     }
   },
   async mounted() {
-    this.table = this.$route.params.tableNumber;
-    await this.getSubmissionCategories();
+    await this.getTableID();
+    await this.getJudge();
+    await this.setJudgeableCats();
   }
 });
 </script>
@@ -279,8 +369,9 @@ export default Vue.extend({
   font-size: 20px;
 }
 
-.submission-info a {
+.devpost {
   text-decoration: none;
+  color: white;
 }
 
 .submission-info textarea {
@@ -303,9 +394,9 @@ export default Vue.extend({
   margin-top: 10px;
 }
 
-
 .score {
   padding: 30px;
+  width: 300px;
 }
 
 #score-val {
@@ -326,6 +417,5 @@ export default Vue.extend({
   #score-val {
     font-size: 140px;
   }
-  .score { text-align: center;}
 }
 </style>
