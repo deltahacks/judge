@@ -9,9 +9,9 @@
       <span>{{ seconds }}</span>
     </div>
     <div>
-      <b-button @click="reset">Reset</b-button>
-      <b-button v-if="!started" @click="start">Start</b-button>
-      <b-button v-if="started" @click="pause">Pause</b-button>
+      <b-button @click="reset">Reset Timer</b-button>
+      <b-button v-if="!started" @click="start">Start Timer</b-button>
+      <b-button v-if="started" @click="pause">Pause Timer</b-button>
     </div>
   </div>
 </template>
