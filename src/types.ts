@@ -28,13 +28,13 @@ export interface Judge {
   name: name;
   contact: string;
   org: string;
-  categories: [category];
+  categories: [string];
 }
 
 export interface Table {
   name: string;
   devlink: string;
-  categories: [category];
+  categories: [string];
   reviews: [JudgeReviews];
 }
 export interface Questions {
@@ -48,6 +48,27 @@ export interface JudgeReviews {
   questions: [Questions];
   final: number;
 }
-export const categories = ["General", "JS", "Java", "Python"];
-type category = "General" | "JS" | "Java" | "Python";
+export const categories = [
+  "centre challenge",
+  "hotel dieu shaver health and rehabilitation",
+  "ite challenge",
+  "kyle arscott challenge",
+  "beasley neighbourhood association challenge",
+  "best overall hack",
+  "best education hack",
+  "best finance hack",
+  "best environment hack",
+  "best health hack",
+  "best quality of life/productivity hack"
+].map(each => {
+  return each
+    .split(" ")
+    .map(word => {
+      return (
+        word.substring(0, 1).toUpperCase() +
+        word.substring(1, word.length).toLowerCase()
+      );
+    })
+    .join(" ");
+});
 type question = string;

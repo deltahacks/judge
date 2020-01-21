@@ -7,13 +7,13 @@
     "
     ></Blurb>
     <div class="center submission-info">
-      <h1>TeamName</h1>
-      <h2>Table 3</h2>
+      <h1>{{ tableDoc.name ? tableDoc.name.project : "" }}</h1>
+      <h2>Table {{ tableNumber }}</h2>
       <p>Members:</p>
-      <p v-for="member in ['A', 'B', 'C']" :key="member">
-        {{ member }}
+      <p v-for="(member, i) in tableDoc.group ? tableDoc.group : []" :key="i">
+        <span v-if="member.email">{{ member.email }}</span>
       </p>
-      <a href="https://devpost.com">Devpost link</a>
+      <a :href="tableDoc.name ? tableDoc.name.devpost : ''">Devpost link</a>
     </div>
     <div class="center">
       <b-dropdown v-model="selectedOptions" dark>
@@ -21,14 +21,26 @@
           <span> {{ selectedOptions }}</span>
           <b-icon icon="menu-down"></b-icon>
         </button>
-        <div v-for="category in submission_categories" :key="category">
-          <b-dropdown-item :value="category">
+        <div v-for="category in cats" :key="category">
+          <b-dropdown-item :value="category" @click="changeCategory()">
             {{ category }}
           </b-dropdown-item>
         </div>
       </b-dropdown>
+      <button
+        v-if="selectedOptions !== 'Select a category to judge'"
+        @click="onSubmit()"
+      >
+        Submit
+      </button>
     </div>
-    <ul>
+    <ul
+      v-if="
+        selectedOptions !== 'Select a category to judge' &&
+          tableDoc._ &&
+          tableDoc._.categories[selectedOptions.toLowerCase()].score !== 0
+      "
+    >
       <li v-for="(criteria, i) in marking_criteria" :key="(criteria, i)">
         <div
           class="marking-category"
@@ -47,7 +59,7 @@
             <p class="category subheading">{{ criteria.desc }}</p>
           </div>
           <div class="mark-field">
-            <input type="text" placeholder="1" maxlength="1" class="marks" />
+            <input type="tel" pattern="[0-9]*" v-model="marks[i]" />
           </div>
         </div>
       </li>
@@ -60,6 +72,9 @@ import Vue from "vue";
 import Blurb from "@/components/Blurb.vue";
 import Timer from "@/components/Timer.vue";
 import * as firebase from "firebase/app";
+import "firebase/auth";
+import "firebase/firestore";
+import "firebase/storage";
 import db from "../firebaseinit";
 
 export default Vue.extend({
@@ -71,7 +86,6 @@ export default Vue.extend({
   props: {},
   data() {
     return {
-      submission_categories: ["A", "B", "C"],
       colors: [
         ["#FF9DA0", "#FACFC3"],
         ["#FF9DA0", "#FACFC3"],
@@ -103,11 +117,35 @@ export default Vue.extend({
         }
       ],
       selectedOptions: "Select a category to judge",
-      table: -1
+      tableID: "",
+      tableDoc: {},
+      tableNumber: -1,
+      judge: {},
+      cats: [],
+      marks: [0, 0, 0, 0, 0]
     };
   },
   methods: {
-    async getSubmissionCategories() {
+    async getTableID() {
+      let table = this.$route.params.tableNumber;
+      let doc = await db
+        .collection("DH6")
+        .doc("hackathon")
+        .collection("projects")
+        .where("_.table", "==", Number(table))
+        .onSnapshot(snap => {
+          if (snap.empty) {
+            console.log("empty");
+            return;
+          }
+          this.tableID = snap.docs[0].id;
+          console.log(this.tableID);
+          this.tableDoc = snap.docs[0].data();
+        });
+      this.tableNumber = table;
+      console.log(this.tableNumber);
+    },
+    getSubmissionCategories() {
       db.collection("DH6")
         .doc("hackathon")
         .collection("projects")
@@ -123,19 +161,22 @@ export default Vue.extend({
         });
     },
     onSubmit() {
-      const marks = document.getElementsByClassName("marks");
       let rubric = {};
       let totalScore = 0;
       let judgeEmail = firebase.auth().currentUser.email;
-      const category = "general";
-      const project = "test1@test.com";
-      for (let i = 0; i < this.marking_criteria.length; i++) {
-        rubric[this.marking_criteria[i].desc] = marks[i].value;
-        totalScore += Number(marks[i].value);
+      const category = this.selectedOptions.toLowerCase();
+      const criteria = this.marking_criteria;
+      const project = this.tableID;
+
+      for (let i = 0; i < criteria.length; i++) {
+        rubric[criteria[i].desc] = Number(this.marks[i]);
+        totalScore += Number(this.marks[i]);
       }
-      totalScore = totalScore / this.marking_criteria.length;
-      rubric["score"] = totalScore;
-      judgeEmail = "gzsalam7@gmail.comm";
+
+      totalScore = totalScore / criteria.length;
+      rubric.score = totalScore;
+
+      judgeEmail = this.getUUID();
 
       db.collection("DH6")
         .doc("hackathon")
@@ -149,7 +190,6 @@ export default Vue.extend({
             x => x.email === judgeEmail
           );
           data.categories[category][arrayIndex].rubric = rubric;
-
           let updateNested = db
             .collection("DH6")
             .doc("hackathon")
@@ -157,18 +197,79 @@ export default Vue.extend({
             .doc(project)
             .update({
               _: data
-            });
+            })
+            .then(() => window.location.reload());
         });
+    },
+    getUUID() {
+      return firebase.auth().currentUser.email;
+    },
+    async getJudge() {
+      let doc = await db
+        .collection("DH6")
+        .doc("hackathon")
+        .collection("judges")
+        .doc(this.getUUID())
+        .get();
+      if (!doc.exists) return;
+      this.judge = doc.data();
+    },
+    getCategories() {
+      return this.judge.categories
+        ? this.judge.categories.map(cat => cat.toLowerCase())
+        : [];
+    },
+    setJudgeableCats() {
+      this.cats = Object.keys(this.tableDoc._.categories)
+        .filter(each => {
+          return (
+            this.getCategories().includes(each.toLowerCase()) &&
+            this.tableDoc._.categories[each.toLowerCase()].filter(judge => {
+              return judge.email === this.getUUID();
+            }).length
+          );
+        })
+        .map(
+          each =>
+            each.substring(0, 1).toUpperCase() +
+            each.substring(1, each.length).toLowerCase()
+        );
+    },
+    changeCategory() {
+      // TODO: Clean this... lol
+      console.log(this.selectedOptions);
+      this.marks = [0, 0, 0, 0, 0];
+      for (let i = 0; i < this.marking_criteria.length; i++) {
+        let judgeIndex = this.tableDoc._.categories[
+          this.selectedOptions.toLowerCase()
+        ].findIndex(x => x.email === this.getUUID());
+        let criteria = this.marking_criteria[i].desc;
+        if (
+          Object.keys(
+            this.tableDoc._.categories[this.selectedOptions.toLowerCase()][
+              judgeIndex
+            ].rubric
+          ).includes(criteria)
+        ) {
+          this.marks[i] = this.tableDoc._.categories[
+            this.selectedOptions.toLowerCase()
+          ][judgeIndex].rubric[criteria];
+        }
+      }
     }
   },
   async mounted() {
-    this.table = this.$route.params.tableNumber;
-    await this.getSubmissionCategories();
+    await this.getTableID();
+    await this.getJudge();
+    await this.setJudgeableCats();
   }
 });
 </script>
 
 <style>
+#marking {
+  padding-bottom: 100px;
+}
 #marking .marking-div {
   float: left;
   width: 70%;
