@@ -192,6 +192,7 @@ export default Vue.extend({
 <style>
 #marking {
   padding-bottom: 100px;
+  overflow: hidden;
 }
 #marking .marking-div {
   float: left;
@@ -289,14 +290,25 @@ export default Vue.extend({
 }
 
 .notes {
-  padding: 30px;
+  padding: 20px;
   height: 100%;
-  width: 55vw;
+  width: 40vw;
 }
 .button {
   background-color: rgba(255, 255, 255, 0.2) !important;
   border-radius: 20px !important;
   margin-top: 10px;
+}
+
+
+.score {
+  padding: 30px;
+}
+
+#score-val {
+  font-size: 120px;
+  font-weight: 700;
+  opacity: 69%;
 }
 
 @media only screen and (max-width: 768px) {
@@ -308,16 +320,9 @@ export default Vue.extend({
   .left {
     text-align: center;
   }
-}
-
-.score {
-  padding: 30px;
-  bottom: 0;
-}
-
-#score-val {
-  font-size: 100px;
-  font-weight: 700;
-  opacity: 69%;
+  #score-val {
+    font-size: 140px;
+  }
+  .score { text-align: center;}
 }
 </style>

@@ -63,8 +63,8 @@ export default Vue.extend({
 
 <style>
 section {
-  /* position: relative;
-  overflow: hidden; */
+  position: relative;
+  overflow: hidden;
   background: linear-gradient(90deg, #469e9a 0%, #2b408a 90%);
   height: 150px;
 }
@@ -99,6 +99,7 @@ section {
   top: 3vw;
   background: #5565a1;
   border-radius: 10px;
+  overflow: hidden;
 }
 
 .navicon .bar {

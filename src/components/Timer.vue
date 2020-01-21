@@ -68,7 +68,7 @@ export default Vue.extend({
 #timer {
   display: grid;
   grid-auto-flow: column;
-  background: #1a1a1a;
+  background: linear-gradient(90deg, #469e9a 0%, #2b408a 90%);
   height: 100px;
   width: 100%;
   position: fixed;
