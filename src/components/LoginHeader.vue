@@ -22,23 +22,29 @@
       <!-- <text x="600" y="120" fill="white">Delta</text><text x="675" y="120" fill="white">Delta</text> -->
     </svg>
     <div id="title-section">
-      <h1 id="title" class="header-title">
+      <a href="/home"><h1 id="title" class="header-title">
         Delta<span style="font-weight: 300">Hacks</span>
-      </h1>
-      <h1 id="subtitle" class="header-title">Judging</h1>
+      </h1></a>
+      <a href="/home"><h1 id="subtitle" class="header-title">Judging</h1></a>
       <img
         src="../assets/delta_logo.svg"
         height="50"
         width="50"
         alt="DeltaHacks Logo"
-      />
+      /><br>
+      <div class="goback" v-if="showLogout==1">
+        <div class="backbutton">
+      <ul>
+        <a @click="goBack()" style="color: silver; font-size:1.5em;"><li>⬅</li></a>
+      </ul>
+      </div>
+    </div>
     </div>
     <div class="nav" :class="{ open: showMenu }">
       <ul>
         <a href="/home"><li>Home</li></a>
-        <a href="/home"><li>Rubric</li></a>
         <a href="/home"><li>Rankings</li></a>
-        <a href="#" @click="logout()"><li>Logout</li></a>
+        <a href="#" @click="logout()" v-if="showLogout==1"><li>Logout</li></a>
       </ul>
     </div>
     <div
@@ -65,9 +71,10 @@ export default Vue.extend({
       default: "DeltaHacks-VI Application Judging Platform"
     }
   },
-  data(): { showMenu: boolean } {
+  data(): { showMenu: boolean, showLogout: number } {
     return {
-      showMenu: false
+      showMenu: false,
+      showLogout: 1
     };
   },
   methods: {
@@ -77,8 +84,20 @@ export default Vue.extend({
     logout() {
       auth().signOut();
       this.$router.push({ name: "Login" });
+    },
+    goBack(){
+      window.history.back();
     }
-  }
+  },
+  watch: {
+ '$route' (to, from) {
+      if(to.name=="Login"){
+      this.showLogout=0;
+      }
+      else{
+      this.showLogout=1;
+      }
+  }}
 });
 </script>
 
@@ -112,10 +131,11 @@ section {
 
 .navicon {
   position: absolute;
-  left: 91%;
+  /* left: 91%; */
+  right:-2%;
   width: 150px;
   height: 50px;
-  top: 3vw;
+  top: 6vw;
   background: #5565a1;
   border-radius: 10px;
 }
@@ -124,8 +144,9 @@ section {
   background: rgb(160, 157, 157);
   width: 20px;
   height: 1px;
+  margin: 0 auto;
+  right:5px;
   position: relative;
-  left: 30px;
   transition: 300ms all ease-in-out;
 }
 
@@ -156,7 +177,7 @@ section {
 .nav {
   position: absolute;
   left: 50%;
-  top: 3vw;
+  top: 6vw;
   height: 50px;
   width: 800px;
   transition: all 300ms ease-in-out;
@@ -165,6 +186,21 @@ section {
   border-radius: 100px;
   transform-origin: right;
 }
+.goback{
+  position: absolute;
+  left: -40%;
+  height: 50px;
+  width: 70px;
+  transition: all 300ms ease-in-out;
+  background: #5b79a5;
+  border-top-right-radius : 10px;
+  border-bottom-right-radius : 10px;
+}
+
+.backbutton{
+  margin-top:5px;
+  margin-left:30%!important;
+}  
 
 .open {
   transform: scaleX(1);
@@ -181,7 +217,7 @@ section {
   padding: 12px 12px 12px 50px;
 }
 
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 765px) {
   svg {
     height: 100%;
     width: 200%;
@@ -189,13 +225,16 @@ section {
   .navicon {
     width: 100px;
     left: 80%;
-    top: 4vw;
+    margin-top: 45px;
   }
   .nav {
+    margin-top: -35%;
+    position: relative;
     height: auto;
     border-radius: 10px;
-    transform: scaleY(0);
-    transform-origin: top;
+    padding-bottom:5vh;
+    /* transform: scaleY(0);
+    transform-origin: top; */
   }
   .nav li {
     display: block;
@@ -204,4 +243,31 @@ section {
     transform: scaleY(1);
   }
 }
+@media only screen and (max-width: 900px) {
+  svg {
+    height: 100%;
+    width: 200%;
+  }
+  .navicon {
+    width: 100px;
+    left: 80%;
+    margin-top: 35px;
+  }
+  .nav {
+    margin-top: -41%;
+    position: relative;
+    height: auto;
+    border-radius: 10px;
+    padding-bottom:5vh;
+    /* transform: scaleY(0);
+    transform-origin: top; */
+  }
+  .nav li {
+    display: block;
+  }
+  .open {
+    transform: scaleY(1);
+  }
+}
+
 </style>
