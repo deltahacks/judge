@@ -89,10 +89,8 @@ export default Vue.extend({
   },
   watch: {
  '$route' (to, from) {
-   if(this.$route.path=="/"){
       this.showLogout=0;
       }
-    }
   }
 });
 </script>
