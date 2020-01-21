@@ -107,7 +107,11 @@ export default Vue.extend({
         ["#FF9DA0", "#FACFC3"],
         ["#FF9DA0", "#FACFC3"],
         ["#649C9F", "#FACFC3"],
-        ["#649C9F", "#FACFC3"]
+        ["#649C9F", "#FACFC3"],
+        ["#FF9DA0", "#FACFC3"],
+        ["#FF9DA0", "#FACFC3"],
+        ["#FF9DA0", "#FACFC3"],
+        ["#649C9F", "#FACFC3"] 
       ],
       marking_criteria: [
         {
@@ -130,6 +134,32 @@ export default Vue.extend({
           type: "Social Impact",
           desc:
             "Does the hack have a positive impact for the targeted audience?"
+        },
+        {
+          type: "Originality",
+          desc:
+            "Was the hack original? \
+            Were you surprised by the hack or have you seen similar things done before? \
+            Did they come up with problem that you had not thought to approach?"
+        },
+        {
+          type: "Originality",
+          desc:
+            "Was the hack creative? \
+            Was the solution / problem approached in a unique way?"
+        },
+        {
+          type: "Presentation",
+          desc:
+            "Was the project clearly explained? \
+            Was the solution relevant to the given problem that they identified? \
+            Was it clear how the product works?"
+        },
+        {
+          type: "Presentation",
+          desc:
+            "Was the group prepared to present? \
+            Was the demo of high quality? Did they have demos, visuals, research, powerpoints, logos etc. (note: not all are required)."
         }
       ],
       selectedOptions: "Select a category to judge",
@@ -138,7 +168,7 @@ export default Vue.extend({
       tableNumber: -1,
       judge: {},
       cats: [],
-      marks: [0, 0, 0, 0, 0]
+      marks: []
     };
   },
   methods: {
