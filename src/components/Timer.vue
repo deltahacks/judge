@@ -9,9 +9,9 @@
       <span>{{ seconds }}</span>
     </div>
     <div>
-      <b-button @click="reset">Reset</b-button>
-      <b-button v-if="!started" @click="start">Start</b-button>
-      <b-button v-if="started" @click="pause">Pause</b-button>
+      <button @click="reset">Reset</button>
+      <button v-if="!started" @click="start">Start</button>
+      <button v-if="started" @click="pause">Pause</button>
     </div>
   </div>
 </template>
@@ -76,6 +76,7 @@ export default Vue.extend({
   font-size: 40px;
   color: white;
   font-family: "Montserrat", sans-serif;
+	opacity: 100%;
 }
 
 #timer h1 {
@@ -87,10 +88,12 @@ export default Vue.extend({
   float: right;
   height: 100%;
   width: 20vw;
-  background: #484848;
-  color: white;
-  border-color: #1a1a1a;
+  background: rgba(255,255,255,0.3);
   font-size: 20px;
+	border-radius: 0;
+	border: 1px solid rgba(0,0,0,0.1);
+	/* border: none; */
+	color: white;
 }
 
 #clock {
