@@ -32,7 +32,7 @@
         width="50"
         alt="DeltaHacks Logo"
       /><br>
-      <div class="goback">
+      <div class="goback" v-if="showLogout==1">
         <div class="backbutton">
       <ul>
         <a href="/home" style="color: silver; font-size:1.5em;"><li>⬅</li></a>
@@ -45,7 +45,7 @@
         <a href="/home"><li>Home</li></a>
         <a href="/home"><li>Rubric</li></a>
         <a href="/home"><li>Rankings</li></a>
-        <a href="#" @click="logout()"><li>Logout</li></a>
+        <a href="#" @click="logout()" v-if="showLogout==1"><li>Logout</li></a>
       </ul>
     </div>
     <div
@@ -72,9 +72,10 @@ export default Vue.extend({
       default: "DeltaHacks-VI Application Judging Platform"
     }
   },
-  data(): { showMenu: boolean } {
+  data(): { showMenu: boolean, showLogout: number } {
     return {
-      showMenu: false
+      showMenu: false,
+      showLogout: 1
     };
   },
   methods: {
@@ -84,6 +85,13 @@ export default Vue.extend({
     logout() {
       auth().signOut();
       this.$router.push({ name: "Login" });
+    },
+  },
+  watch: {
+ '$route' (to, from) {
+   if(this.$route.path=="/"){
+      this.showLogout=0;
+      }
     }
   }
 });
