@@ -172,10 +172,6 @@ export default Vue.extend({
     border-radius: 10px;
     top: 371px;
   }
-  /* .nav li {
-    display: block;
-    height: 10px;
-  } */
 }
 
 @media only screen and (max-width: 400px) {

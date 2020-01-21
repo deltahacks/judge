@@ -372,6 +372,7 @@ export default Vue.extend({
 .devpost {
   text-decoration: none;
   color: white;
+  font-size: 30px;
 }
 
 .submission-info textarea {
