@@ -86,7 +86,7 @@ export default Vue.extend({
 #timer button {
   float: right;
   height: 100%;
-  width: 20vw;
+  width: 25vw;
   background: #484848;
   color: white;
   border-color: #1a1a1a;
