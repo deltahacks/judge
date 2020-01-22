@@ -31,23 +31,18 @@
             </b-dropdown-item>
           </div>
         </b-dropdown>
-        <b-button
-          class="button is-primary"
-          type="button"
-          v-if="selectedOptions !== 'Select a category to judge'"
-          @click="onSubmit()"
-        >
-          Submit
-        </b-button>
       </div>
       <div class="column">
+        <div :style="{ marginLeft: '30px', fontSize: '20px' }">
+          Project Notes
+        </div>
         <b-input
           class="notes"
           maxlength="200"
           type="textarea"
           placeholder="Add your notes here..."
           v-model="notes"
-          @change="onSubmit()"
+          @input="onSubmit()"
         ></b-input>
       </div>
       <div class="column">
@@ -58,7 +53,7 @@
     </div>
     <ul
       v-if="
-        selectedOptions !== 'Select a category to judge' &&
+        selectedOptions !== this.defaultOPTION &&
           tableDoc._ &&
           tableDoc._.categories[selectedOptions.toLowerCase()].score !== 0
       "
@@ -186,13 +181,15 @@ export default Vue.extend({
         }
       ],
       selectedOptions: "Select a category to judge",
+      defaultOPTION: "Select a category to judge",
       tableID: "",
       tableDoc: {},
       tableNumber: -1,
       judge: {},
       cats: [],
       marks: [0, 0, 0, 0, 0, 0, 0, 0, 0],
-      notes: ""
+      notes: "",
+      debounce: null
     };
   },
   methods: {
@@ -231,54 +228,58 @@ export default Vue.extend({
         });
     },
     onSubmit() {
-      let rubric = {};
-      let totalScore = 0;
-      let judgeEmail = firebase.auth().currentUser.email;
-      const category = this.selectedOptions.toLowerCase();
-      const criteria = this.marking_criteria;
-      const project = this.tableID;
+      if (this.debounce) clearTimeout(this.debounce);
+      this.debounce = setTimeout(() => {
+        let rubric = {};
+        let totalScore = 0;
+        let judgeEmail = firebase.auth().currentUser.email;
+        const category = this.selectedOptions.toLowerCase();
+        const criteria = this.marking_criteria;
+        const project = this.tableID;
 
-      for (let i = 0; i < criteria.length; i++) {
-        rubric[criteria[i].tag] = Number(this.marks[i]);
-        totalScore += Number(this.marks[i]);
-      }
+        for (let i = 0; i < criteria.length; i++) {
+          rubric[criteria[i].tag] = Number(this.marks[i]);
+          totalScore += Number(this.marks[i]);
+        }
 
-      totalScore = totalScore / criteria.length;
-      rubric.score = totalScore;
+        totalScore = totalScore / criteria.length;
+        rubric.score = totalScore;
 
-      judgeEmail = this.getUUID();
+        judgeEmail = this.getUUID();
 
-      db.collection("DH6")
-        .doc("hackathon")
-        .collection(this.projects)
-        .doc(project)
-        .get()
-        .then(doc => {
-          let data = doc.data()._;
-          console.log(data.categories[category][0].rubric);
-          let arrayIndex = data.categories[category].findIndex(
-            x => x.email === judgeEmail
-          );
-          data.categories[category][arrayIndex].rubric = rubric;
-          data.notes[this.getUUID()] = this.notes;
-          let updateNested = db
-            .collection("DH6")
-            .doc("hackathon")
-            .collection(this.projects)
-            .doc(project)
-            .update({
-              _: data
-            })
-            .then(() => {
-              this.$buefy.snackbar.open({
-                message: "Changes saved!",
-                type: "is-success",
-                position: "is-top-right",
-                actionText: "OK",
-                indefinite: false
+        db.collection("DH6")
+          .doc("hackathon")
+          .collection(this.projects)
+          .doc(project)
+          .get()
+          .then(doc => {
+            let data = doc.data()._;
+            if (this.selectedOptions !== this.defaultOPTION) {
+              let arrayIndex = data.categories[category].findIndex(
+                x => x.email === judgeEmail
+              );
+              data.categories[category][arrayIndex].rubric = rubric;
+            }
+            data.notes[this.getUUID()] = this.notes;
+            let updateNested = db
+              .collection("DH6")
+              .doc("hackathon")
+              .collection(this.projects)
+              .doc(project)
+              .update({
+                _: data
+              })
+              .then(() => {
+                this.$buefy.snackbar.open({
+                  message: "Changes saved!",
+                  type: "is-success",
+                  position: "is-top-right",
+                  actionText: "OK",
+                  indefinite: false
+                });
               });
-            });
-        });
+          });
+      }, 2000);
     },
     getUUID() {
       return firebase.auth().currentUser.email;
@@ -351,10 +352,7 @@ export default Vue.extend({
   },
   computed: {
     totalScore() {
-      if (
-        !this.tableDoc._ ||
-        this.selectedOptions === "Select a category to judge"
-      ) {
+      if (!this.tableDoc._ || this.selectedOptions === this.defaultOPTION) {
         return 0;
       }
       let totalScore = 0;
