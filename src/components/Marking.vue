@@ -88,7 +88,7 @@ import Header from "@/components/Header.vue";
 
 import "firebase/storage";
 import db from "../firebaseinit";
-import { LoginData } from "../types";
+import {LoginData} from "../types";
 
 export default Vue.extend({
   name: "Home",
@@ -100,6 +100,7 @@ export default Vue.extend({
   props: {},
   data() {
     return {
+      projects: "",
       colors: [
         "#FF9DA0",
         "#FF9DA0",
@@ -114,19 +115,19 @@ export default Vue.extend({
       marking_criteria: [
         {
           type: "Technical",
-          desc: "How technically impressive is the hack?"
+          desc: "How technically impressive is the hack?",
         },
         {
           type: "Technical",
-          desc: "Is the project complete?"
+          desc: "Is the project complete?",
         },
         {
           type: "Technical",
-          desc: "Does the hack allow for a good user experience?"
+          desc: "Does the hack allow for a good user experience?",
         },
         {
           type: "Social Impact",
-          desc: "Does the hack solve an important/relevant issue in society?"
+          desc: "Does the hack solve an important/relevant issue in society?",
         },
         {
           type: "Social Impact",
@@ -166,7 +167,7 @@ export default Vue.extend({
       tableNumber: -1,
       judge: {},
       cats: [],
-      marks: []
+      marks: [0, 0, 0, 0, 0],
     };
   },
   methods: {
@@ -175,7 +176,7 @@ export default Vue.extend({
       let doc = await db
         .collection("DH6")
         .doc("hackathon")
-        .collection("projects")
+        .collection(this.projects)
         .where("_.table", "==", Number(table))
         .onSnapshot(snap => {
           if (snap.empty) {
@@ -192,15 +193,15 @@ export default Vue.extend({
     getSubmissionCategories() {
       db.collection("DH6")
         .doc("hackathon")
-        .collection("projects")
+        .collection(this.projects)
         .where("_.table", "==", Number(this.table))
         .onSnapshot(snap => {
           if (snap.empty) return;
           this.submission_categories = Object.keys(
-            snap.docs[0].data()._.categories
+            snap.docs[0].data()._.categories,
           ).map(
             cat =>
-              cat.substring(0, 1).toUpperCase() + cat.substring(1, cat.length)
+              cat.substring(0, 1).toUpperCase() + cat.substring(1, cat.length),
           );
         });
     },
@@ -224,23 +225,23 @@ export default Vue.extend({
 
       db.collection("DH6")
         .doc("hackathon")
-        .collection("projects")
+        .collection(this.projects)
         .doc(project)
         .get()
         .then(doc => {
           let data = doc.data()._;
           console.log(data.categories[category][0].rubric);
           let arrayIndex = data.categories[category].findIndex(
-            x => x.email === judgeEmail
+            x => x.email === judgeEmail,
           );
           data.categories[category][arrayIndex].rubric = rubric;
           let updateNested = db
             .collection("DH6")
             .doc("hackathon")
-            .collection("projects")
+            .collection(this.projects)
             .doc(project)
             .update({
-              _: data
+              _: data,
             })
             .then(() => window.location.reload());
         });
@@ -276,7 +277,7 @@ export default Vue.extend({
         .map(
           each =>
             each.substring(0, 1).toUpperCase() +
-            each.substring(1, each.length).toLowerCase()
+            each.substring(1, each.length).toLowerCase(),
         );
     },
     changeCategory() {
@@ -292,7 +293,7 @@ export default Vue.extend({
           Object.keys(
             this.tableDoc._.categories[this.selectedOptions.toLowerCase()][
               judgeIndex
-            ].rubric
+            ].rubric,
           ).includes(criteria)
         ) {
           this.marks[i] = this.tableDoc._.categories[
@@ -300,13 +301,19 @@ export default Vue.extend({
           ][judgeIndex].rubric[criteria];
         }
       }
-    }
+    },
   },
   async mounted() {
     await this.getTableID();
     await this.getJudge();
     await this.setJudgeableCats();
-  }
+  },
+  beforeMount() {
+    this.projects =
+      firebase.auth().currentUser.email != "judge@deltahacks.com"
+        ? "projects"
+        : "projects stage";
+  },
 });
 </script>
 
