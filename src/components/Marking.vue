@@ -7,7 +7,8 @@
         Please assign marks to every category appropriately.
     "
     ></Blurb>
-    <div class="columns submission-info">
+    <div class="columns submission-info" 
+      style="margin-bottom:0">
       <div class="column left">
         <h1>{{ tableDoc.name ? tableDoc.name.project : "" }}</h1>
         <h2>Table {{ tableNumber }}</h2>
@@ -15,7 +16,7 @@
         <p v-for="(member, i) in tableDoc.group ? tableDoc.group : []" :key="i">
           <span v-if="member.email">{{ member.email }}</span>
         </p>
-        <a class="devpost" :href="tableDoc.name ? tableDoc.name.devpost : ''">Devpost link</a>
+        <p><a class="devpost" :href="tableDoc.name ? tableDoc.name.devpost : ''">Devpost link</a></p>
         <b-dropdown v-model="selectedOptions" dark>
           <button class="button is-primary" type="button" slot="trigger">
             <span> {{ selectedOptions }}</span>
@@ -27,12 +28,12 @@
             </b-dropdown-item>
           </div>
         </b-dropdown>
-        <button
+        <b-button class="button is-primary" type="button"
           v-if="selectedOptions !== 'Select a category to judge'"
           @click="onSubmit()"
         >
           Submit
-        </button>
+        </b-button>
       </div>
       <div class="column">
         <b-input
@@ -333,8 +334,15 @@ export default Vue.extend({
   margin-right: 20px;
 }
 
+/* to get rid of white space between categories */
+li {
+  margin-bottom: -6px !important;
+}
+
 .marking-category {
-  height: 100px;
+  display: inline-block;
+  width: 100%;
+
   padding-top: 20px;
 }
 
@@ -368,7 +376,6 @@ export default Vue.extend({
   font-weight: 700;
   font-family: "Montserrat", sans-serif;
   font-size: 60px;
-  /* padding: 1rem; */
   color: rgba(255, 255, 255, 0.6);
 }
 
@@ -391,6 +398,7 @@ export default Vue.extend({
 
 .submission-info .left {
   padding: 50px;
+  text-align: left;
 }
 .submission-info h1 {
   opacity: 60%;
@@ -408,6 +416,7 @@ export default Vue.extend({
   text-decoration: none;
   color: white;
   font-size: 30px;
+  width: 200px;
 }
 
 .submission-info textarea {
@@ -419,7 +428,7 @@ export default Vue.extend({
   font-size: 20px;
 }
 
-.notes {
+.notes {  font-family: "Montserrat", sans-serif;
   padding: 20px;
   height: 100%;
   width: 40vw;
