@@ -43,6 +43,7 @@ export default Vue.extend({
         this.interval = clearInterval(this.interval);
         this.started = false;
         this.time_left = 300000;
+        alert("Time's Up!");
       }
     },
     two_digits(seconds) {
