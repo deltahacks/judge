@@ -58,10 +58,8 @@
           class="marking-category"
           :style="
             'background: linear-gradient(90deg,' +
-              colors[i][0] +
-              ' 0%,' +
-              colors[i][1] +
-              ' 120%)'
+              colors[i] +
+              ' 0%, #FACFC3 120%)'
           "
         >
           <div class="marking-div">
@@ -103,15 +101,15 @@ export default Vue.extend({
   data() {
     return {
       colors: [
-        ["#FF9DA0", "#FACFC3"],
-        ["#FF9DA0", "#FACFC3"],
-        ["#FF9DA0", "#FACFC3"],
-        ["#649C9F", "#FACFC3"],
-        ["#649C9F", "#FACFC3"],
-        ["#FF9DA0", "#FACFC3"],
-        ["#FF9DA0", "#FACFC3"],
-        ["#FF9DA0", "#FACFC3"],
-        ["#649C9F", "#FACFC3"] 
+        "#FF9DA0",
+        "#FF9DA0",
+        "#FF9DA0", 
+        "#649C9F", 
+        "#649C9F",   
+        "#4768DB", 
+        "#4768DB", 
+        "#AF6AB3", 
+        "#AF6AB3" 
       ],
       marking_criteria: [
         {
