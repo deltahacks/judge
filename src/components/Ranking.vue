@@ -1,6 +1,9 @@
 <template>
   <div id="home">
     <div class="center">
+      <h1 class="title" style="font-size: 250%; margin-bottom: 50px;">
+        Team Rankings
+      </h1>
       <b-dropdown v-model="selectedOptions" dark>
         <button class="button is-primary" type="button" slot="trigger">
           <span> {{ selectedOptions }}</span>
@@ -14,6 +17,7 @@
       </b-dropdown>
     </div>
     <Blurb
+      style="width: 60%; margin: 0 auto;"
       :content="
         'Here are the top 10 teams in the category you selected based on your marking. \
       Click on a group to see their rubric if you want to make any adjustments in score.'
@@ -219,6 +223,7 @@ export default Vue.extend({
   font-weight: 300;
   width: 90%;
 }
+
 .team {
   height: 150px;
 }
