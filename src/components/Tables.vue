@@ -146,11 +146,13 @@ export default Vue.extend({
             }).length
           );
         })
-        .map(
-          each =>
+        .map(each => {
+          if (each.length > 8) each = each.substring(0, 10);
+          return (
             each.substring(0, 1).toUpperCase() +
             each.substring(1, each.length).toLowerCase()
-        )
+          );
+        })
         .join(", ");
     },
     async getTables() {
