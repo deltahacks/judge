@@ -68,6 +68,7 @@ export default Vue.extend({
   props: {},
   data() {
     return {
+      projects: "",
       submission_categories: [],
       selectedOptions: "Select a category to judge",
       teams: [],
@@ -93,48 +94,56 @@ export default Vue.extend({
       this.judge = doc.data();
       this.selectedOptions = this.judge.categories.length
         ? this.judge.categories[0]
+            .split(" ")
+            .map(cat => cat.charAt(0).toUpperCase() + cat.substring(1))
+            .join(" ")
         : "general";
     },
     getCategories() {
       return this.judge.categories[0]
-        ? this.judge.categories.map(cat => cat.toLowerCase())
+        ? this.judge.categories.map(cat =>
+            cat
+              .split(" ")
+              .map(cat => cat.charAt(0).toUpperCase() + cat.substring(1))
+              .join(" ")
+          )
         : [];
     },
     getUUID() {
       return firebase.auth().currentUser.email;
     },
-    getJudgesCategories() {
-      db.collection("DH6")
-        .doc("hackathon")
-        .collection("projects")
-        .get()
-        .then(snapshot => {
-          snapshot.forEach(project => {
-            try {
-              let projectCategories = project.data()._.categories;
-              Object.keys(projectCategories).forEach(category => {
-                for (let i = 0; i < projectCategories[category].length; i++) {
-                  const email = projectCategories[category][i].email;
-                  if (email == this.judgeEmail) {
-                    if (this.submission_categories.indexOf(category) == -1) {
-                      this.submission_categories.push(category);
-                    }
-                  }
-                }
-              });
-            } catch (error) {
-              console.log(error);
-            }
-          });
-        });
-    },
+    // getJudgesCategories() {
+    //   db.collection("DH6")
+    //     .doc("hackathon")
+    //     .collection(this.projects)
+    //     .get()
+    //     .then(snapshot => {
+    //       snapshot.forEach(project => {
+    //         try {
+    //           let projectCategories = project.data()._.categories;
+    //           Object.keys(projectCategories).forEach(category => {
+    //             for (let i = 0; i < projectCategories[category].length; i++) {
+    //               const email = projectCategories[category][i].email;
+    //               if (email == this.judgeEmail) {
+    //                 if (this.submission_categories.indexOf(category) == -1) {
+    //                   this.submission_categories.push(category);
+    //                 }
+    //               }
+    //             }
+    //           });
+    //         } catch (error) {
+    //           console.log(error);
+    //         }
+    //       });
+    //     });
+    // },
     getTeams() {
       this.teams = [];
       let scoreArray = [];
-      let category = this.selectedOptions;
+      let category = this.selectedOptions.toLowerCase();
       db.collection("DH6")
         .doc("hackathon")
-        .collection("projects")
+        .collection(this.projects)
         .get()
         .then(snapshot => {
           snapshot.forEach(project => {
@@ -172,6 +181,12 @@ export default Vue.extend({
     await this.getJudge();
     await this.getTeams();
     this.submission_categories = this.getCategories();
+  },
+  beforeMount() {
+    this.projects =
+      firebase.auth().currentUser.email != "judge@deltahacks.com"
+        ? "projects"
+        : "projects stage";
   },
   watch: {
     selectedOptions: function() {
