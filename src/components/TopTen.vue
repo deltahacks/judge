@@ -20,34 +20,30 @@
       "
     ></Blurb>
 
-    <div id="app">
+    <div id="app" class="container">
       <ul id="example-1">
         <li v-for="(team, i) in teams" :key="(team, i)">
-          <a href="/home">
-            <div
-              class="team"
-              :style="
-                'background: linear-gradient(90deg,' +
-                  colors[i % 5][0] +
-                  ' 0%,' +
-                  colors[i % 5][1] +
-                  ' 120%)'
-              "
-            >
-              <div class="team-div">
-                <h1 class="team-name">
-                  <span style="font-weight: 600">Team</span>{{ team }}
-                </h1>
-              </div>
-              <router-link
-                :to="{ name: 'Marking', params: { tableNumber: team } }"
-              >
-                <div class="mark">
-                  <h1 class="team-name">Mark</h1>
-                </div>
-              </router-link>
+          <div
+            class="team"
+            :style="
+              'background: linear-gradient(90deg,' +
+                colors[i % 5][0] +
+                ' 0%,' +
+                colors[i % 5][1] +
+                ' 120%)'
+            "
+          >
+            <div class="team-div">
+              <h1 class="team-name">
+                <span style="padding-right: 2%; font-weight: 800;"
+                  >Rank {{ i + 1 }}</span
+                >
+                <span style="font-weight: 600">Team</span
+                >{{ team[0].name.project }}
+                <span style="float: right;">Score: {{ team[1] }}</span>
+              </h1>
             </div>
-          </a>
+          </div>
         </li>
       </ul>
     </div>
@@ -68,10 +64,9 @@ export default Vue.extend({
   props: {},
   data() {
     return {
-      submission_categories: ["A", "B", "C"],
+      submission_categories: [],
       selectedOptions: "Select a category to judge",
       teams: [],
-      judgeEmail: firebase.auth().currentUser.email,
       colors: [
         ["#FCE18A", "#F54FA1"],
         ["#F54FA1", "#fa96a8"],
@@ -119,16 +114,24 @@ export default Vue.extend({
               let projectCategories = element.data()._.categories;
               let totalScore = 0;
               let numOfScores = 0;
+              let avgScore = 0;
               for (let i = 0; i < projectCategories[category].length; i++) {
-                totalScore += element.data()._.categories[category][i].rubric
-                  .score;
-                numOfScores++;
+                if (
+                  element.data()._.categories[category][i].rubric.score != 0
+                ) {
+                  totalScore += element.data()._.categories[category][i].rubric
+                    .score;
+                  numOfScores++;
+                  console.log(element.id);
+                  console.log(totalScore);
+                }
               }
-              scoreArray.push([
-                element.id,
-                element.data(),
-                totalScore / numOfScores
-              ]);
+              if (totalScore == 0) {
+                avgScore = 0;
+              } else {
+                avgScore = totalScore / numOfScores;
+              }
+              scoreArray.push([element.id, element.data(), avgScore]);
             } catch (error) {
               console.log(element.id);
             }
@@ -138,7 +141,7 @@ export default Vue.extend({
           });
           try {
             for (let i = 0; i < 10; i++) {
-              this.teams.push(scoreArray[i][1].name.project);
+              this.teams.push([scoreArray[i][1], scoreArray[i][2]]);
               console.log(scoreArray);
             }
           } catch (error) {
@@ -160,24 +163,34 @@ export default Vue.extend({
 </script>
 
 <style>
+.container {
+  height: 98vh;
+}
 .team-div {
   float: left;
+  width: 100%;
 }
 .mark {
   top: 0;
   background: rgba(255, 255, 255, 0.2);
-  width: 150px;
-  float: right;
+  /* float: right; */
+  width: 50% !important;
 }
 .team-name {
-  font-size: 30px;
+  font-size: 1.5em;
   color: white;
-  line-height: 100px;
+  line-height: 150px;
   margin: 0 40px;
   font-family: "Montserrat", sans-serif;
   font-weight: 300;
+  width: 90%;
 }
 .team {
-  height: 100px;
+  height: 150px;
+}
+.blurb {
+  font-size: 20px;
+  text-align: center;
+  padding: 50px;
 }
 </style>
