@@ -46,10 +46,14 @@
           maxlength="200"
           type="textarea"
           placeholder="Add your notes here..."
+          v-model="notes"
+          @change="onSubmit()"
         ></b-input>
       </div>
       <div class="column">
-        <h2 class="score">Overall score: <span id="score-val">69</span></h2>
+        <h2 class="score">
+          Overall score: <span id="score-val">{{ totalScore }}</span>
+        </h2>
       </div>
     </div>
     <ul
@@ -75,7 +79,12 @@
             <p class="category subheading">{{ criteria.desc }}</p>
           </div>
           <div class="mark-field">
-            <input type="tel" pattern="[0-9]*" v-model="marks[i]" />
+            <input
+              type="tel"
+              pattern="[0-9]*"
+              v-model="marks[i]"
+              @change="onSubmit()"
+            />
           </div>
         </div>
       </li>
@@ -121,50 +130,59 @@ export default Vue.extend({
       marking_criteria: [
         {
           type: "Technical",
-          desc: "How technically impressive is the hack?"
+          desc: "How technically impressive is the hack?",
+          tag: "tech1"
         },
         {
           type: "Technical",
-          desc: "Is the project complete?"
+          desc: "Is the project complete?",
+          tag: "tech2"
         },
         {
           type: "Technical",
-          desc: "Does the hack allow for a good user experience?"
+          desc: "Does the hack allow for a good user experience?",
+          tag: "tech3"
         },
         {
           type: "Social Impact",
-          desc: "Does the hack solve an important/relevant issue in society?"
+          desc: "Does the hack solve an important/relevant issue in society?",
+          tag: "soc1"
         },
         {
           type: "Social Impact",
           desc:
-            "Does the hack have a positive impact for the targeted audience?"
+            "Does the hack have a positive impact for the targeted audience?",
+          tag: "soc2"
         },
         {
           type: "Originality",
           desc:
             "Was the hack original? \
             Were you surprised by the hack or have you seen similar things done before? \
-            Did they come up with problem that you had not thought to approach?"
+            Did they come up with problem that you had not thought to approach?",
+          tag: "orig1"
         },
         {
           type: "Originality",
           desc:
             "Was the hack creative? \
-            Was the solution / problem approached in a unique way?"
+            Was the solution / problem approached in a unique way?",
+          tag: "orig2"
         },
         {
           type: "Presentation",
           desc:
             "Was the project clearly explained? \
             Was the solution relevant to the given problem that they identified? \
-            Was it clear how the product works?"
+            Was it clear how the product works?",
+          tag: "pres1"
         },
         {
           type: "Presentation",
           desc:
             "Was the group prepared to present? \
-            Was the demo of high quality? Did they have demos, visuals, research, powerpoints, logos etc. (note: not all are required)."
+            Was the demo of high quality? Did they have demos, visuals, research, powerpoints, logos etc. (note: not all are required).",
+          tag: "pres2"
         }
       ],
       selectedOptions: "Select a category to judge",
@@ -173,7 +191,8 @@ export default Vue.extend({
       tableNumber: -1,
       judge: {},
       cats: [],
-      marks: [0, 0, 0, 0, 0]
+      marks: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      notes: ""
     };
   },
   methods: {
@@ -220,7 +239,7 @@ export default Vue.extend({
       const project = this.tableID;
 
       for (let i = 0; i < criteria.length; i++) {
-        rubric[criteria[i].desc] = Number(this.marks[i]);
+        rubric[criteria[i].tag] = Number(this.marks[i]);
         totalScore += Number(this.marks[i]);
       }
 
@@ -241,6 +260,7 @@ export default Vue.extend({
             x => x.email === judgeEmail
           );
           data.categories[category][arrayIndex].rubric = rubric;
+          data.notes[this.getUUID()] = this.notes;
           let updateNested = db
             .collection("DH6")
             .doc("hackathon")
@@ -249,7 +269,15 @@ export default Vue.extend({
             .update({
               _: data
             })
-            .then(() => window.location.reload());
+            .then(() => {
+              this.$buefy.snackbar.open({
+                message: "Changes saved!",
+                type: "is-success",
+                position: "is-top-right",
+                actionText: "OK",
+                indefinite: false
+              });
+            });
         });
     },
     getUUID() {
@@ -289,12 +317,12 @@ export default Vue.extend({
     changeCategory() {
       // TODO: Clean this... lol
       console.log(this.selectedOptions);
-      this.marks = [0, 0, 0, 0, 0];
+      this.marks = this.marking_criteria.map(each => 0);
       for (let i = 0; i < this.marking_criteria.length; i++) {
         let judgeIndex = this.tableDoc._.categories[
           this.selectedOptions.toLowerCase()
         ].findIndex(x => x.email === this.getUUID());
-        let criteria = this.marking_criteria[i].desc;
+        let criteria = this.marking_criteria[i].tag;
         if (
           Object.keys(
             this.tableDoc._.categories[this.selectedOptions.toLowerCase()][
@@ -313,12 +341,36 @@ export default Vue.extend({
     await this.getTableID();
     await this.getJudge();
     await this.setJudgeableCats();
+    this.notes = this.tableDoc._ ? this.tableDoc._.notes[this.getUUID()] : "";
   },
   beforeMount() {
     this.projects =
       firebase.auth().currentUser.email != "judge@deltahacks.com"
         ? "projects"
         : "projects stage";
+  },
+  computed: {
+    totalScore() {
+      if (
+        !this.tableDoc._ ||
+        this.selectedOptions === "Select a category to judge"
+      ) {
+        return 0;
+      }
+      let totalScore = 0;
+      let arrayIndex = this.tableDoc._.categories[
+        this.selectedOptions.toLowerCase()
+      ].findIndex(x => x.email === this.getUUID());
+      let iterate = this.tableDoc._.categories[
+        this.selectedOptions.toLowerCase()
+      ][arrayIndex].rubric;
+
+      for (let key of Object.keys(iterate)) {
+        if (key !== "score") totalScore += iterate[key];
+      }
+
+      return totalScore;
+    }
   }
 });
 </script>
