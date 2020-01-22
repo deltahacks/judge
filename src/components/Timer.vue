@@ -77,7 +77,7 @@ export default Vue.extend({
   font-size: 40px;
   color: white;
   font-family: "Montserrat", sans-serif;
-  
+  z-index: 10;
 }
 
 #timer h1 {

@@ -49,9 +49,9 @@
     </div>
     <ul
       v-if="
-        selectedOptions !== 'Select a category to judge' &&
+        !(selectedOptions !== 'Select a category to judge' &&
           tableDoc._ &&
-          tableDoc._.categories[selectedOptions.toLowerCase()].score !== 0
+          tableDoc._.categories[selectedOptions.toLowerCase()].score !== 0)
       "
     >
       <li v-for="(criteria, i) in marking_criteria" :key="(criteria, i)">
@@ -68,9 +68,11 @@
               <span style="font-weight: 600"></span>{{ criteria.type }}
             </h1>
             <p class="category subheading">{{ criteria.desc }}</p>
+            <b-slider class="drag" size="is-large" :max="10" v-model="marks[i]" :tooltip="false">
+              </b-slider>
           </div>
           <div class="mark-field">
-            <input type="tel" pattern="[0-9]*" v-model="marks[i]" />
+            <p>{{marks[i]}}</p>
           </div>
         </div>
       </li>
@@ -303,6 +305,12 @@ export default Vue.extend({
         }
       }
     },
+    limitTen(i) {
+      if (Number(this.marks[i]) > 10) { 
+        console.log("too big");
+        this.marks[i] = 10;
+      }
+    }
   },
   async mounted() {
     await this.getTableID();
@@ -365,7 +373,7 @@ li {
   color: white;
 }
 
-.mark-field input {
+.mark-field p {
   border: none;
   outline: none;
   border-radius: 0;
@@ -449,6 +457,12 @@ li {
   font-weight: 700;
   opacity: 69%;
 }
+
+.drag {
+ padding: 20px;
+ margin-left: 60px !important;
+}
+
 
 @media only screen and (max-width: 768px) {
   .notes {
