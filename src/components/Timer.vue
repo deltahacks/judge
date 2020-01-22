@@ -9,9 +9,9 @@
       <span>{{ seconds }}</span>
     </div>
     <div>
-      <b-button @click="reset">Reset ⏰</b-button>
-      <b-button v-if="!started" @click="start">Start ⏰</b-button>
-      <b-button v-if="started" @click="pause">Pause ⏰</b-button>
+      <button @click="reset">Reset</button>
+      <button v-if="!started" @click="start">Start</button>
+      <button v-if="started" @click="pause">Pause</button>
     </div>
   </div>
 </template>
@@ -43,6 +43,7 @@ export default Vue.extend({
         this.interval = clearInterval(this.interval);
         this.started = false;
         this.time_left = 300000;
+        alert("Time's Up!");
       }
     },
     two_digits(seconds) {
@@ -68,7 +69,7 @@ export default Vue.extend({
 #timer {
   display: grid;
   grid-auto-flow: column;
-  background: #1a1a1a;
+  background-image: linear-gradient(90deg, #469e9a 0%, #2b408a 90%);
   height: 100px;
   width: 100%;
   position: fixed;
@@ -76,6 +77,7 @@ export default Vue.extend({
   font-size: 40px;
   color: white;
   font-family: "Montserrat", sans-serif;
+  
 }
 
 #timer h1 {
@@ -87,10 +89,12 @@ export default Vue.extend({
   float: right;
   height: 100%;
   width: 20vw;
-  background: #484848;
-  color: white;
-  border-color: #1a1a1a;
+  background: rgba(255,255,255,0.3);
   font-size: 20px;
+	border-radius: 0;
+	border: 1px solid rgba(0,0,0,0.1);
+	/* border: none; */
+	color: white;
 }
 
 #clock {

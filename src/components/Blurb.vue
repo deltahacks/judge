@@ -4,7 +4,7 @@
       href="https://fonts.googleapis.com/css?family=Montserrat:300,400&display=swap"
       rel="stylesheet"
     />
-    <p class="blurb">
+    <p class="blurb-text">
       {{ content }}
     </p>
   </div>
@@ -21,9 +21,11 @@ export default Vue.extend({
 </script>
 
 <style>
-.blurb {
+.blurb-text {
   font-size: 20px;
   text-align: center;
   padding: 30px;
+  background: linear-gradient(90deg, #469e9a 0%, #2b408a 90%);
+  color: white;
 }
 </style>

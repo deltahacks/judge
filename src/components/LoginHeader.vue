@@ -265,9 +265,6 @@ section {
   .nav li {
     display: block;
   }
-  .open {
-    transform: scaleY(1);
-  }
 }
 
 </style>
