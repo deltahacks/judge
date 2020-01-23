@@ -19,7 +19,7 @@
         </p>
         <p>
           <a class="devpost" :href="tableDoc.name ? tableDoc.name.devpost : ''"
-            >Devpost link</a
+            >Devpost</a
           >
         </p>
         <b-dropdown v-model="selectedOptions" dark>
@@ -94,7 +94,7 @@
             </b-slider>
           </div>
           <div class="mark-field">
-            <input type="number" v-model="marks[i]" disabled />
+            <h2 class="mark-f-2">{{ marks[i] }}</h2>
           </div>
         </div>
       </li>
@@ -142,7 +142,7 @@ export default Vue.extend({
           type: "Technical",
           desc: "How technically impressive is the hack?",
           tag: "tech1",
-          max: 10
+          max: 20
         },
         {
           type: "Technical",
@@ -176,7 +176,7 @@ export default Vue.extend({
             Were you surprised by the hack or have you seen similar things done before? \
             Did they come up with problem that you had not thought to approach?",
           tag: "orig1",
-          max: 5
+          max: 10
         },
         {
           type: "Originality",
@@ -184,7 +184,7 @@ export default Vue.extend({
             "Was the hack creative? \
             Was the solution / problem approached in a unique way?",
           tag: "orig2",
-          max: 5
+          max: 10
         },
         {
           type: "Presentation",
@@ -193,7 +193,7 @@ export default Vue.extend({
             Was the solution relevant to the given problem that they identified? \
             Was it clear how the product works?",
           tag: "pres1",
-          max: 5
+          max: 10
         },
         {
           type: "Presentation",
@@ -201,7 +201,7 @@ export default Vue.extend({
             "Was the group prepared to present? \
             Was the demo of high quality? Did they have demos, visuals, research, powerpoints, logos etc. (note: not all are required).",
           tag: "pres2",
-          max: 5
+          max: 10
         }
       ],
       selectedOptions: "Select a category to judge",
@@ -533,6 +533,12 @@ li {
 .drag {
   padding: 20px;
   margin-left: 60px !important;
+}
+
+.mark-f-2 {
+  font-size: 30px;
+  font-weight: 600;
+  color: white;
 }
 
 @media only screen and (max-width: 768px) {
