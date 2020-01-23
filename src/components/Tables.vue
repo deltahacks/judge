@@ -42,7 +42,7 @@
       <ul id="example-1">
         <li v-for="(team, i) in currentProjects" :key="(team, i)">
           <router-link
-            :to="{name: 'Marking', params: {tableNumber: team._.table}}"
+            :to="{ name: 'Marking', params: { tableNumber: team._.table } }"
           >
             <div
               class="team"
@@ -58,13 +58,17 @@
                 <h1>
                   <span class="team-name" style="font-weight: 600"
                     ><span style="font-weight:300"
-                      >{{ team.name.project }} Table:
-                    {{ team._.table }}</span
+                      >{{ team.name.project }} Table: {{ team._.table }}</span
                     >
                   </span>
                   <span style="float: right; font-weight: 600">
                     <ul class="stacked">
-                      <li v-for="category in getProjectCatsNames(team)" :key="category">{{category}}</li>
+                      <li
+                        v-for="category in getProjectCatsNames(team)"
+                        :key="category"
+                      >
+                        {{ category }}
+                      </li>
                     </ul>
                   </span>
                 </h1>
@@ -73,7 +77,7 @@
                 <h1>
                   <span style="font-weight: 600"
                     ><strike
-                      ><span  class="team-name" style="font-weight:300"
+                      ><span class="team-name" style="font-weight:300"
                         >{{ team.name.project }} Table:</span
                       >
                       {{ team._.table }}</strike
@@ -81,8 +85,13 @@
                     <span style="color: #7FFF00;"> ✔</span>
                     <span style="float: right; font-weight: 600">
                       <ul class="stacked">
-                        <li v-for="category in getProjectCatsNames(team)" :key="category">{{category}}</li>
-                    </ul>
+                        <li
+                          v-for="category in getProjectCatsNames(team)"
+                          :key="category"
+                        >
+                          {{ category }}
+                        </li>
+                      </ul>
                     </span>
                   </span>
                 </h1>
@@ -98,7 +107,7 @@
 
 <script>
 import Vue from "vue";
-import {auth} from "firebase/app";
+import { auth } from "firebase/app";
 import db from "../firebaseinit";
 import LoginHeader from "@/components/LoginHeader.vue";
 
@@ -118,12 +127,12 @@ export default Vue.extend({
         ["#F54FA1", "#fa96a8"],
         ["#18BDD9", "#267aed"],
         ["#7419E6", "#e619ce"],
-        ["#42E596", "#42d7e5"],
+        ["#42E596", "#42d7e5"]
       ],
       judge: {},
       selectedCat: "general",
       currentProjects: [],
-      categories: [],
+      categories: []
     };
   },
   methods: {
@@ -178,7 +187,7 @@ export default Vue.extend({
             project
               .data()
               ._.categories[each].filter(
-                judge => judge.email === this.getUUID(),
+                judge => judge.email === this.getUUID()
               ).length
           );
         }).length;
@@ -216,7 +225,7 @@ export default Vue.extend({
         }
       }
       return score;
-    },
+    }
   },
   async mounted() {
     await this.getJudge();
@@ -229,7 +238,7 @@ export default Vue.extend({
         ? "projects"
         : "projects stage";
     console.log(auth().currentUser.email, this.projects, "A");
-  },
+  }
 });
 </script>
 
@@ -273,7 +282,6 @@ export default Vue.extend({
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
 }
-
 
 @media only screen and (max-width: 499px) {
   .team {
