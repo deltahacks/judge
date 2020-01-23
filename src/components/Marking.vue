@@ -86,7 +86,7 @@
             <b-slider
               class="drag"
               size="is-large"
-              :max="10"
+              :max="criteria.max"
               v-model="marks[i]"
               :tooltip="false"
               @input="onSubmit()"
@@ -141,28 +141,33 @@ export default Vue.extend({
         {
           type: "Technical",
           desc: "How technically impressive is the hack?",
-          tag: "tech1"
+          tag: "tech1",
+          max: 10
         },
         {
           type: "Technical",
           desc: "Is the project complete?",
-          tag: "tech2"
+          tag: "tech2",
+          max: 10
         },
         {
           type: "Technical",
           desc: "Does the hack allow for a good user experience?",
-          tag: "tech3"
+          tag: "tech3",
+          max: 10
         },
         {
-          type: "Social Impact",
+          type: "Stream Impact",
           desc: "Does the hack solve an important/relevant issue in society?",
-          tag: "soc1"
+          tag: "soc1",
+          max: 10
         },
         {
-          type: "Social Impact",
+          type: "Stream Impact",
           desc:
             "Does the hack have a positive impact for the targeted audience?",
-          tag: "soc2"
+          tag: "soc2",
+          max: 10
         },
         {
           type: "Originality",
@@ -170,14 +175,16 @@ export default Vue.extend({
             "Was the hack original? \
             Were you surprised by the hack or have you seen similar things done before? \
             Did they come up with problem that you had not thought to approach?",
-          tag: "orig1"
+          tag: "orig1",
+          max: 10
         },
         {
           type: "Originality",
           desc:
             "Was the hack creative? \
             Was the solution / problem approached in a unique way?",
-          tag: "orig2"
+          tag: "orig2",
+          max: 10
         },
         {
           type: "Presentation",
@@ -185,14 +192,16 @@ export default Vue.extend({
             "Was the project clearly explained? \
             Was the solution relevant to the given problem that they identified? \
             Was it clear how the product works?",
-          tag: "pres1"
+          tag: "pres1",
+          max: 10
         },
         {
           type: "Presentation",
           desc:
             "Was the group prepared to present? \
             Was the demo of high quality? Did they have demos, visuals, research, powerpoints, logos etc. (note: not all are required).",
-          tag: "pres2"
+          tag: "pres2",
+          max: 10
         }
       ],
       selectedOptions: "Select a category to judge",
