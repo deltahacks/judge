@@ -7,8 +7,7 @@
         Please assign marks to every category appropriately.
     "
     ></Blurb>
-    <div class="columns submission-info" 
-      style="margin-bottom:0">
+    <div class="columns submission-info" style="margin-bottom:0">
       <div class="column left">
         <h1>{{ tableDoc.name ? tableDoc.name.project : "" }}</h1>
         <h2>Table {{ tableNumber }}</h2>
@@ -16,7 +15,11 @@
         <p v-for="(member, i) in tableDoc.group ? tableDoc.group : []" :key="i">
           <span v-if="member.email">{{ member.email }}</span>
         </p>
-        <p><a class="devpost" :href="tableDoc.name ? tableDoc.name.devpost : ''">Devpost link</a></p>
+        <p>
+          <a class="devpost" :href="tableDoc.name ? tableDoc.name.devpost : ''"
+            >Devpost link</a
+          >
+        </p>
         <b-dropdown v-model="selectedOptions" dark>
           <button class="button is-primary" type="button" slot="trigger">
             <span> {{ selectedOptions }}</span>
@@ -28,7 +31,9 @@
             </b-dropdown-item>
           </div>
         </b-dropdown>
-        <b-button class="button is-primary" type="button"
+        <b-button
+          class="button is-primary"
+          type="button"
           v-if="selectedOptions !== 'Select a category to judge'"
           @click="onSubmit()"
         >
@@ -44,8 +49,15 @@
         ></b-input>
       </div>
       <div class="column">
-        <h2 class="score">Overall score: 
-          <input :placeholder="totalScore()" type="text" maxLength="3" id="score-val"  v-on:keydown="checkScore"/>
+        <h2 class="score">
+          Overall score:
+          <input
+            :placeholder="totalScore()"
+            type="text"
+            maxLength="3"
+            id="score-val"
+            v-on:keydown="checkScore"
+          />
         </h2>
       </div>
     </div>
@@ -70,11 +82,17 @@
               <span style="font-weight: 600"></span>{{ criteria.type }}
             </h1>
             <p class="category subheading">{{ criteria.desc }}</p>
-            <b-slider class="drag" size="is-large" :max="10" v-model="marks[i]" :tooltip="false">
-              </b-slider>
+            <b-slider
+              class="drag"
+              size="is-large"
+              :max="10"
+              v-model="marks[i]"
+              :tooltip="false"
+            >
+            </b-slider>
           </div>
           <div class="mark-field">
-            <p>{{marks[i]}}</p>
+            <p>{{ marks[i] }}</p>
           </div>
         </div>
       </li>
@@ -93,7 +111,7 @@ import Header from "@/components/Header.vue";
 
 import "firebase/storage";
 import db from "../firebaseinit";
-import {LoginData} from "../types";
+import { LoginData } from "../types";
 
 export default Vue.extend({
   name: "Home",
@@ -109,30 +127,30 @@ export default Vue.extend({
       colors: [
         "#FF9DA0",
         "#FF9DA0",
-        "#FF9DA0", 
-        "#649C9F", 
-        "#649C9F",   
-        "#4768DB", 
-        "#4768DB", 
-        "#AF6AB3", 
-        "#AF6AB3" 
+        "#FF9DA0",
+        "#649C9F",
+        "#649C9F",
+        "#4768DB",
+        "#4768DB",
+        "#AF6AB3",
+        "#AF6AB3"
       ],
       marking_criteria: [
         {
           type: "Technical",
-          desc: "How technically impressive is the hack?",
+          desc: "How technically impressive is the hack?"
         },
         {
           type: "Technical",
-          desc: "Is the project complete?",
+          desc: "Is the project complete?"
         },
         {
           type: "Technical",
-          desc: "Does the hack allow for a good user experience?",
+          desc: "Does the hack allow for a good user experience?"
         },
         {
           type: "Social Impact",
-          desc: "Does the hack solve an important/relevant issue in society?",
+          desc: "Does the hack solve an important/relevant issue in society?"
         },
         {
           type: "Social Impact",
@@ -172,7 +190,7 @@ export default Vue.extend({
       tableNumber: -1,
       judge: {},
       cats: [],
-      marks: [0, 0, 0, 0, 0],
+      marks: [0, 0, 0, 0, 0]
     };
   },
   methods: {
@@ -203,10 +221,10 @@ export default Vue.extend({
         .onSnapshot(snap => {
           if (snap.empty) return;
           this.submission_categories = Object.keys(
-            snap.docs[0].data()._.categories,
+            snap.docs[0].data()._.categories
           ).map(
             cat =>
-              cat.substring(0, 1).toUpperCase() + cat.substring(1, cat.length),
+              cat.substring(0, 1).toUpperCase() + cat.substring(1, cat.length)
           );
         });
     },
@@ -237,7 +255,7 @@ export default Vue.extend({
           let data = doc.data()._;
           console.log(data.categories[category][0].rubric);
           let arrayIndex = data.categories[category].findIndex(
-            x => x.email === judgeEmail,
+            x => x.email === judgeEmail
           );
           data.categories[category][arrayIndex].rubric = rubric;
           let updateNested = db
@@ -246,7 +264,7 @@ export default Vue.extend({
             .collection(this.projects)
             .doc(project)
             .update({
-              _: data,
+              _: data
             })
             .then(() => window.location.reload());
         });
@@ -282,7 +300,7 @@ export default Vue.extend({
         .map(
           each =>
             each.substring(0, 1).toUpperCase() +
-            each.substring(1, each.length).toLowerCase(),
+            each.substring(1, each.length).toLowerCase()
         );
     },
     changeCategory() {
@@ -298,7 +316,7 @@ export default Vue.extend({
           Object.keys(
             this.tableDoc._.categories[this.selectedOptions.toLowerCase()][
               judgeIndex
-            ].rubric,
+            ].rubric
           ).includes(criteria)
         ) {
           this.marks[i] = this.tableDoc._.categories[
@@ -327,7 +345,7 @@ export default Vue.extend({
       firebase.auth().currentUser.email != "judge@deltahacks.com"
         ? "projects"
         : "projects stage";
-  },
+  }
 });
 </script>
 
@@ -441,7 +459,8 @@ li {
   font-size: 20px;
 }
 
-.notes {  font-family: "Montserrat", sans-serif;
+.notes {
+  font-family: "Montserrat", sans-serif;
   padding: 20px;
   height: 100%;
   width: 40vw;
@@ -475,10 +494,9 @@ li {
 }
 
 .drag {
- padding: 20px;
- margin-left: 60px !important;
+  padding: 20px;
+  margin-left: 60px !important;
 }
-
 
 @media only screen and (max-width: 768px) {
   .notes {

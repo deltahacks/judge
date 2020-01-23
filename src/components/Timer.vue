@@ -89,12 +89,12 @@ export default Vue.extend({
   float: right;
   height: 100%;
   width: 20vw;
-  background: rgba(255,255,255,0.3);
+  background: rgba(255, 255, 255, 0.3);
   font-size: 20px;
-	border-radius: 0;
-	border: 1px solid rgba(0,0,0,0.1);
-	/* border: none; */
-	color: white;
+  border-radius: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  /* border: none; */
+  color: white;
 }
 
 #clock {
