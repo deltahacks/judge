@@ -1,18 +1,13 @@
 <template>
   <div id="app">
-    <login-header></login-header>
     <router-view />
   </div>
 </template>
 
 <script>
-import LoginHeader from "@/components/LoginHeader.vue";
 
 export default {
-  name: "app",
-  components: {
-    LoginHeader
-  }
+  name: "app"
 };
 </script>
 

@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <login-header></login-header>
     <span>
       <span class="txt1">Create</span>
       <span class="txt2">Account</span><br />
@@ -149,9 +150,13 @@
 import { RegisterData, categories } from "../types";
 import firebase from "firebase";
 import Vue from "vue";
+import LoginHeader from "@/components/LoginHeader.vue";
 
 export default Vue.extend({
   name: "Login",
+  components: {
+    LoginHeader
+  },
   data(): RegisterData {
     return {
       email: "",

@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <login-header></login-header>
     <link
       href="https://fonts.googleapis.com/css?family=Montserrat:300,400&display=swap"
       rel="stylesheet"
@@ -41,7 +42,7 @@
       <ul id="example-1">
         <li v-for="(team, i) in currentProjects" :key="(team, i)">
           <router-link
-            :to="{ name: 'Marking', params: { tableNumber: team._.table } }"
+            :to="{name: 'Marking', params: {tableNumber: team._.table}}"
           >
             <div
               class="team"
@@ -93,13 +94,19 @@
 
 <script>
 import Vue from "vue";
-import { auth } from "firebase/app";
+import {auth} from "firebase/app";
 import db from "../firebaseinit";
+import LoginHeader from "@/components/LoginHeader.vue";
+
 export default Vue.extend({
   name: "Home",
+  components: {
+    LoginHeader
+  },
   props: {},
   data() {
     return {
+      projects: "",
       selectedOptions: "Select a Challenge to Judge",
       teams: Array,
       colors: [
@@ -107,12 +114,12 @@ export default Vue.extend({
         ["#F54FA1", "#fa96a8"],
         ["#18BDD9", "#267aed"],
         ["#7419E6", "#e619ce"],
-        ["#42E596", "#42d7e5"]
+        ["#42E596", "#42d7e5"],
       ],
       judge: {},
       selectedCat: "general",
       currentProjects: [],
-      categories: []
+      categories: [],
     };
   },
   methods: {
@@ -159,7 +166,7 @@ export default Vue.extend({
       let doc = await db
         .collection("DH6")
         .doc("hackathon")
-        .collection("projects")
+        .collection(this.projects)
         .get();
       let projects = doc.docs.filter(project => {
         return Object.keys(project.data()._.categories).filter(each => {
@@ -168,7 +175,7 @@ export default Vue.extend({
             project
               .data()
               ._.categories[each].filter(
-                judge => judge.email === this.getUUID()
+                judge => judge.email === this.getUUID(),
               ).length
           );
         }).length;
@@ -206,13 +213,20 @@ export default Vue.extend({
         }
       }
       return score;
-    }
+    },
   },
   async mounted() {
     await this.getJudge();
     await this.getTables();
     this.categories = this.getCategories();
-  }
+  },
+  beforeMount() {
+    this.projects =
+      auth().currentUser.email != "judge@deltahacks.com"
+        ? "projects"
+        : "projects stage";
+    console.log(auth().currentUser.email, this.projects, "A");
+  },
 });
 </script>
 
@@ -246,5 +260,6 @@ export default Vue.extend({
   font-size: 20px;
   text-align: center;
   padding: 50px;
+  background: white;
 }
 </style>

@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <LoginHeader></LoginHeader>
     <span>
       <span class="txt1">Log</span>
       <span class="txt2">in</span>
@@ -45,9 +46,13 @@
 import Vue from "vue";
 import { auth, functions } from "firebase/app";
 import { LoginData } from "../types";
+import LoginHeader from "@/components/LoginHeader.vue";
 
 export default Vue.extend({
   name: "Login",
+  components: {
+    LoginHeader
+  },
   data(): LoginData {
     return {
       email: "",
