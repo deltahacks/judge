@@ -47,8 +47,8 @@
     <div class="nav" :class="{ open: showMenu }">
       <ul>
         <a href="/home"><li>Home</li></a>
-        <a href="/home"><li>Rankings</li></a>
-        <a href="#" @click="logout()" v-if="showLogout == 1"><li>Logout</li></a>
+        <a href="/ranking"><li>Rankings</li></a>
+        <a href="#" @click="logout()" v-if="showLogout==1"><li>Logout</li></a>
       </ul>
     </div>
     <div
