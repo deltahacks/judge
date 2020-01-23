@@ -44,7 +44,6 @@
 <script>
 import Vue from "vue";
 import Blurb from "@/components/Blurb.vue";
-
 export default Vue.extend({
   name: "Home",
   components: {
