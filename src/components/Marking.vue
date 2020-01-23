@@ -13,7 +13,9 @@
         <h2>Table {{ tableNumber }}</h2>
         <p>Members:</p>
         <p v-for="(member, i) in tableDoc.group ? tableDoc.group : []" :key="i">
-          <span v-if="member.email">{{ member.email }}</span>
+          <span v-if="member.email"
+            >{{ member.name }} - {{ member.email }}</span
+          >
         </p>
         <p>
           <a class="devpost" :href="tableDoc.name ? tableDoc.name.devpost : ''"
@@ -31,39 +33,38 @@
             </b-dropdown-item>
           </div>
         </b-dropdown>
-        <b-button
-          class="button is-primary"
-          type="button"
-          v-if="selectedOptions !== 'Select a category to judge'"
-          @click="onSubmit()"
-        >
-          Submit
-        </b-button>
       </div>
       <div class="column">
+        <div :style="{ marginLeft: '30px', fontSize: '20px' }">
+          Project Notes
+        </div>
         <b-input
           class="notes"
           maxlength="200"
           type="textarea"
           placeholder="Add your notes here..."
+          v-model="notes"
+          @input="onSubmit()"
         ></b-input>
       </div>
       <div class="column">
         <h2 class="score">
           Overall score:
           <input
-            :placeholder="totalScore()"
+            v-if="selectedOptions !== this.defaultOPTION"
+            :placeholder="totalScore"
             type="text"
             maxLength="3"
             id="score-val"
             v-on:keydown="checkScore"
           />
+          <div v-else>Please Select Category</div>
         </h2>
       </div>
     </div>
     <ul
       v-if="
-        selectedOptions !== 'Select a category to judge' &&
+        selectedOptions !== this.defaultOPTION &&
           tableDoc._ &&
           tableDoc._.categories[selectedOptions.toLowerCase()].score !== 0
       "
@@ -88,11 +89,12 @@
               :max="10"
               v-model="marks[i]"
               :tooltip="false"
+              @input="onSubmit()"
             >
             </b-slider>
           </div>
           <div class="mark-field">
-            <p>{{ marks[i] }}</p>
+            <input type="number" v-model="marks[i]" disabled />
           </div>
         </div>
       </li>
@@ -138,59 +140,71 @@ export default Vue.extend({
       marking_criteria: [
         {
           type: "Technical",
-          desc: "How technically impressive is the hack?"
+          desc: "How technically impressive is the hack?",
+          tag: "tech1"
         },
         {
           type: "Technical",
-          desc: "Is the project complete?"
+          desc: "Is the project complete?",
+          tag: "tech2"
         },
         {
           type: "Technical",
-          desc: "Does the hack allow for a good user experience?"
+          desc: "Does the hack allow for a good user experience?",
+          tag: "tech3"
         },
         {
           type: "Social Impact",
-          desc: "Does the hack solve an important/relevant issue in society?"
+          desc: "Does the hack solve an important/relevant issue in society?",
+          tag: "soc1"
         },
         {
           type: "Social Impact",
           desc:
-            "Does the hack have a positive impact for the targeted audience?"
+            "Does the hack have a positive impact for the targeted audience?",
+          tag: "soc2"
         },
         {
           type: "Originality",
           desc:
             "Was the hack original? \
             Were you surprised by the hack or have you seen similar things done before? \
-            Did they come up with problem that you had not thought to approach?"
+            Did they come up with problem that you had not thought to approach?",
+          tag: "orig1"
         },
         {
           type: "Originality",
           desc:
             "Was the hack creative? \
-            Was the solution / problem approached in a unique way?"
+            Was the solution / problem approached in a unique way?",
+          tag: "orig2"
         },
         {
           type: "Presentation",
           desc:
             "Was the project clearly explained? \
             Was the solution relevant to the given problem that they identified? \
-            Was it clear how the product works?"
+            Was it clear how the product works?",
+          tag: "pres1"
         },
         {
           type: "Presentation",
           desc:
             "Was the group prepared to present? \
-            Was the demo of high quality? Did they have demos, visuals, research, powerpoints, logos etc. (note: not all are required)."
+            Was the demo of high quality? Did they have demos, visuals, research, powerpoints, logos etc. (note: not all are required).",
+          tag: "pres2"
         }
       ],
       selectedOptions: "Select a category to judge",
+      defaultOPTION: "Select a category to judge",
       tableID: "",
       tableDoc: {},
       tableNumber: -1,
       judge: {},
       cats: [],
-      marks: [0, 0, 0, 0, 0]
+      marks: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      notes: "",
+      debounce: null
     };
   },
   methods: {
@@ -229,45 +243,56 @@ export default Vue.extend({
         });
     },
     onSubmit() {
-      let rubric = {};
-      let totalScore = 0;
-      let judgeEmail = firebase.auth().currentUser.email;
-      const category = this.selectedOptions.toLowerCase();
-      const criteria = this.marking_criteria;
-      const project = this.tableID;
+      if (this.debounce) clearTimeout(this.debounce);
+      this.debounce = setTimeout(() => {
+        let rubric = {};
+        let totalScore = 0;
+        let judgeEmail = firebase.auth().currentUser.email;
+        const category = this.selectedOptions.toLowerCase();
+        const criteria = this.marking_criteria;
+        const project = this.tableID;
 
-      for (let i = 0; i < criteria.length; i++) {
-        rubric[criteria[i].desc] = Number(this.marks[i]);
-        totalScore += Number(this.marks[i]);
-      }
+        for (let i = 0; i < criteria.length; i++) {
+          rubric[criteria[i].tag] = Number(this.marks[i]);
+          totalScore += Number(this.marks[i]);
+        }
+        rubric.score = totalScore;
 
-      totalScore = totalScore / criteria.length;
-      rubric.score = totalScore;
+        judgeEmail = this.getUUID();
 
-      judgeEmail = this.getUUID();
-
-      db.collection("DH6")
-        .doc("hackathon")
-        .collection(this.projects)
-        .doc(project)
-        .get()
-        .then(doc => {
-          let data = doc.data()._;
-          console.log(data.categories[category][0].rubric);
-          let arrayIndex = data.categories[category].findIndex(
-            x => x.email === judgeEmail
-          );
-          data.categories[category][arrayIndex].rubric = rubric;
-          let updateNested = db
-            .collection("DH6")
-            .doc("hackathon")
-            .collection(this.projects)
-            .doc(project)
-            .update({
-              _: data
-            })
-            .then(() => window.location.reload());
-        });
+        db.collection("DH6")
+          .doc("hackathon")
+          .collection(this.projects)
+          .doc(project)
+          .get()
+          .then(doc => {
+            let data = doc.data()._;
+            if (this.selectedOptions !== this.defaultOPTION) {
+              let arrayIndex = data.categories[category].findIndex(
+                x => x.email === judgeEmail
+              );
+              data.categories[category][arrayIndex].rubric = rubric;
+            }
+            data.notes[this.getUUID()] = this.notes;
+            let updateNested = db
+              .collection("DH6")
+              .doc("hackathon")
+              .collection(this.projects)
+              .doc(project)
+              .update({
+                _: data
+              })
+              .then(() => {
+                this.$buefy.snackbar.open({
+                  message: "Changes saved!",
+                  type: "is-success",
+                  position: "is-top-right",
+                  actionText: "OK",
+                  indefinite: false
+                });
+              });
+          });
+      }, 2000);
     },
     getUUID() {
       return firebase.auth().currentUser.email;
@@ -306,12 +331,12 @@ export default Vue.extend({
     changeCategory() {
       // TODO: Clean this... lol
       console.log(this.selectedOptions);
-      this.marks = [0, 0, 0, 0, 0];
+      this.marks = this.marking_criteria.map(each => 0);
       for (let i = 0; i < this.marking_criteria.length; i++) {
         let judgeIndex = this.tableDoc._.categories[
           this.selectedOptions.toLowerCase()
         ].findIndex(x => x.email === this.getUUID());
-        let criteria = this.marking_criteria[i].desc;
+        let criteria = this.marking_criteria[i].tag;
         if (
           Object.keys(
             this.tableDoc._.categories[this.selectedOptions.toLowerCase()][
@@ -325,12 +350,9 @@ export default Vue.extend({
         }
       }
     },
-    totalScore() {
-      return this.marks.reduce((x, y) => x + y);
-    },
     checkScore() {
-      console.log(this.totalScore());
-      if (Number(this.totalScore()) > 100) {
+      console.log(this.totalScore);
+      if (Number(this.totalScore > 100)) {
         alert("Mark must be between 0 and 100.");
       }
     }
@@ -339,12 +361,18 @@ export default Vue.extend({
     await this.getTableID();
     await this.getJudge();
     await this.setJudgeableCats();
+    this.notes = this.tableDoc._ ? this.tableDoc._.notes[this.getUUID()] : "";
   },
   beforeMount() {
     this.projects =
       firebase.auth().currentUser.email != "judge@deltahacks.com"
         ? "projects"
         : "projects stage";
+  },
+  computed: {
+    totalScore() {
+      return this.marks.reduce((x, y) => x + y);
+    }
   }
 });
 </script>
@@ -446,7 +474,7 @@ li {
 .devpost {
   text-decoration: none;
   color: white;
-  font-size: 30px;
+  font-size: 20px;
   width: 200px;
 }
 
