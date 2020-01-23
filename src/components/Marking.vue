@@ -13,7 +13,9 @@
         <h2>Table {{ tableNumber }}</h2>
         <p>Members:</p>
         <p v-for="(member, i) in tableDoc.group ? tableDoc.group : []" :key="i">
-          <span v-if="member.email">{{ member.email }}</span>
+          <span v-if="member.email"
+            >{{ member.name }} - {{ member.email }}</span
+          >
         </p>
         <p>
           <a class="devpost" :href="tableDoc.name ? tableDoc.name.devpost : ''"
@@ -47,7 +49,16 @@
       </div>
       <div class="column">
         <h2 class="score">
-          Overall score: <span id="score-val">{{ totalScore }}</span>
+          Overall score:
+          <input
+            v-if="selectedOptions !== this.defaultOPTION"
+            :placeholder="totalScore"
+            type="text"
+            maxLength="3"
+            id="score-val"
+            v-on:keydown="checkScore"
+          />
+          <div v-else>Please Select Category</div>
         </h2>
       </div>
     </div>
@@ -72,14 +83,18 @@
               <span style="font-weight: 600"></span>{{ criteria.type }}
             </h1>
             <p class="category subheading">{{ criteria.desc }}</p>
+            <b-slider
+              class="drag"
+              size="is-large"
+              :max="10"
+              v-model="marks[i]"
+              :tooltip="false"
+              @input="onSubmit()"
+            >
+            </b-slider>
           </div>
           <div class="mark-field">
-            <input
-              type="tel"
-              pattern="[0-9]*"
-              v-model="marks[i]"
-              @change="onSubmit()"
-            />
+            <input type="number" v-model="marks[i]" disabled />
           </div>
         </div>
       </li>
@@ -241,8 +256,6 @@ export default Vue.extend({
           rubric[criteria[i].tag] = Number(this.marks[i]);
           totalScore += Number(this.marks[i]);
         }
-
-        totalScore = totalScore / criteria.length;
         rubric.score = totalScore;
 
         judgeEmail = this.getUUID();
@@ -336,6 +349,12 @@ export default Vue.extend({
           ][judgeIndex].rubric[criteria];
         }
       }
+    },
+    checkScore() {
+      console.log(this.totalScore);
+      if (Number(this.totalScore > 100)) {
+        alert("Mark must be between 0 and 100.");
+      }
     }
   },
   async mounted() {
@@ -352,22 +371,7 @@ export default Vue.extend({
   },
   computed: {
     totalScore() {
-      if (!this.tableDoc._ || this.selectedOptions === this.defaultOPTION) {
-        return 0;
-      }
-      let totalScore = 0;
-      let arrayIndex = this.tableDoc._.categories[
-        this.selectedOptions.toLowerCase()
-      ].findIndex(x => x.email === this.getUUID());
-      let iterate = this.tableDoc._.categories[
-        this.selectedOptions.toLowerCase()
-      ][arrayIndex].rubric;
-
-      for (let key of Object.keys(iterate)) {
-        if (key !== "score") totalScore += iterate[key];
-      }
-
-      return totalScore;
+      return this.marks.reduce((x, y) => x + y);
     }
   }
 });
@@ -420,7 +424,7 @@ li {
   color: white;
 }
 
-.mark-field input {
+.mark-field p {
   border: none;
   outline: none;
   border-radius: 0;
@@ -470,7 +474,7 @@ li {
 .devpost {
   text-decoration: none;
   color: white;
-  font-size: 30px;
+  font-size: 20px;
   width: 200px;
 }
 
@@ -501,9 +505,25 @@ li {
 }
 
 #score-val {
-  font-size: 120px;
+  /* font-size: 120px;
   font-weight: 700;
-  opacity: 69%;
+  opacity: 69%; */
+  border: none;
+  outline: none;
+  border-radius: 0;
+  text-align: left;
+  background-color: transparent;
+  /* width: 60px;
+  height: 60px; */
+  font-weight: 700;
+  font-family: "Montserrat", sans-serif;
+  font-size: 60px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.drag {
+  padding: 20px;
+  margin-left: 60px !important;
 }
 
 @media only screen and (max-width: 768px) {

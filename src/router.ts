@@ -10,6 +10,7 @@ import Register from "./components/Register.vue";
 import Home from "./components/Home.vue";
 import Tables from "./components/Tables.vue";
 import Marking from "./components/Marking.vue";
+import Ranking from "./components/Ranking.vue";
 import db from "./firebaseinit";
 
 Vue.use(Router);
@@ -40,6 +41,11 @@ const router = new Router({
       meta: {
         auth: true
       }
+    },
+    {
+      path: "/ranking",
+      name: "Ranking",
+      component: Ranking
     },
     {
       path: "/submissions",

@@ -55,30 +55,34 @@
               "
             >
               <div v-if="!doneMarking(team._.table)" class="team-div">
-                <h1 class="team-name">
-                  <span style="font-weight: 600"
+                <h1>
+                  <span class="team-name" style="font-weight: 600"
                     ><span style="font-weight:300"
-                      >{{ team.name.project }} Table:</span
+                      >{{ team.name.project }} Table:
+                    {{ team._.table }}</span
                     >
-                    {{ team._.table }}
                   </span>
                   <span style="float: right; font-weight: 600">
-                    {{ getProjectCatsNames(team) }}
+                    <ul class="stacked">
+                      <li v-for="category in getProjectCatsNames(team)" :key="category">{{category}}</li>
+                    </ul>
                   </span>
                 </h1>
               </div>
               <div v-else class="team-div">
-                <h1 class="team-name">
+                <h1>
                   <span style="font-weight: 600"
                     ><strike
-                      ><span style="font-weight:300"
+                      ><span  class="team-name" style="font-weight:300"
                         >{{ team.name.project }} Table:</span
                       >
                       {{ team._.table }}</strike
                     >
                     <span style="color: #7FFF00;"> ✔</span>
                     <span style="float: right; font-weight: 600">
-                      {{ getProjectCatsNames(team) }}
+                      <ul class="stacked">
+                        <li v-for="category in getProjectCatsNames(team)" :key="category">{{category}}</li>
+                    </ul>
                     </span>
                   </span>
                 </h1>
@@ -159,8 +163,7 @@ export default Vue.extend({
             each.substring(0, 1).toUpperCase() +
             each.substring(1, each.length).toLowerCase()
           );
-        })
-        .join(", ");
+        });
     },
     async getTables() {
       let doc = await db
@@ -247,7 +250,7 @@ export default Vue.extend({
 .team-name {
   font-size: 1.5em;
   color: white;
-  line-height: 150px;
+  line-height: 140px;
   margin: 0 40px;
   font-family: "Montserrat", sans-serif;
   font-weight: 300;
@@ -261,5 +264,20 @@ export default Vue.extend({
   text-align: center;
   padding: 50px;
   background: white;
+}
+
+.stacked {
+  font-size: 1.5em;
+  color: white;
+  margin: 10px 40px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+}
+
+
+@media only screen and (max-width: 499px) {
+  .team {
+    height: 300px;
+  }
 }
 </style>
