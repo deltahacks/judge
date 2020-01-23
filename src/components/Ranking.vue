@@ -1,11 +1,12 @@
 <template>
   <div id="home">
+    <login-header></login-header>
     <div class="center">
       <h1 class="title" style="font-size: 250%; margin-bottom: 50px;">
         Team Rankings
       </h1>
       <b-dropdown v-model="selectedOptions" dark>
-        <button class="button is-primary" type="button" slot="trigger">
+        <button class="button is-primary" type="button" slot="trigger" style="background-color: #8c67ef !important;">
           <span> {{ selectedOptions }}</span>
           <b-icon icon="menu-down"></b-icon>
         </button>
@@ -16,14 +17,13 @@
         </div>
       </b-dropdown>
     </div>
-    <Blurb
-      style="width: 60%; margin: 0 auto;"
-      :content="
-        'Here are the top 10 teams in the category you selected based on your marking. \
-      Click on a group to see their rubric if you want to make any adjustments in score.'
-      "
-    ></Blurb>
-
+    <div class="blurb">
+      <p>
+        Here are the teams you will be judging today. Click on a group to see
+        their rubric and start marking.
+      </p>
+      <br />
+    </div>
     <div id="app" class="container">
       <ul id="example-1">
         <li v-for="(team, i) in teams" :key="(team, i)">
@@ -63,11 +63,12 @@ import Vue from "vue";
 import Blurb from "@/components/Blurb.vue";
 import db from "../firebaseinit";
 import * as firebase from "firebase/app";
+import LoginHeader from "@/components/LoginHeader.vue";
 
 export default Vue.extend({
   name: "Home",
   components: {
-    Blurb
+    LoginHeader
   },
   props: {},
   data() {
@@ -227,6 +228,7 @@ export default Vue.extend({
 .team {
   height: 150px;
 }
+
 .blurb {
   font-size: 20px;
   text-align: center;
