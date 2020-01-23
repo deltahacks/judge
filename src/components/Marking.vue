@@ -51,9 +51,9 @@
     </div>
     <ul
       v-if="
-        !(selectedOptions !== 'Select a category to judge' &&
+        selectedOptions !== 'Select a category to judge' &&
           tableDoc._ &&
-          tableDoc._.categories[selectedOptions.toLowerCase()].score !== 0)
+          tableDoc._.categories[selectedOptions.toLowerCase()].score !== 0
       "
     >
       <li v-for="(criteria, i) in marking_criteria" :key="(criteria, i)">
