@@ -176,7 +176,7 @@ export default Vue.extend({
             Were you surprised by the hack or have you seen similar things done before? \
             Did they come up with problem that you had not thought to approach?",
           tag: "orig1",
-          max: 10
+          max: 5
         },
         {
           type: "Originality",
@@ -184,7 +184,7 @@ export default Vue.extend({
             "Was the hack creative? \
             Was the solution / problem approached in a unique way?",
           tag: "orig2",
-          max: 10
+          max: 5
         },
         {
           type: "Presentation",
@@ -193,7 +193,7 @@ export default Vue.extend({
             Was the solution relevant to the given problem that they identified? \
             Was it clear how the product works?",
           tag: "pres1",
-          max: 10
+          max: 5
         },
         {
           type: "Presentation",
@@ -201,7 +201,7 @@ export default Vue.extend({
             "Was the group prepared to present? \
             Was the demo of high quality? Did they have demos, visuals, research, powerpoints, logos etc. (note: not all are required).",
           tag: "pres2",
-          max: 10
+          max: 5
         }
       ],
       selectedOptions: "Select a category to judge",
