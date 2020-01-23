@@ -44,7 +44,9 @@
         ></b-input>
       </div>
       <div class="column">
-        <h2 class="score">Overall score: <span id="score-val">69</span></h2>
+        <h2 class="score">Overall score: 
+          <input :placeholder="totalScore()" type="text" maxLength="3" id="score-val"  v-on:keydown="checkScore"/>
+        </h2>
       </div>
     </div>
     <ul
@@ -305,10 +307,13 @@ export default Vue.extend({
         }
       }
     },
-    limitTen(i) {
-      if (Number(this.marks[i]) > 10) { 
-        console.log("too big");
-        this.marks[i] = 10;
+    totalScore() {
+      return this.marks.reduce((x, y) => x + y);
+    },
+    checkScore() {
+      console.log(this.totalScore());
+      if (Number(this.totalScore()) > 100) {
+        alert("Mark must be between 0 and 100.");
       }
     }
   },
@@ -453,9 +458,20 @@ li {
 }
 
 #score-val {
-  font-size: 120px;
+  /* font-size: 120px;
   font-weight: 700;
-  opacity: 69%;
+  opacity: 69%; */
+  border: none;
+  outline: none;
+  border-radius: 0;
+  text-align: left;
+  background-color: transparent;
+  /* width: 60px;
+  height: 60px; */
+  font-weight: 700;
+  font-family: "Montserrat", sans-serif;
+  font-size: 60px;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .drag {
