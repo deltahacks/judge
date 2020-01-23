@@ -168,7 +168,6 @@ export default Vue.extend({
     left: 90%;
   }
   .nav {
-
     border-radius: 10px;
     top: 371px;
   }
@@ -189,5 +188,4 @@ export default Vue.extend({
     height: 15px;
   }
 }
-
 </style>

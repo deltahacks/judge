@@ -22,23 +22,27 @@
       <!-- <text x="600" y="120" fill="white">Delta</text><text x="675" y="120" fill="white">Delta</text> -->
     </svg>
     <div id="title-section">
-      <a href="/home"><h1 id="title" class="header-title">
-        Delta<span style="font-weight: 300">Hacks</span>
-      </h1></a>
+      <a href="/home"
+        ><h1 id="title" class="header-title">
+          Delta<span style="font-weight: 300">Hacks</span>
+        </h1></a
+      >
       <a href="/home"><h1 id="subtitle" class="header-title">Judging</h1></a>
       <img
         src="../assets/delta_logo.svg"
         height="50"
         width="50"
         alt="DeltaHacks Logo"
-      /><br>
-      <div class="goback" v-if="showLogout==1">
+      /><br />
+      <div class="goback" v-if="showLogout == 1">
         <div class="backbutton">
-      <ul>
-        <a @click="goBack()" style="color: silver; font-size:1.5em;"><li>⬅</li></a>
-      </ul>
+          <ul>
+            <a @click="goBack()" style="color: silver; font-size:1.5em;"
+              ><li>⬅</li></a
+            >
+          </ul>
+        </div>
       </div>
-    </div>
     </div>
     <div class="nav" :class="{ open: showMenu }">
       <ul>
@@ -71,7 +75,7 @@ export default Vue.extend({
       default: "DeltaHacks-VI Application Judging Platform"
     }
   },
-  data(): { showMenu: boolean, showLogout: number } {
+  data(): { showMenu: boolean; showLogout: number } {
     return {
       showMenu: false,
       showLogout: 1
@@ -85,19 +89,19 @@ export default Vue.extend({
       auth().signOut();
       this.$router.push({ name: "Login" });
     },
-    goBack(){
+    goBack() {
       window.history.back();
     }
   },
   watch: {
- '$route' (to, from) {
-      if(to.name=="Login"){
-      this.showLogout=0;
+    $route(to, from) {
+      if (to.name == "Login") {
+        this.showLogout = 0;
+      } else {
+        this.showLogout = 1;
       }
-      else{
-      this.showLogout=1;
-      }
-  }}
+    }
+  }
 });
 </script>
 
@@ -132,7 +136,7 @@ section {
 .navicon {
   position: absolute;
   /* left: 91%; */
-  right:-2%;
+  right: -2%;
   width: 150px;
   height: 50px;
   top: 6vw;
@@ -145,7 +149,7 @@ section {
   width: 20px;
   height: 1px;
   margin: 0 auto;
-  right:5px;
+  right: 5px;
   position: relative;
   transition: 300ms all ease-in-out;
 }
@@ -186,21 +190,21 @@ section {
   border-radius: 100px;
   transform-origin: right;
 }
-.goback{
+.goback {
   position: absolute;
   left: -40%;
   height: 50px;
   width: 70px;
   transition: all 300ms ease-in-out;
   background: #5b79a5;
-  border-top-right-radius : 10px;
-  border-bottom-right-radius : 10px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
-.backbutton{
-  margin-top:5px;
-  margin-left:30%!important;
-}  
+.backbutton {
+  margin-top: 5px;
+  margin-left: 30% !important;
+}
 
 .open {
   transform: scaleX(1);
@@ -232,7 +236,7 @@ section {
     position: relative;
     height: auto;
     border-radius: 10px;
-    padding-bottom:5vh;
+    padding-bottom: 5vh;
     /* transform: scaleY(0);
     transform-origin: top; */
   }
@@ -258,7 +262,7 @@ section {
     position: relative;
     height: auto;
     border-radius: 10px;
-    padding-bottom:5vh;
+    padding-bottom: 5vh;
     /* transform: scaleY(0);
     transform-origin: top; */
   }
@@ -266,5 +270,4 @@ section {
     display: block;
   }
 }
-
 </style>
