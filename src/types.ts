@@ -61,7 +61,8 @@ export const categories = [
   "best health hack",
   "best quality of life/productivity hack",
   "innovation factory challenge",
-  "td challenge, arcelormittal dofasco challenge",
+  "td challenge",
+  "arcelormittal dofasco challenge",
   "materials challenge",
   "algorand challenge"
 ].map(each => {
@@ -76,3 +77,25 @@ export const categories = [
     .join(" ");
 });
 type question = string;
+
+export const map = {
+  "centre challenge": "Centre Challenge",
+  "hotel dieu shaver health and rehabilitation":
+    "Hotel Dieu Shaver Health and Rehabilitation",
+  "ite challenge": "ITE Challenge",
+  "kyle arscott challenge": "Kyle Arscott Challenge",
+  "beasley neighbourhood association challenge":
+    "Beasley Neighbourhood Association Challenge",
+  "best overall hack": "Best Overall Hack",
+  "best education hack": "Best Education Hack",
+  "best finance hack": "Best Finance Hack",
+  "best environment hack": "Best Environment Hack",
+  "best health hack": "Best Health Hack",
+  "best quality of life/productivity hack":
+    "Best Quality of Life/Productivity Hack",
+  "innovation factory challenge": "Innovation Factory Challenge",
+  "td challenge": "TD Challenge",
+  "arcelormittal dofasco challenge": "Arcelormittal Dofasco Challenge",
+  "Materials Challenge": "Materials Challenge",
+  "Algorand Challenge": "Algorand Challenge"
+};
