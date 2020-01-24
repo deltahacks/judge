@@ -59,7 +59,11 @@ export const categories = [
   "best finance hack",
   "best environment hack",
   "best health hack",
-  "best quality of life/productivity hack"
+  "best quality of life/productivity hack",
+  "innovation factory challenge",
+  "td challenge, arcelormittal dofasco challenge",
+  "materials challenge",
+  "algorand challenge"
 ].map(each => {
   return each
     .split(" ")

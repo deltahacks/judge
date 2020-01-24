@@ -81,14 +81,7 @@
         />
       </div>
 
-      <select v-model="role" class="role-dropdown" required>
-        <option disabled selected value="">Select desired role</option>
-        <option value="volunteer">Volunteer</option>
-        <option value="mentor">Mentor</option>
-        <option value="judge">Judge</option>
-      </select>
-
-      <div v-if="role === 'judge'" class="input-container">
+      <div class="input-container">
         <i class="fa fa-building icon"></i>
         <input
           class="input-field"
@@ -99,7 +92,7 @@
           required
         />
       </div>
-      <div v-if="role === 'judge'" class="input-container">
+      <div class="input-container">
         <i class="fa fa-phone-alt icon"></i>
         <input
           class="input-field"
@@ -110,6 +103,14 @@
           required
         />
       </div>
+
+      <select v-model="role" class="role-dropdown" required>
+        <option disabled selected value="">Select desired role</option>
+        <option value="volunteer">Volunteer</option>
+        <option value="mentor">Mentor</option>
+        <option value="judge">Judge</option>
+      </select>
+
       <div v-if="role === 'judge'" class="multi-container">
         <b-dropdown v-model="categories" multiple aria-role="list" required>
           <button class="button is-dark" type="button" slot="trigger">
