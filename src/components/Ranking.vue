@@ -184,7 +184,7 @@ export default Vue.extend({
   },
   async mounted() {
     await this.getJudge();
-    await this.getTeams();
+    // await this.getTeams();
     this.submission_categories = this.getCategories();
   },
   beforeMount() {
