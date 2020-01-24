@@ -533,7 +533,6 @@ li {
   font-weight: 700;
   font-family: "Montserrat", sans-serif;
   font-size: 60px;
-  opacity: 69%;
 }
 
 @media only screen and (max-width: 768px) {
