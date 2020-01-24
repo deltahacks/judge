@@ -58,7 +58,7 @@
                 <h1>
                   <div class="team-name" style="font-weight: 300"
                     >
-                      {{ team.name.project }} Table: {{ team._.table }}
+                      <span style="font-weight: 600">Table: {{ team._.table }}</span> {{ team.name.project }}
                     
                   </div>
                     <ul class="stacked" style="font-weight: 600">
@@ -75,8 +75,8 @@
                 <h1>
                   <div class="team-name" style="font-weight: 300"
                     ><strike
-                      >{{ team.name.project }} Table:
-                      {{ team._.table }}</strike
+                      ><span style="font-weight: 600">Table: {{ team._.table }}</span> 
+                      {{ team.name.project }} </strike
                     >
                     <span style="color: #7FFF00;"> ✔</span>
                   </div>
@@ -267,30 +267,28 @@ export default Vue.extend({
 .stacked {
   font-size: 1.5em;
   color: white;
-  margin: -130px 50px;
+  text-align: center;
+  margin: -130px 0px;
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
   float: right;
 }
 
-@media only screen and (max-width: 499px) {
+@media only screen and (max-width: 700px) {
   .team {
-    height: 300px;
+    height: 210px !important;
+    padding: 5px;
+  }
+  .team-name {
+    text-align: center;
   }
   .stacked {
     float: left;
     margin-top: -50px;
-    font-size: 4vw;
+    font-size: 5vw;
     list-style: none;
     width: 100%;
     height: auto;
-  }
-  .stacked li {
-    display: inline;
-    background: rgba(0,0,255, 0.3);
-    border:3px solid rgba(0,0,255, 0.1);
-    border-radius: 10px;
-    margin-left: 10px !important;
   }
 }
 </style>

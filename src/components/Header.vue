@@ -176,6 +176,7 @@ export default Vue.extend({
 @media only screen and (max-width: 690px) {
   .navicon {
     left: 80%;
+    top: 18%;
   }
   .nav {
     left: 45%;
