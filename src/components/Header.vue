@@ -163,24 +163,24 @@ export default Vue.extend({
   padding: 12px 12px 12px 50px;
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 900px) {
   .navicon {
     left: 90%;
   }
   .nav {
     border-radius: 10px;
-    top: 371px;
+    top: 48vw;
   }
 }
 
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 690px) {
   .navicon {
     left: 80%;
   }
   .nav {
-    left: 50%;
+    left: 45%;
     border-radius: 10px;
-    top: 201px;
+    top: 50vw;
     background: none;
   }
   .nav li {

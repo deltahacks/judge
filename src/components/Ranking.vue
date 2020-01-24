@@ -1,5 +1,5 @@
 <template>
-  <div id="home">
+  <div id="ranking">
     <login-header></login-header>
     <div class="center">
       <h1 class="title" style="font-size: 250%; margin-bottom: 50px;">
@@ -233,5 +233,12 @@ export default Vue.extend({
   font-size: 20px;
   text-align: center;
   padding: 50px;
+}
+
+@media only screen and (max-width: 530px) {
+  .team-name { 
+    line-height: 1.5em;
+    margin: 50px 0;
+  }
 }
 </style>
