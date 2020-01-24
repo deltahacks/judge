@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="tables">
     <login-header></login-header>
     <link
       href="https://fonts.googleapis.com/css?family=Montserrat:300,400&display=swap"
@@ -56,13 +56,12 @@
             >
               <div v-if="!doneMarking(team._.table)" class="team-div">
                 <h1>
-                  <span class="team-name" style="font-weight: 600"
-                    ><span style="font-weight:300"
-                      >{{ team.name.project }} Table: {{ team._.table }}</span
+                  <div class="team-name" style="font-weight: 300"
                     >
-                  </span>
-                  <span style="float: right; font-weight: 600">
-                    <ul class="stacked">
+                      {{ team.name.project }} Table: {{ team._.table }}
+                    
+                  </div>
+                    <ul class="stacked" style="font-weight: 600">
                       <li
                         v-for="category in getProjectCatsNames(team)"
                         :key="category"
@@ -70,30 +69,25 @@
                         {{ category }}
                       </li>
                     </ul>
-                  </span>
                 </h1>
               </div>
               <div v-else class="team-div">
                 <h1>
-                  <span style="font-weight: 600"
+                  <div class="team-name" style="font-weight: 300"
                     ><strike
-                      ><span class="team-name" style="font-weight:300"
-                        >{{ team.name.project }} Table:</span
-                      >
+                      >{{ team.name.project }} Table:
                       {{ team._.table }}</strike
                     >
                     <span style="color: #7FFF00;"> ✔</span>
-                    <span style="float: right; font-weight: 600">
-                      <ul class="stacked">
-                        <li
-                          v-for="category in getProjectCatsNames(team)"
-                          :key="category"
-                        >
-                          {{ category }}
-                        </li>
-                      </ul>
-                    </span>
-                  </span>
+                  </div>
+                    <ul class="stacked" style="font-weight: 600">
+                      <li
+                        v-for="category in getProjectCatsNames(team)"
+                        :key="category"
+                      >
+                        {{ category }}
+                      </li>
+                    </ul>
                 </h1>
               </div>
             </div>
@@ -248,13 +242,9 @@ export default Vue.extend({
 .team-div {
   float: left;
   width: 100%;
+  height: 140px;
 }
-.mark {
-  top: 0;
-  background: rgba(255, 255, 255, 0.2);
-  /* float: right; */
-  width: 50% !important;
-}
+
 .team-name {
   font-size: 1.5em;
   color: white;
@@ -277,14 +267,30 @@ export default Vue.extend({
 .stacked {
   font-size: 1.5em;
   color: white;
-  margin: 10px 40px;
+  margin: -130px 50px;
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
+  float: right;
 }
 
 @media only screen and (max-width: 499px) {
   .team {
     height: 300px;
+  }
+  .stacked {
+    float: left;
+    margin-top: -50px;
+    font-size: 4vw;
+    list-style: none;
+    width: 100%;
+    height: auto;
+  }
+  .stacked li {
+    display: inline;
+    background: rgba(0,0,255, 0.3);
+    border:3px solid rgba(0,0,255, 0.1);
+    border-radius: 10px;
+    margin-left: 10px !important;
   }
 }
 </style>
