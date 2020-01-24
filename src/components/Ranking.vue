@@ -44,8 +44,6 @@
                 <h1 class="team-name">
                   <span style="padding-right: 2%; font-weight: 800;"
                     >Rank {{ i + 1 }}</span
-                  >
-                  <span style="font-weight: 600">Team</span
                   >{{ team[0].name.project }}
                   <span style="float: right;">Score: {{ team[1] }}</span>
                 </h1>
