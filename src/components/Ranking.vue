@@ -222,7 +222,6 @@ export default Vue.extend({
   margin: 0 40px;
   font-family: "Montserrat", sans-serif;
   font-weight: 300;
-  width: 90%;
 }
 
 .team {
