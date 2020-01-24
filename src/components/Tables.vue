@@ -252,7 +252,6 @@ export default Vue.extend({
   margin: 0 40px;
   font-family: "Montserrat", sans-serif;
   font-weight: 300;
-  width: 90%;
 }
 .team {
   height: 150px;
@@ -285,7 +284,7 @@ export default Vue.extend({
   .stacked {
     float: left;
     margin-top: -50px;
-    font-size: 5vw;
+    font-size: 4vw;
     list-style: none;
     width: 100%;
     height: auto;
