@@ -50,7 +50,7 @@
       <div class="column">
         <h2 class="score">
           Overall score:
-          <input
+          <input class="score-i-2"
             v-if="selectedOptions !== this.defaultOPTION"
             :placeholder="totalScore"
             type="text"
@@ -433,20 +433,6 @@ li {
   color: white;
 }
 
-.mark-field p {
-  border: none;
-  outline: none;
-  border-radius: 0;
-  text-align: center;
-  background-color: transparent;
-  width: 60px;
-  height: 60px;
-  font-weight: 700;
-  font-family: "Montserrat", sans-serif;
-  font-size: 60px;
-  color: rgba(255, 255, 255, 0.6);
-}
-
 /* Chrome, Firefox, Opera, Safari 10.1+ */
 ::placeholder {
   color: rgba(255, 255, 255, 0.6);
@@ -462,6 +448,7 @@ li {
   font-family: "Montserrat", sans-serif;
   background: linear-gradient(90deg, #469e9a 0%, #2b408a 90%);
   color: white;
+  padding-bottom: 20px;
 }
 
 .submission-info .left {
@@ -513,17 +500,16 @@ li {
   width: 300px;
 }
 
+.score-i-2 {
+  font-size: 100px !important;
+}
+
 #score-val {
-  /* font-size: 120px;
-  font-weight: 700;
-  opacity: 69%; */
   border: none;
   outline: none;
   border-radius: 0;
   text-align: left;
   background-color: transparent;
-  /* width: 60px;
-  height: 60px; */
   font-weight: 700;
   font-family: "Montserrat", sans-serif;
   font-size: 60px;
@@ -536,9 +522,18 @@ li {
 }
 
 .mark-f-2 {
-  font-size: 30px;
-  font-weight: 600;
   color: white;
+  border: none;
+  outline: none;
+  border-radius: 0;
+  text-align: center;
+  background-color: transparent;
+  width: 60px;
+  height: 60px;
+  font-weight: 700;
+  font-family: "Montserrat", sans-serif;
+  font-size: 60px;
+  opacity: 69%;
 }
 
 @media only screen and (max-width: 768px) {
