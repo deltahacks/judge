@@ -110,6 +110,7 @@ import Vue from "vue";
 import { auth } from "firebase/app";
 import db from "../firebaseinit";
 import LoginHeader from "@/components/LoginHeader.vue";
+import { map } from "../types";
 
 export default Vue.extend({
   name: "Home",
@@ -167,11 +168,9 @@ export default Vue.extend({
           );
         })
         .map(each => {
-          if (each.length > 8) each = each.substring(0, 10);
-          return (
-            each.substring(0, 1).toUpperCase() +
-            each.substring(1, each.length).toLowerCase()
-          );
+          each = map[each];
+          if (each.length >= 24) each = each.substring(0, 24) + "...";
+          return each;
         });
     },
     async getTables() {

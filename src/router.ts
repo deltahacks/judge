@@ -46,7 +46,10 @@ const router = new Router({
     {
       path: "/ranking",
       name: "Ranking",
-      component: Ranking
+      component: Ranking,
+      meta: {
+        auth: true
+      }
     },
     {
       path: "/submissions",
@@ -60,16 +63,25 @@ const router = new Router({
       path: "/submission/:tableNumber/",
       name: "Marking",
       component: Marking,
-      props: true
+      props: true,
+      meta: {
+        auth: true
+      }
     },
     {
       path: "/topTen",
       name: "TopTen",
-      component: TopTen
+      component: TopTen,
+      meta: {
+        auth: true
+      }
     },
     {
       path: "*",
-      component: Tables
+      component: Tables,
+      meta: {
+        auth: true
+      }
     }
   ]
 });
