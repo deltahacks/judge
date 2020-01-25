@@ -63,7 +63,13 @@ export const categories = [
   "arcelormittal dofasco challenge",
   "materials challenge",
   "algorand challenge",
-  "hypercare challenge"
+  "hypercare challenge",
+  "best uiPath automation hack",
+  "best domain registered with domain.com",
+  "best use of google cloud",
+  "best use of mongoDB atlas",
+  "best use of blockstack",
+  "most creative radar.io hack"
 ].map(each => {
   return each
     .split(" ")
