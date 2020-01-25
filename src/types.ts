@@ -49,10 +49,8 @@ export interface JudgeReviews {
   final: number;
 }
 export const categories = [
-  "centre challenge",
   "hotel dieu shaver health and rehabilitation",
   "ite challenge",
-  "kyle arscott challenge",
   "beasley neighbourhood association challenge",
   "best overall hack",
   "best education hack",
@@ -64,7 +62,8 @@ export const categories = [
   "td challenge",
   "arcelormittal dofasco challenge",
   "materials challenge",
-  "algorand challenge"
+  "algorand challenge",
+  "hypercare challenge"
 ].map(each => {
   return each
     .split(" ")
@@ -79,11 +78,9 @@ export const categories = [
 type question = string;
 
 export const map = {
-  "centre challenge": "Centre Challenge",
   "hotel dieu shaver health and rehabilitation":
     "Hotel Dieu Shaver Health and Rehabilitation",
   "ite challenge": "ITE Challenge",
-  "kyle arscott challenge": "Kyle Arscott Challenge",
   "beasley neighbourhood association challenge":
     "Beasley Neighbourhood Association Challenge",
   "best overall hack": "Best Overall Hack",
@@ -96,6 +93,7 @@ export const map = {
   "innovation factory challenge": "Innovation Factory Challenge",
   "td challenge": "TD Challenge",
   "arcelormittal dofasco challenge": "Arcelormittal Dofasco Challenge",
-  "Materials Challenge": "Materials Challenge",
-  "Algorand Challenge": "Algorand Challenge"
+  "materials challenge": "Materials Challenge",
+  "algorand challenge": "Algorand Challenge",
+  "hypercare challenge": "Hypercare Challenge"
 };

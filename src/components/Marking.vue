@@ -57,6 +57,7 @@
             maxLength="3"
             id="score-val"
             v-on:keydown="checkScore"
+            disabled
           />
           <div v-else>Please Select Category</div>
         </h2>
