@@ -101,5 +101,12 @@ export const map = {
   "arcelormittal dofasco challenge": "Arcelormittal Dofasco Challenge",
   "materials challenge": "Materials Challenge",
   "algorand challenge": "Algorand Challenge",
-  "hypercare challenge": "Hypercare Challenge"
+  "hypercare challenge": "Hypercare Challenge",
+  "best uiPath automation hack": "Best UiPath Automation Hack",
+  "best domain registered with domain.com":
+    "Best Domain Registered with Domain.com",
+  "best use of google cloud": "Best use of Google Cloud",
+  "best use of mongoDB atlas": "Best use of MongoDB Atlas",
+  "best use of blockstack": "Best use of Blockstack",
+  "most creative radar.io hack": "Most Creative Radar.io Hack"
 };
