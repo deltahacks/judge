@@ -50,7 +50,8 @@
       <div class="column">
         <h2 class="score">
           Overall score:
-          <input class="score-i-2"
+          <input
+            class="score-i-2"
             v-if="selectedOptions !== this.defaultOPTION"
             :placeholder="totalScore"
             type="text"
@@ -371,6 +372,7 @@ export default Vue.extend({
     await this.getTableID();
     await this.getJudge();
     await this.setJudgeableCats();
+    console.log(this.tableDoc);
     this.notes = this.tableDoc._ ? this.tableDoc._.notes[this.getUUID()] : "";
   },
   beforeMount() {

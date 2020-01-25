@@ -67,7 +67,7 @@ export const categories = [
   "best uiPath automation hack",
   "best domain registered with domain.com",
   "best use of google cloud",
-  "best use of mongoDB atlas",
+  "best use of mongodb atlas",
   "best use of blockstack",
   "most creative radar.io hack"
 ].map(each => {
@@ -106,7 +106,7 @@ export const map = {
   "best domain registered with domain.com":
     "Best Domain Registered with Domain.com",
   "best use of google cloud": "Best use of Google Cloud",
-  "best use of mongoDB atlas": "Best use of MongoDB Atlas",
+  "best use of mongodb atlas": "Best use of MongoDB Atlas",
   "best use of blockstack": "Best use of Blockstack",
   "most creative radar.io hack": "Most Creative Radar.io Hack"
 };

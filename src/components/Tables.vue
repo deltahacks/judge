@@ -56,38 +56,41 @@
             >
               <div v-if="!doneMarking(team._.table)" class="team-div">
                 <h1>
-                  <div class="team-name" style="font-weight: 300"
+                  <div class="team-name" style="font-weight: 300">
+                    <span style="font-weight: 600"
+                      >Table: {{ team._.table }}</span
                     >
-                      <span style="font-weight: 600">Table: {{ team._.table }}</span> {{ team.name.project }}
-                    
+                    {{ team.name.project }}
                   </div>
-                    <ul class="stacked" style="font-weight: 600">
-                      <li
-                        v-for="category in getProjectCatsNames(team)"
-                        :key="category"
-                      >
-                        {{ category }}
-                      </li>
-                    </ul>
+                  <ul class="stacked" style="font-weight: 600">
+                    <li
+                      v-for="category in getProjectCatsNames(team)"
+                      :key="category"
+                    >
+                      {{ category }}
+                    </li>
+                  </ul>
                 </h1>
               </div>
               <div v-else class="team-div">
                 <h1>
-                  <div class="team-name" style="font-weight: 300"
-                    ><strike
-                      ><span style="font-weight: 600">Table: {{ team._.table }}</span> 
-                      {{ team.name.project }} </strike
-                    >
+                  <div class="team-name" style="font-weight: 300">
+                    <strike
+                      ><span style="font-weight: 600"
+                        >Table: {{ team._.table }}</span
+                      >
+                      {{ team.name.project }}
+                    </strike>
                     <span style="color: #7FFF00;"> ✔</span>
                   </div>
-                    <ul class="stacked" style="font-weight: 600">
-                      <li
-                        v-for="category in getProjectCatsNames(team)"
-                        :key="category"
-                      >
-                        {{ category }}
-                      </li>
-                    </ul>
+                  <ul class="stacked" style="font-weight: 600">
+                    <li
+                      v-for="category in getProjectCatsNames(team)"
+                      :key="category"
+                    >
+                      {{ category }}
+                    </li>
+                  </ul>
                 </h1>
               </div>
             </div>
