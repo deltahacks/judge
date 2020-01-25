@@ -64,7 +64,7 @@ export const categories = [
   "materials challenge",
   "algorand challenge",
   "hypercare challenge",
-  "best uiPath automation hack",
+  "best uipath automation hack",
   "best domain registered with domain.com",
   "best use of google cloud",
   "best use of mongodb atlas",
@@ -102,7 +102,7 @@ export const map = {
   "materials challenge": "Materials Challenge",
   "algorand challenge": "Algorand Challenge",
   "hypercare challenge": "Hypercare Challenge",
-  "best uiPath automation hack": "Best UiPath Automation Hack",
+  "best uipath automation hack": "Best UiPath Automation Hack",
   "best domain registered with domain.com":
     "Best Domain Registered with Domain.com",
   "best use of google cloud": "Best use of Google Cloud",
