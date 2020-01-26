@@ -6,7 +6,12 @@
         Team Rankings
       </h1>
       <b-dropdown v-model="selectedOptions" dark>
-        <button class="button is-primary" type="button" slot="trigger" style="background-color: #8c67ef !important;">
+        <button
+          class="button is-primary"
+          type="button"
+          slot="trigger"
+          style="background-color: #8c67ef !important;"
+        >
           <span> {{ selectedOptions }}</span>
           <b-icon icon="menu-down"></b-icon>
         </button>
@@ -189,7 +194,7 @@ export default Vue.extend({
     this.projects =
       firebase.auth().currentUser.email != "judge@deltahacks.com"
         ? "projects"
-        : "projects stage";
+        : "projects";
   },
   watch: {
     selectedOptions: function() {
@@ -233,7 +238,7 @@ export default Vue.extend({
 }
 
 @media only screen and (max-width: 530px) {
-  .team-name { 
+  .team-name {
     line-height: 1.5em;
     margin: 50px 0;
   }

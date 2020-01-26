@@ -379,7 +379,7 @@ export default Vue.extend({
     this.projects =
       firebase.auth().currentUser.email != "judge@deltahacks.com"
         ? "projects"
-        : "projects stage";
+        : "projects";
   },
   computed: {
     totalScore() {

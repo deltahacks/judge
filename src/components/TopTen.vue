@@ -3,7 +3,12 @@
     <login-header></login-header>
     <div class="center">
       <b-dropdown v-model="selectedOptions" dark>
-        <button class="button is-primary" type="button" slot="trigger" style="background-color: #8c67ef !important;">
+        <button
+          class="button is-primary"
+          type="button"
+          slot="trigger"
+          style="background-color: #8c67ef !important;"
+        >
           <span> {{ selectedOptions }}</span>
           <b-icon icon="menu-down"></b-icon>
         </button>
@@ -40,9 +45,13 @@
                 <span style="padding-right: 2%; font-weight: 800;"
                   >Rank {{ i + 1 }}</span
                 >
-                <span style="font-weight: 600">Team</span
+                <span style="font-weight: 600">Team </span
                 >{{ team[0].name.project }}
                 <span style="float: right;">Score: {{ team[1] }}</span>
+                <span
+                  ><span style="font-weight: 600">Table: </span
+                  >{{ team[0]._.table }}</span
+                >
               </h1>
             </div>
           </div>
