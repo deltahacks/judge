@@ -1,27 +1,30 @@
 <template>
   <div class="main">
-    <LoginHeader></LoginHeader>
+    <LoginHeader noMenu=true></LoginHeader>
     <span>
       <span class="txt1">Log</span>
       <span class="txt2">in</span>
-      <b-field class="limited">
-        <b-input
-          placeholder="Email"
-          type="email"
-          icon="email"
-          color="black"
-          v-model="email"
-        ></b-input>
-      </b-field>
-      <b-field class="limited">
-        <b-input
-          placeholder="Password"
-          type="password"
-          icon="lock"
-          password-reveal
-          v-model="password"
-        ></b-input>
-      </b-field>
+      <br><br>
+      <div class="loginContainer">
+        <b-field class="limited">
+          <b-input
+            placeholder="Email"
+            type="email"
+            icon="email"
+            color="black"
+            v-model="email"
+          ></b-input>
+        </b-field>
+        <b-field class="limited">
+          <b-input
+            placeholder="Password"
+            type="password"
+            icon="lock"
+            password-reveal
+            v-model="password"
+          ></b-input>
+        </b-field>
+      </div>
       <b-notification
         type="is-danger"
         :active.sync="showError"
@@ -32,12 +35,14 @@
         {{ this.error }}
       </b-notification>
       <a class="forgot">Forgot Password?</a><br /><br />
-      <b-button rounded type="is-success" outlined @click="login()"
-        >Submit</b-button
-      ><br /><br />
-      <b-button rounded type="is-primary" outlined @click="gotoRegister()"
-        >Create Account</b-button
-      >
+      <div class=btnContainer>
+        <b-button rounded type="is-success" outlined @click="login()"
+          >Submit</b-button
+        ><br><br>
+        <b-button rounded type="is-primary" outlined @click="gotoRegister()"
+          >Create Account</b-button
+        >
+      </div>
     </span>
   </div>
 </template>
@@ -109,14 +114,26 @@ export default Vue.extend({
   font-size: 3em;
   font-weight: 300;
 }
+.loginContainer {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
 .limited {
-  width: 50%;
-  margin-left: 25vw;
+  width: 20%;
+  margin: auto;
+}
+@media only screen and (max-width: 900px) {
+  .limited {
+    width: 50%;
+  }
 }
 .forgot {
   color: grey;
 }
 .forgot:hover {
   color: black;
+}
+.btnContainer {
+  margin-bottom: 20px;
 }
 </style>
