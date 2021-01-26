@@ -34,7 +34,7 @@
         width="50"
         alt="DeltaHacks Logo"
       /><br />
-      <div class="goback" v-if="showLogout == 1">
+      <div class="goback" v-if="showLogout == 1 && !noMenu" >
         <div class="backbutton">
           <ul>
             <a @click="goBack()" style="color: silver; font-size:1.5em;"
@@ -44,7 +44,7 @@
         </div>
       </div>
     </div>
-    <div class="nav" :class="{ open: showMenu }">
+    <div class="nav" v-if="!noMenu" :class="{ open: showMenu }">
       <ul>
         <a href="/home"><li>Home</li></a>
         <a href="/ranking"><li>Rankings</li></a>
@@ -53,6 +53,7 @@
     </div>
     <div
       class="navicon"
+      v-if="!noMenu"
       @click="showMenu = !showMenu"
       :class="{ open: showMenu }"
     >
@@ -73,6 +74,10 @@ export default Vue.extend({
     title: {
       type: String,
       default: "DeltaHacks-VI Application Judging Platform"
+    },
+    noMenu: {
+      type: Boolean,
+      default: false
     }
   },
   data(): { showMenu: boolean; showLogout: number } {
