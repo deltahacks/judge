@@ -90,7 +90,7 @@ export default Vue.extend({
   },
   methods: {
     getJudgesCategories() {
-      db.collection("DH6")
+      db.collection(this.$store.state.currentHackathon)
         .doc("hackathon")
         .collection("projects")
         .get()
@@ -116,7 +116,7 @@ export default Vue.extend({
       this.teams = [];
       let scoreArray = [];
       let category = this.selectedOptions;
-      db.collection("DH6")
+      db.collection(this.$store.state.currentHackathon)
         .doc("hackathon")
         .collection("projects")
         .get()

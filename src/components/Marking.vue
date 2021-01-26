@@ -222,7 +222,7 @@ export default Vue.extend({
     async getTableID() {
       let table = this.$route.params.tableNumber;
       let doc = await db
-        .collection("DH6")
+        .collection(this.$store.state.currentHackathon)
         .doc("hackathon")
         .collection(this.projects)
         .where("_.table", "==", Number(table))
@@ -239,7 +239,7 @@ export default Vue.extend({
       console.log(this.tableNumber);
     },
     getSubmissionCategories() {
-      db.collection("DH6")
+      db.collection(this.$store.state.currentHackathon)
         .doc("hackathon")
         .collection(this.projects)
         .where("_.table", "==", Number(this.table))
@@ -271,7 +271,7 @@ export default Vue.extend({
 
         judgeEmail = this.getUUID();
 
-        db.collection("DH6")
+        db.collection(this.$store.state.currentHackathon)
           .doc("hackathon")
           .collection(this.projects)
           .doc(project)
@@ -286,7 +286,7 @@ export default Vue.extend({
             }
             data.notes[this.getUUID()] = this.notes;
             let updateNested = db
-              .collection("DH6")
+              .collection(this.$store.state.currentHackathon)
               .doc("hackathon")
               .collection(this.projects)
               .doc(project)
@@ -310,7 +310,7 @@ export default Vue.extend({
     },
     async getJudge() {
       let doc = await db
-        .collection("DH6")
+        .collection(this.$store.state.currentHackathon)
         .doc("hackathon")
         .collection("judges")
         .doc(this.getUUID())
