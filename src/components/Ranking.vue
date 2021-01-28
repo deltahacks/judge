@@ -94,7 +94,7 @@ export default Vue.extend({
   methods: {
     async getJudge() {
       let doc = await db
-        .collection("DH6")
+        .collection(this.$store.state.currentHackathon)
         .doc("hackathon")
         .collection("judges")
         .doc(this.getUUID())
@@ -121,7 +121,7 @@ export default Vue.extend({
       return firebase.auth().currentUser.email;
     },
     // getJudgesCategories() {
-    //   db.collection("DH6")
+    //   db.collection(this.$store.state.currentHackathon)
     //     .doc("hackathon")
     //     .collection(this.projects)
     //     .get()
@@ -149,7 +149,7 @@ export default Vue.extend({
       this.teams = [];
       let scoreArray = [];
       let category = this.selectedOptions.toLowerCase();
-      db.collection("DH6")
+      db.collection(this.$store.state.currentHackathon)
         .doc("hackathon")
         .collection(this.projects)
         .get()

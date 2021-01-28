@@ -136,7 +136,7 @@ export default Vue.extend({
   methods: {
     async getJudge() {
       let doc = await db
-        .collection("DH6")
+        .collection(this.$store.state.currentHackathon)
         .doc("hackathon")
         .collection("judges")
         .doc(this.getUUID())
@@ -172,7 +172,7 @@ export default Vue.extend({
     },
     async getTables() {
       let doc = await db
-        .collection("DH6")
+        .collection(this.$store.state.currentHackathon)
         .doc("hackathon")
         .collection(this.projects)
         .get();
