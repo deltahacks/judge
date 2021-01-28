@@ -1,12 +1,39 @@
 <template>
   <div id="marking">
     <Header></Header>
-    <timer></timer>
-    <Blurb
-      content="
-        Please assign marks to every category appropriately.
-    "
-    ></Blurb>
+    <timer class="timer"></timer>
+      <b-modal :active.sync="showVideo">
+        <div v-if="tableDoc.profiles && tableDoc.profiles.youtube">
+          <figure class="image is-16by9">
+            <iframe
+              class="has-ratio" width="640" height="360"
+              v-bind:src="getDemoVideoEmbedUrl"
+              frameborder="0"
+              allow="accelerometer; clipboard-write; encrypted-media"
+              allowfullscreen>
+            </iframe>
+          </figure>
+        </div>
+        <div v-else>
+          <Blurb
+            content="A demo video has not been uploaded yet"
+          ></Blurb>
+        </div>
+    </b-modal>
+    <div style="text-align: center">
+        <b-button
+          id="showVideo"
+          label="Show Video"
+          type="is-primary"
+          size="is-large"
+          @click="showVideo = true" />
+      <Blurb
+        class="topBlurb"
+        content="
+          Please assign marks to every category appropriately.
+      "
+      ></Blurb>
+    </div>
     <div class="columns submission-info" style="margin-bottom:0">
       <div class="column left">
         <h1>{{ tableDoc.name ? tableDoc.name.project : "" }}</h1>
@@ -208,6 +235,7 @@ export default Vue.extend({
       ],
       selectedOptions: "Select a category to judge",
       defaultOPTION: "Select a category to judge",
+      showVideo: false,
       tableID: "",
       tableDoc: {},
       tableNumber: -1,
@@ -222,7 +250,7 @@ export default Vue.extend({
     async getTableID() {
       let table = this.$route.params.tableNumber;
       let doc = await db
-        .collection("DH6")
+        .collection("DH7")
         .doc("hackathon")
         .collection(this.projects)
         .where("_.table", "==", Number(table))
@@ -239,7 +267,7 @@ export default Vue.extend({
       console.log(this.tableNumber);
     },
     getSubmissionCategories() {
-      db.collection("DH6")
+      db.collection("DH7")
         .doc("hackathon")
         .collection(this.projects)
         .where("_.table", "==", Number(this.table))
@@ -271,7 +299,7 @@ export default Vue.extend({
 
         judgeEmail = this.getUUID();
 
-        db.collection("DH6")
+        db.collection("DH7")
           .doc("hackathon")
           .collection(this.projects)
           .doc(project)
@@ -286,7 +314,7 @@ export default Vue.extend({
             }
             data.notes[this.getUUID()] = this.notes;
             let updateNested = db
-              .collection("DH6")
+              .collection("DH7")
               .doc("hackathon")
               .collection(this.projects)
               .doc(project)
@@ -308,9 +336,10 @@ export default Vue.extend({
     getUUID() {
       return firebase.auth().currentUser.email;
     },
+    
     async getJudge() {
       let doc = await db
-        .collection("DH6")
+        .collection("DH7")
         .doc("hackathon")
         .collection("judges")
         .doc(this.getUUID())
@@ -384,6 +413,12 @@ export default Vue.extend({
   computed: {
     totalScore() {
       return this.marks.reduce((x, y) => x + y);
+    },
+    getDemoVideoEmbedUrl() {
+      let regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+      let match = this.tableDoc.profiles.youtube.match(regExp);
+      const videoID = (match && match[7].length==11)? match[7] : false;
+      return `https://www.youtube.com/embed/${videoID}`;
     }
   }
 });
@@ -392,6 +427,7 @@ export default Vue.extend({
 <style>
 #marking {
   padding-bottom: 100px;
+  background: linear-gradient(90deg, #469e9a 0%, #2b408a 90%);
   overflow: hidden;
 }
 #marking .marking-div {
@@ -447,9 +483,20 @@ li {
   text-align: center;
 }
 
+.topBlurb {
+  margin-bottom: 20px;
+}
+
+#showVideo {
+  margin-top: 0;
+}
+
+.timer {
+  box-shadow: 0 -5px 5px -5px #333;
+}
+
 .submission-info {
   font-family: "Montserrat", sans-serif;
-  background: linear-gradient(90deg, #469e9a 0%, #2b408a 90%);
   color: white;
   padding-bottom: 20px;
 }
@@ -492,10 +539,11 @@ li {
   height: 100%;
   width: 40vw;
 }
+
 .button {
   background-color: rgba(255, 255, 255, 0.2) !important;
   border-radius: 20px !important;
-  margin-top: 10px;
+  margin-top: 50px;
 }
 
 .score {
