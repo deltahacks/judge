@@ -303,7 +303,7 @@ export default Vue.extend({
 }
 
 input::placeholder {
-  color: black;
+  color: rgba(0, 0, 0, 0.5);
 }
 /* Set a style for the submit button */
 .btn {

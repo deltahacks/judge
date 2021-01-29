@@ -24,6 +24,13 @@ export interface RegisterData {
   error: string;
 }
 
+export interface ResetData {
+  email: string;
+  showFb: boolean;
+  isInvalid: boolean;
+  feedback: string;
+}
+
 export interface Judge {
   name: name;
   contact: string;

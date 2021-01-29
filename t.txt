@@ -1,0 +1,11 @@
+    async reset() {
+      if (!this.getForm().checkValidity()) {
+        this.getForm().reportValidity();
+        return;
+      }
+      firebase.auth().sendPasswordResetEmail(this.email).then(() => {
+        this.feedback = 'Reset email sent.';
+      }).catch((error) => {
+        this.feedback = 'User with this email does not exist';
+      });
+    },
