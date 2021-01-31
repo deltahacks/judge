@@ -29,6 +29,8 @@ export interface ResetData {
   showFb: boolean;
   isInvalid: boolean;
   feedback: string;
+  debounce: boolean,
+  last: string
 }
 
 export interface Judge {

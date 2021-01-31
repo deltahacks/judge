@@ -56,15 +56,22 @@ export default Vue.extend({
       email: "",
       showFb: false,
       isInvalid: false,
-      feedback: ""
+      feedback: "",
+      debounce: false,
+      last: ""
     };
   },
   methods: {
     async submit() {
       if (this.getForm().checkValidity()) {
         firebase.auth().sendPasswordResetEmail(this.email).then(() => {
-            this.isInvalid = false
-            this.feedback = 'Reset email sent.';
+            if(!this.debounce || this.email != this.last) {
+              this.isInvalid = false
+              this.feedback = 'Reset email sent.';
+              this.debounce = true;
+              this.last = this.email;
+              setTimeout(() => this.debounce = false, 5000)
+            }
         }).catch((e) => {
             this.isInvalid = true
             this.feedback = 'User with this email does not exist';
