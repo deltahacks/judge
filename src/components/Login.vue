@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <LoginHeader noMenu=true></LoginHeader>
+    <LoginHeader :noMenu=true></LoginHeader>
     <span>
       <span class="txt1">Log</span>
       <span class="txt2">in</span>
@@ -34,7 +34,7 @@
       >
         {{ this.error }}
       </b-notification>
-      <a class="forgot">Forgot Password?</a><br /><br />
+      <a class="forgot" @click="reset()">Forgot Password?</a><br /><br />
       <div class=btnContainer>
         <b-button rounded type="is-success" outlined @click="login()"
           >Submit</b-button
@@ -92,7 +92,10 @@ export default Vue.extend({
         this.error = e;
         this.showError = true;
       }
-    }
+    },
+    async reset() {
+      this.$router.push({ name: "Reset" });
+    },
   }
 });
 </script>

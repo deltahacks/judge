@@ -7,6 +7,7 @@ import "firebase/firestore";
 import Login from "./components/Login.vue";
 import Empty from "./components/Empty.vue";
 import Register from "./components/Register.vue";
+import Reset from "./components/Reset.vue";
 import Home from "./components/Home.vue";
 import Tables from "./components/Tables.vue";
 import Marking from "./components/Marking.vue";
@@ -31,6 +32,14 @@ const router = new Router({
       path: "/register",
       name: "Register",
       component: Register,
+      meta: {
+        loginRedir: true
+      }
+    },
+    {
+      path: "/reset",
+      name: "Reset",
+      component: Reset,
       meta: {
         loginRedir: true
       }
