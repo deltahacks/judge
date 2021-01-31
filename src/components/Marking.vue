@@ -1,4 +1,5 @@
 <template>
+  <div id="bgd">
   <div id="marking">
     <Header></Header>
     <timer class="timer"></timer>
@@ -128,6 +129,7 @@
         </div>
       </li>
     </ul>
+  </div>
   </div>
 </template>
 
@@ -429,6 +431,11 @@ export default Vue.extend({
   padding-bottom: 100px;
   background: linear-gradient(90deg, #469e9a 0%, #2b408a 90%);
   overflow: hidden;
+}
+
+#bgd {
+  height: 100vh;
+  background: linear-gradient(90deg, #469e9a 0%, #2b408a 90%);
 }
 #marking .marking-div {
   float: left;
