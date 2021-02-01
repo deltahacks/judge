@@ -34,7 +34,7 @@
         width="50"
         alt="DeltaHacks Logo"
       /><br />
-      <div class="goback" v-if="showLogout == 1 && !noMenu" >
+      <div class="goback" v-if="showLogout == 1 && !noBack" >
         <div class="backbutton">
           <ul>
             <a @click="goBack()" style="color: silver; font-size:1.5em;"
@@ -76,6 +76,10 @@ export default Vue.extend({
       default: "DeltaHacks-VI Application Judging Platform"
     },
     noMenu: {
+      type: Boolean,
+      default: false
+    },
+    noBack: {
       type: Boolean,
       default: false
     }

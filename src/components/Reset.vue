@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <login-header></login-header>
+    <login-header :noMenu=true></login-header>
     <span>
       <span class="txt1">Reset</span>
       <span class="txt2">Password</span><br />
