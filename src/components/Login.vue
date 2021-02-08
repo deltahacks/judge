@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <LoginHeader :noMenu=true></LoginHeader>
+    <LoginHeader :noMenu=true :noBack=true></LoginHeader>
     <span>
       <span class="txt1">Log</span>
       <span class="txt2">in</span>
@@ -34,12 +34,12 @@
       >
         {{ this.error }}
       </b-notification>
-      <a class="forgot" @click="reset()">Forgot Password?</a><br /><br />
+      <a class="forgot" @click="reset()">Forgot Password?</a>
       <div class=btnContainer>
-        <b-button rounded type="is-success" outlined @click="login()"
+        <b-button class="btn" rounded type="is-success" outlined @click="login()"
           >Submit</b-button
-        ><br><br>
-        <b-button rounded type="is-primary" outlined @click="gotoRegister()"
+        ><br>
+        <b-button class="btn" rounded type="is-primary" outlined @click="gotoRegister()"
           >Create Account</b-button
         >
       </div>
@@ -137,6 +137,9 @@ export default Vue.extend({
   color: black;
 }
 .btnContainer {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+}
+.btn {
+  margin-top: 30px;
 }
 </style>
