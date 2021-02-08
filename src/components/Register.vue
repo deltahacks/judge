@@ -113,14 +113,14 @@
 
       <div v-if="role === 'judge'" class="multi-container">
         <b-dropdown v-model="categories" multiple aria-role="list" required>
-          <button class="button is-dark" type="button" slot="trigger">
-            <span style="padding-bottom: 20px;"
+          <button class="button" type="button" slot="trigger">
+            <span style="padding-top:20px; padding-bottom: 20px;"
               >Categories: ({{ categories.length }})</span
             >
             <b-icon style="padding-bottom: 20px;" icon="menu-down"></b-icon>
           </button>
           <b-dropdown-item
-            v-for="category in getCategories()"
+            v-for="category in cats"
             :key="category"
             :value="category"
             aria-role="listitem"
@@ -148,7 +148,7 @@
 </template>
 
 <script lang="ts">
-import { RegisterData, categories } from "../types";
+import { RegisterData, getCategories } from "../types";
 import firebase from "firebase";
 import Vue from "vue";
 import LoginHeader from "@/components/LoginHeader.vue";
@@ -170,13 +170,11 @@ export default Vue.extend({
       contact: "",
       categories: [],
       showError: false,
-      error: ""
+      error: "",
+      cats: []
     };
   },
   methods: {
-    getCategories() {
-      return categories;
-    },
     async submit() {
       if (
         this.getForm().checkValidity() &&
@@ -225,6 +223,21 @@ export default Vue.extend({
     gotoLogin() {
       this.$router.push("Login");
     }
+  },
+  async created() {
+    const cats = await getCategories()
+
+    this.cats = cats.map(each => {
+      return each
+        .split(" ")
+        .map(word => {
+          return (
+            word.substring(0, 1).toUpperCase() +
+            word.substring(1, word.length).toLowerCase()
+          );
+        })
+        .join(" ");
+    });
   }
 });
 </script>

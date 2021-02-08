@@ -1,3 +1,5 @@
+import firebase from "firebase"
+
 interface name {
   first: string;
   last: string;
@@ -22,6 +24,7 @@ export interface RegisterData {
   categories: string[];
   showError: boolean;
   error: string;
+  cats: Array<string>;
 }
 
 export interface ResetData {
@@ -57,40 +60,27 @@ export interface JudgeReviews {
   questions: [Questions];
   final: number;
 }
-export const categories = [
-  "hotel dieu shaver health and rehabilitation",
-  "ite challenge",
-  "beasley neighbourhood association challenge",
-  "best overall hack",
-  "best education hack",
-  "best finance hack",
-  "best environment hack",
-  "best health hack",
-  "best quality of life/productivity hack",
-  "innovation factory challenge",
-  "td challenge",
-  "arcelormittal dofasco challenge",
-  "materials challenge",
-  "algorand challenge",
-  "hypercare challenge",
-  "best uipath automation hack",
-  "best domain registered with domain.com",
-  "best use of google cloud",
-  "best use of mongodb atlas",
-  "best use of blockstack",
-  "most creative radar.io hack"
-].map(each => {
-  return each
-    .split(" ")
-    .map(word => {
-      return (
-        word.substring(0, 1).toUpperCase() +
-        word.substring(1, word.length).toLowerCase()
-      );
-    })
-    .join(" ");
-});
+
+// .map(each => {
+//   return each
+//     .split(" ")
+//     .map(word => {
+//       return (
+//         word.substring(0, 1).toUpperCase() +
+//         word.substring(1, word.length).toLowerCase()
+//       );
+//     })
+//     .join(" ");
+// });
 type question = string;
+
+export async function getCategories() {
+  const res = await firebase
+    .functions()
+    .httpsCallable('getCategories')();
+
+  return res.data.categories
+}
 
 export const map = {
   "hotel dieu shaver health and rehabilitation":
