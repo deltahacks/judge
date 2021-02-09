@@ -192,7 +192,7 @@ export default Vue.extend({
             role: this.role,
             organization: this.organization,
             contact: this.contact,
-            categories: this.categories
+            categories: this.categories.map(each => each.toLowerCase())
           });
           console.log("RESPONSE: ", signupRequest.data);
           if (signupRequest.data.createdUser) {
