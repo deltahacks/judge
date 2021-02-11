@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { ResetData, categories } from "../types";
+import { ResetData } from "../types";
 import firebase from "firebase";
 import Vue from "vue";
 import LoginHeader from "@/components/LoginHeader.vue";
