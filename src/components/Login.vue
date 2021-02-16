@@ -142,4 +142,10 @@ export default Vue.extend({
 .btn {
   margin-top: 30px;
 }
+.button.is-success.is-outlined:hover {
+  color: green;
+}
+.button.is-primary.is-outlined:hover {
+  color: purple;
+}
 </style>
