@@ -81,6 +81,21 @@
         />
       </div>
 
+      <div class="input-container"> 
+        <i class="fab fa-discord" id="discord"></i>
+        <input
+          class="input-field"
+          type="text"
+          placeholder="Discord Username"
+          name="discord"
+          v-model="discord"
+          pattern="^.{3,32}#[0-9]{4}$"
+          oninvalid="setCustomValidity('Please enter a valid Discord username')"
+          oninput="setCustomValidity('')"
+          required
+        />
+      </div>
+
       <div class="input-container">
         <i class="fa fa-building icon"></i>
         <input
@@ -92,6 +107,7 @@
           required
         />
       </div>
+
       <div class="input-container">
         <i class="fa fa-phone-alt icon"></i>
         <input
@@ -166,6 +182,7 @@ export default Vue.extend({
       last: "",
       secret: "",
       role: "",
+      discord: "",
       organization: "",
       contact: "",
       categories: [],
@@ -190,6 +207,7 @@ export default Vue.extend({
             first: this.first,
             last: this.last,
             role: this.role,
+            discord: this.discord,
             organization: this.organization,
             contact: this.contact,
             categories: this.categories.map(each => each.toLowerCase())
@@ -267,6 +285,11 @@ export default Vue.extend({
   width: 100%;
   margin-bottom: 5px;
 }
+#discord{
+  padding: 13px;
+}
+
+
 .register-form {
   max-width: 400px;
   margin: 25px auto;

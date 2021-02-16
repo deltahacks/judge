@@ -21,6 +21,7 @@ export interface RegisterData {
   role: string;
   organization?: string;
   contact?: string;
+  discord: string;
   categories: string[];
   showError: boolean;
   error: string;
