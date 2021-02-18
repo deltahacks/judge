@@ -10,6 +10,7 @@ export interface LoginData {
   password: string;
   showError: boolean;
   error: string;
+  loading: boolean;
 }
 
 export interface RegisterData {
