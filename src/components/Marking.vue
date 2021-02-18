@@ -126,6 +126,7 @@
           <div class="mark-field">
             <span style='display: flex'>
               <input
+                onClick="this.select();"
                 ref="nInput"
                 @input="nInputChange(criteria.max, i)"
                 id="nInput"
