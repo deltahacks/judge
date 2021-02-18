@@ -155,7 +155,10 @@
         {{ this.error }}
       </b-notification>
 
-      <button type="submit" class="btn">Register</button>
+      <button type="submit" class="btn">
+        <div v-if="this.loading" class="processing"></div>
+        <div v-else>Register</div>
+      </button>
       <button type="submit" class="btn" @click="gotoLogin()">
         Return to Login
       </button>
@@ -188,7 +191,8 @@ export default Vue.extend({
       categories: [],
       showError: false,
       error: "",
-      cats: []
+      cats: [],
+      loading: false,
     };
   },
   methods: {
@@ -197,6 +201,7 @@ export default Vue.extend({
         this.getForm().checkValidity() &&
         (this.role !== "judge" || this.categories.length > 0)
       ) {
+        this.loading = true;
         try {
           const signupRequest = await firebase
             .functions()
@@ -225,6 +230,8 @@ export default Vue.extend({
           console.log("Error: ", e);
           this.error = e;
           this.showError = true;
+        } finally {
+          this.loading = false
         }
       }
     },
@@ -239,7 +246,7 @@ export default Vue.extend({
       }
     },
     gotoLogin() {
-      this.$router.push("Login");
+      if (!this.loading) { this.$router.push("Login"); }
     }
   },
   async created() {
@@ -289,7 +296,6 @@ export default Vue.extend({
   padding: 13px;
 }
 
-
 .register-form {
   max-width: 400px;
   margin: 25px auto;
@@ -318,6 +324,20 @@ export default Vue.extend({
   color: black;
   //   min-width: 50px;
   text-align: center;
+}
+
+.processing {
+  margin: auto;
+  border: 0.3em solid #5565a1; /* Light grey */
+  border-top: 0.3em solid white; /* Blue */
+  border-radius: 50%;
+  width: 1.4em;
+  height: 1.4em;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .input-field {

@@ -26,6 +26,7 @@ export interface RegisterData {
   showError: boolean;
   error: string;
   cats: Array<string>;
+  loading: boolean;
 }
 
 export interface ResetData {
