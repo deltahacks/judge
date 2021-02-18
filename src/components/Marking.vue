@@ -125,14 +125,15 @@
           </div>
           <div class="mark-field">
             <span style='display: flex'>
-              <b-input
+              <input
+                ref="nInput"
+                @input="nInputChange(criteria.max, i)"
                 id="nInput"
                 type="number"
-                v-model="marks[i]"
+                v-model.number="marks[i]"
                 :max="criteria.max"
                 :min="0"
-              >
-              </b-input>
+              />
               <span class="mark-f-2">{{ "/" + criteria.max }}</span>
             </span>
           </div>
@@ -407,6 +408,17 @@ export default Vue.extend({
       if (Number(this.totalScore > 100)) {
         alert("Mark must be between 0 and 100.");
       }
+    },
+    nInputChange(m, i) {
+      if (this.marks[i] > m) {
+        this.marks[i] = Number(m);
+      }
+      else if (this.marks[i] < 0 
+        || this.marks[i] === undefined 
+        || this.marks[i] === "") 
+      {
+        this.marks[i] = 0;
+      }
     }
   },
   async mounted() {
@@ -611,6 +623,8 @@ input[type=number]::-webkit-inner-spin-button {
 }
 
 #nInput {
+  outline: none;
+  border: none;
   max-width: 70px;
   text-align: center;
   padding: .2rem;
