@@ -124,7 +124,19 @@
             </b-slider>
           </div>
           <div class="mark-field">
-            <h2 class="mark-f-2">{{ marks[i] }}</h2>
+            <span style='display: flex'>
+              <input
+                onClick="this.select();"
+                ref="nInput"
+                @input="nInputChange(criteria.max, i)"
+                id="nInput"
+                type="number"
+                v-model.number="marks[i]"
+                :max="criteria.max"
+                :min="0"
+              />
+              <span class="mark-f-2">{{ "/" + criteria.max }}</span>
+            </span>
           </div>
         </div>
       </li>
@@ -397,6 +409,17 @@ export default Vue.extend({
       if (Number(this.totalScore > 100)) {
         alert("Mark must be between 0 and 100.");
       }
+    },
+    nInputChange(m, i) {
+      if (this.marks[i] > m) {
+        this.marks[i] = Number(m);
+      }
+      else if (this.marks[i] < 0 
+        || this.marks[i] === undefined 
+        || this.marks[i] === "") 
+      {
+        this.marks[i] = 0;
+      }
     }
   },
   async mounted() {
@@ -443,7 +466,7 @@ export default Vue.extend({
 }
 #marking .mark-field {
   top: 0;
-  width: 50px;
+  width: 160px;
   float: right;
   margin-right: 20px;
 }
@@ -585,12 +608,31 @@ li {
   outline: none;
   border-radius: 0;
   text-align: center;
+  margin-top: 15px;
+  margin-left: 7px;
   background-color: transparent;
-  width: 60px;
-  height: 60px;
+  max-width: 60px;
   font-weight: 700;
   font-family: "Montserrat", sans-serif;
-  font-size: 60px;
+  font-size: 42px;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#nInput {
+  outline: none;
+  border: none;
+  max-width: 70px;
+  text-align: center;
+  padding: .2rem;
+  font-weight: 700;
+  font-family: "Montserrat", sans-serif;
+  font-size: 35px;
+  -moz-appearance: textfield;
 }
 
 @media only screen and (max-width: 768px) {
