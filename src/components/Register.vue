@@ -128,11 +128,11 @@
       </select>
 
       <div v-if="role === 'judge'" class="multi-container">
-        <b-dropdown v-model="categories" multiple aria-role="list" required>
+        <b-dropdown class="cat-dropdown" v-model="categories" multiple aria-role="list" required>
           <button class="button" type="button" slot="trigger">
             <span style="padding-top:20px; padding-bottom: 20px;"
-              >Categories: ({{ categories.length }})</span
-            >
+              >Categories: ({{ categories.length }})
+            </span>
             <b-icon style="padding-bottom: 20px;" icon="menu-down"></b-icon>
           </button>
           <b-dropdown-item
@@ -145,6 +145,7 @@
           </b-dropdown-item>
         </b-dropdown>
       </div>
+
       <b-notification
         type="is-danger"
         :active.sync="showError"
@@ -312,6 +313,15 @@ export default Vue.extend({
   border: 1px solid black;
   font-size: 15px;
   text-align: center;
+}
+
+.cat-dropdown /deep/ .dropdown-menu{
+  max-height: 11vh;
+  overflow-y: auto;
+}
+
+.button {
+  margin-top: 10px;
 }
 
 .multi-container {
