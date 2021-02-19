@@ -66,7 +66,7 @@ export default Vue.extend({
       password: "",
       showError: false,
       error: "",
-      loading: true,
+      loading: false,
     };
   },
   methods: {
