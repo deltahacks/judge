@@ -10,6 +10,7 @@ export interface LoginData {
   password: string;
   showError: boolean;
   error: string;
+  loading: boolean;
 }
 
 export interface RegisterData {
@@ -21,10 +22,12 @@ export interface RegisterData {
   role: string;
   organization?: string;
   contact?: string;
+  discord: string;
   categories: string[];
   showError: boolean;
   error: string;
   cats: Array<string>;
+  loading: boolean;
 }
 
 export interface ResetData {

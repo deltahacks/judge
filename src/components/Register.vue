@@ -81,6 +81,21 @@
         />
       </div>
 
+      <div class="input-container"> 
+        <i class="fab fa-discord" id="discord"></i>
+        <input
+          class="input-field"
+          type="text"
+          placeholder="Discord Username"
+          name="discord"
+          v-model="discord"
+          pattern="^.{3,32}#[0-9]{4}$"
+          oninvalid="setCustomValidity('Please enter a valid Discord username')"
+          oninput="setCustomValidity('')"
+          required
+        />
+      </div>
+
       <div class="input-container">
         <i class="fa fa-building icon"></i>
         <input
@@ -92,6 +107,7 @@
           required
         />
       </div>
+
       <div class="input-container">
         <i class="fa fa-phone-alt icon"></i>
         <input
@@ -112,11 +128,11 @@
       </select>
 
       <div v-if="role === 'judge'" class="multi-container">
-        <b-dropdown v-model="categories" multiple aria-role="list" required>
+        <b-dropdown class="cat-dropdown" v-model="categories" multiple aria-role="list" required>
           <button class="button" type="button" slot="trigger">
             <span style="padding-top:20px; padding-bottom: 20px;"
-              >Categories: ({{ categories.length }})</span
-            >
+              >Categories: ({{ categories.length }})
+            </span>
             <b-icon style="padding-bottom: 20px;" icon="menu-down"></b-icon>
           </button>
           <b-dropdown-item
@@ -129,6 +145,7 @@
           </b-dropdown-item>
         </b-dropdown>
       </div>
+
       <b-notification
         type="is-danger"
         :active.sync="showError"
@@ -139,7 +156,10 @@
         {{ this.error }}
       </b-notification>
 
-      <button type="submit" class="btn">Register</button>
+      <button type="submit" class="btn">
+        <div v-if="this.loading" class="processing"></div>
+        <div v-else>Register</div>
+      </button>
       <button type="submit" class="btn" @click="gotoLogin()">
         Return to Login
       </button>
@@ -166,12 +186,14 @@ export default Vue.extend({
       last: "",
       secret: "",
       role: "",
+      discord: "",
       organization: "",
       contact: "",
       categories: [],
       showError: false,
       error: "",
-      cats: []
+      cats: [],
+      loading: false,
     };
   },
   methods: {
@@ -180,6 +202,7 @@ export default Vue.extend({
         this.getForm().checkValidity() &&
         (this.role !== "judge" || this.categories.length > 0)
       ) {
+        this.loading = true;
         try {
           const signupRequest = await firebase
             .functions()
@@ -190,6 +213,7 @@ export default Vue.extend({
             first: this.first,
             last: this.last,
             role: this.role,
+            discord: this.discord,
             organization: this.organization,
             contact: this.contact,
             categories: this.categories.map(each => each.toLowerCase())
@@ -207,6 +231,8 @@ export default Vue.extend({
           console.log("Error: ", e);
           this.error = e;
           this.showError = true;
+        } finally {
+          this.loading = false
         }
       }
     },
@@ -221,7 +247,7 @@ export default Vue.extend({
       }
     },
     gotoLogin() {
-      this.$router.push("Login");
+      if (!this.loading) { this.$router.push("Login"); }
     }
   },
   async created() {
@@ -267,6 +293,10 @@ export default Vue.extend({
   width: 100%;
   margin-bottom: 5px;
 }
+#discord{
+  padding: 13px;
+}
+
 .register-form {
   max-width: 400px;
   margin: 25px auto;
@@ -285,6 +315,15 @@ export default Vue.extend({
   text-align: center;
 }
 
+.cat-dropdown /deep/ .dropdown-menu{
+  max-height: 11vh;
+  overflow-y: auto;
+}
+
+.button {
+  margin-top: 10px;
+}
+
 .multi-container {
   margin-top: 10px;
 }
@@ -295,6 +334,20 @@ export default Vue.extend({
   color: black;
   //   min-width: 50px;
   text-align: center;
+}
+
+.processing {
+  margin: auto;
+  border: 0.3em solid #5565a1; /* Light grey */
+  border-top: 0.3em solid white; /* Blue */
+  border-radius: 50%;
+  width: 1.4em;
+  height: 1.4em;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 .input-field {

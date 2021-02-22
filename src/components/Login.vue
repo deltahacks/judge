@@ -36,8 +36,10 @@
       </b-notification>
       <a class="forgot" @click="reset()">Forgot Password?</a>
       <div class=btnContainer>
-        <b-button class="btn" rounded type="is-success" outlined @click="login()"
-          >Submit</b-button
+        <b-button class="btn" rounded type="is-success" outlined @click="login()">
+          <div v-if="this.loading" class="processing"></div>
+          <div v-else>Submit</div>
+        </b-button
         ><br>
         <b-button class="btn" rounded type="is-primary" outlined @click="gotoRegister()"
           >Create Account</b-button
@@ -63,14 +65,16 @@ export default Vue.extend({
       email: "",
       password: "",
       showError: false,
-      error: ""
+      error: "",
+      loading: false,
     };
   },
   methods: {
     gotoRegister() {
-      this.$router.push({ name: "Register" });
+      if (!this.loading) { this.$router.push({ name: "Register" }); }
     },
     async login() {
+      this.loading = true;
       try {
         console.log(this.email);
         const signupRequest = await functions().httpsCallable("isJudge")({
@@ -91,6 +95,8 @@ export default Vue.extend({
         console.log(e);
         this.error = e;
         this.showError = true;
+      } finally {
+        this.loading = false
       }
     },
     async reset() {
@@ -125,6 +131,20 @@ export default Vue.extend({
   width: 20%;
   margin: auto;
 }
+.processing {
+  
+  margin: auto 2vmin auto 2vmin;
+  border: 0.3em solid #2b408a; /* Light grey */
+  border-top: 0.3em solid #469e9a; /* Blue */
+  border-radius: 50%;
+  width: 1.4em;
+  height: 1.4em;
+  animation: spin 2s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 @media only screen and (max-width: 900px) {
   .limited {
     width: 50%;
@@ -141,5 +161,11 @@ export default Vue.extend({
 }
 .btn {
   margin-top: 30px;
+}
+.button.is-success.is-outlined:hover {
+  color: green;
+}
+.button.is-primary.is-outlined:hover {
+  color: purple;
 }
 </style>
