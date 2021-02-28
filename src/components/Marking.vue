@@ -1,72 +1,79 @@
 <template>
   <div id="bgd">
-  <div id="marking">
-    <Header></Header>
-    <timer class="timer"></timer>
+    <div id="marking">
+      <Header></Header>
+      <timer class="timer"></timer>
       <b-modal :active.sync="showVideo">
         <div v-if="tableDoc.profiles && tableDoc.profiles.youtube">
           <figure class="image is-16by9">
             <iframe
-              class="has-ratio" width="640" height="360"
+              class="has-ratio"
+              width="640"
+              height="360"
               v-bind:src="getDemoVideoEmbedUrl"
               frameborder="0"
               allow="accelerometer; clipboard-write; encrypted-media"
-              allowfullscreen>
+              allowfullscreen
+            >
             </iframe>
           </figure>
         </div>
         <div v-else>
-          <Blurb
-            content="A demo video has not been uploaded yet"
-          ></Blurb>
+          <Blurb content="A demo video has not been uploaded yet"></Blurb>
         </div>
-    </b-modal>
-    <div style="text-align: center">
+      </b-modal>
+      <div style="text-align: center">
         <b-button
           id="showVideo"
           label="Show Video"
           type="is-primary"
           size="is-large"
-          @click="showVideo = true" />
-      <Blurb
-        class="topBlurb"
-        content="
+          @click="showVideo = true"
+        />
+        <Blurb
+          class="topBlurb"
+          content="
           Please assign marks to every category appropriately.
       "
-      ></Blurb>
-    </div>
-    <div class="columns submission-info" style="margin-bottom:0">
-      <div class="column left">
-        <h1>{{ tableDoc.name ? tableDoc.name.project : "" }}</h1>
-        <h2>Table {{ tableNumber }}</h2>
-        <p>Members:</p>
-        <p v-for="(member, i) in tableDoc.group ? tableDoc.group : []" :key="i">
-          <span v-if="member.email"
-            >{{ member.name }} - {{ member.email }}</span
-          >
-        </p>
-        <p>
-          <a class="devpost" :href="tableDoc.name ? tableDoc.name.devpost : ''"
-            >Devpost</a
-          >
-        </p>
-        <b-dropdown v-model="selectedOptions" dark>
-          <button class="button is-primary" type="button" slot="trigger">
-            <span> {{ selectedOptions }}</span>
-            <b-icon icon="menu-down"></b-icon>
-          </button>
-          <div v-for="category in cats" :key="category">
-            <b-dropdown-item :value="category" @click="changeCategory()">
-              {{ category }}
-            </b-dropdown-item>
-          </div>
-        </b-dropdown>
+        ></Blurb>
       </div>
-      <div class="column">
-        <div :style="{ marginLeft: '30px', fontSize: '20px' }">
-          Project Notes
+      <div class="columns submission-info" style="margin-bottom:0">
+        <div class="column left">
+          <h1>{{ tableDoc.name ? tableDoc.name.project : "" }}</h1>
+          <h2>Group {{ tableNumber }}</h2>
+          <p>Members:</p>
+          <p
+            v-for="(member, i) in tableDoc.group ? tableDoc.group : []"
+            :key="i"
+          >
+            <span v-if="member.email"
+              >{{ member.name }} - {{ member.email }}</span
+            >
+          </p>
+          <p>
+            <a
+              class="devpost"
+              :href="tableDoc.name ? tableDoc.name.devpost : ''"
+              >Devpost</a
+            >
+          </p>
+          <b-dropdown v-model="selectedOptions" dark>
+            <button class="button is-primary" type="button" slot="trigger">
+              <span> {{ selectedOptions }}</span>
+              <b-icon icon="menu-down"></b-icon>
+            </button>
+            <div v-for="category in cats" :key="category">
+              <b-dropdown-item :value="category" @click="changeCategory()">
+                {{ category }}
+              </b-dropdown-item>
+            </div>
+          </b-dropdown>
         </div>
-        <b-input
+        <div class="column">
+          <div :style="{ marginLeft: '30px', fontSize: '20px' }">
+            Project Notes
+          </div>
+                  <b-input
           class="notes"
           maxlength="200"
           type="textarea"
@@ -104,58 +111,58 @@
           </div>
           <div v-else>Please Select Category</div>
         </h2>
-      </div>
-    </div>
-    <ul
-      v-if="
-        selectedOptions !== this.defaultOPTION &&
-          tableDoc._ &&
-          tableDoc._.categories[selectedOptions.toLowerCase()].score !== 0
-      "
-    >
-      <li v-for="(criteria, i) in marking_criteria" :key="(criteria, i)">
-        <div
-          class="marking-category"
-          :style="
-            'background: linear-gradient(90deg,' +
-              colors[i] +
-              ' 0%, #FACFC3 120%)'
-          "
-        >
-          <div class="marking-div">
-            <h1 class="category name">
-              <span style="font-weight: 600"></span>{{ criteria.type }}
-            </h1>
-            <p class="category subheading">{{ criteria.desc }}</p>
-            <b-slider
-              class="drag"
-              size="is-large"
-              :max="criteria.max"
-              v-model="marks[i]"
-              :tooltip="false"
-              @input="onSubmit()"
-            >
-            </b-slider>
-          </div>
-          <div class="mark-field">
-            <span style='display: flex'>
-              <input
-                onClick="this.select();"
-                ref="nInput"
-                @input="nInputChange(criteria.max, i)"
-                id="nInput"
-                type="number"
-                v-model.number="marks[i]"
-                :max="criteria.max"
-                :min="0"
-              />
-              <span class="mark-f-2">{{ "/" + criteria.max}}</span>
-            </span>
-          </div>
         </div>
-      </li>
-    </ul>
-  </div>
+      </div>
+      <ul
+        v-if="
+          selectedOptions !== this.defaultOPTION &&
+            tableDoc._ &&
+            tableDoc._.categories[selectedOptions.toLowerCase()].score !== 0
+        "
+      >
+        <li v-for="(criteria, i) in marking_criteria" :key="(criteria, i)">
+          <div
+            class="marking-category"
+            :style="
+              'background: linear-gradient(90deg,' +
+                colors[i] +
+                ' 0%, #FACFC3 120%)'
+            "
+          >
+            <div class="marking-div">
+              <h1 class="category name">
+                <span style="font-weight: 600"></span>{{ criteria.type }}
+              </h1>
+              <p class="category subheading">{{ criteria.desc }}</p>
+              <b-slider
+                class="drag"
+                size="is-large"
+                :max="criteria.max"
+                v-model="marks[i]"
+                :tooltip="false"
+                @input="onSubmit()"
+              >
+              </b-slider>
+            </div>
+            <div class="mark-field">
+              <span style="display: flex">
+                <input
+                  onClick="this.select();"
+                  ref="nInput"
+                  @input="nInputChange(criteria.max, i)"
+                  id="nInput"
+                  type="number"
+                  v-model.number="marks[i]"
+                  :max="criteria.max"
+                  :min="0"
+                />
+                <span class="mark-f-2">{{ "/" + criteria.max }}</span>
+              </span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -365,7 +372,7 @@ export default Vue.extend({
     getUUID() {
       return firebase.auth().currentUser.email;
     },
-    
+
     async getJudge() {
       let doc = await db
         .collection(this.$store.state.currentHackathon)
@@ -428,11 +435,11 @@ export default Vue.extend({
     nInputChange(m, i) {
       if (this.marks[i] > m) {
         this.marks[i] = Number(m);
-      }
-      else if (this.marks[i] < 0 
-        || this.marks[i] === undefined 
-        || this.marks[i] === "") 
-      {
+      } else if (
+        this.marks[i] < 0 ||
+        this.marks[i] === undefined ||
+        this.marks[i] === ""
+      ) {
         this.marks[i] = 0;
       }
     },
@@ -478,7 +485,7 @@ export default Vue.extend({
     getDemoVideoEmbedUrl() {
       let regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
       let match = this.tableDoc.profiles.youtube.match(regExp);
-      const videoID = (match && match[7].length==11)? match[7] : false;
+      const videoID = match && match[7].length == 11 ? match[7] : false;
       return `https://www.youtube.com/embed/${videoID}`;
     }
   }
@@ -671,8 +678,8 @@ li {
   font-size: 42px;
 }
 
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -682,7 +689,7 @@ input[type=number]::-webkit-inner-spin-button {
   border: none;
   max-width: 70px;
   text-align: center;
-  padding: .2rem;
+  padding: 0.2rem;
   font-weight: 700;
   font-family: "Montserrat", sans-serif;
   font-size: 35px;
