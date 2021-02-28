@@ -58,7 +58,7 @@
                 <h1>
                   <div class="team-name" style="font-weight: 300">
                     <span style="font-weight: 600"
-                      >Table: {{ team._.table }}</span
+                      >Group: {{ team._.table }}</span
                     >
                     {{ team.name.project }}
                   </div>
@@ -77,7 +77,7 @@
                   <div class="team-name" style="font-weight: 300">
                     <strike
                       ><span style="font-weight: 600"
-                        >Table: {{ team._.table }}</span
+                        >Group: {{ team._.table }}</span
                       >
                       {{ team.name.project }}
                     </strike>
@@ -107,7 +107,7 @@ import Vue from "vue";
 import { auth } from "firebase/app";
 import db from "../firebaseinit";
 import LoginHeader from "@/components/LoginHeader.vue";
-import { map } from "../types";
+import { getCategoriesMap } from "../types";
 
 export default Vue.extend({
   name: "Home",
@@ -165,10 +165,13 @@ export default Vue.extend({
           );
         })
         .map(each => {
-          each = map[each];
+          let lookup = this.catMap;
+          each = lookup[each];
+          console.log(each);
           if (each.length >= 24) each = each.substring(0, 24) + "...";
           return each;
-        });
+        })
+        .splice(0, 3);
     },
     async getTables() {
       let doc = await db
@@ -224,16 +227,19 @@ export default Vue.extend({
     }
   },
   async mounted() {
+    this.categoriesMap = await getCategoriesMap();
+    console.log(this.categoriesMap);
     await this.getJudge();
     await this.getTables();
     this.categories = this.getCategories();
   },
-  beforeMount() {
+  async beforeMount() {
     this.projects =
       auth().currentUser.email != "judge@deltahacks.com"
         ? "projects"
         : "projects";
     console.log(auth().currentUser.email, this.projects, "A");
+    this.catMap = await getCategoriesMap();
   }
 });
 </script>
