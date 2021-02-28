@@ -1,4 +1,4 @@
-import firebase from "firebase"
+import firebase from "firebase";
 
 interface name {
   first: string;
@@ -32,8 +32,8 @@ export interface ResetData {
   showFb: boolean;
   isInvalid: boolean;
   feedback: string;
-  debounce: boolean,
-  last: string
+  debounce: boolean;
+  last: string;
 }
 
 export interface Judge {
@@ -75,11 +75,24 @@ export interface JudgeReviews {
 type question = string;
 
 export async function getCategories() {
-  const res = await firebase
-    .functions()
-    .httpsCallable('getCategories')();
+  const res = await firebase.functions().httpsCallable("getCategories")();
 
-  return res.data.categories
+  return res.data.categories;
+}
+
+export async function getCategoriesMap() {
+  const categories = await getCategories();
+  let categoriesMap = await firebase
+    .functions()
+    .httpsCallable("getCategoriesMap")();
+
+  categoriesMap = categoriesMap.data.categories;
+
+  let map = {};
+  for (let i = 0; i < categories.length; i++) {
+    map[categories[i]] = categoriesMap[i];
+  }
+  return map;
 }
 
 export const map = {

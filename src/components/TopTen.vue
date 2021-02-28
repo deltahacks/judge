@@ -49,7 +49,7 @@
                 >{{ team[0].name.project }}
                 <span style="float: right;">Score: {{ team[1] }}</span>
                 <span
-                  ><span style="font-weight: 600">Table: </span
+                  ><span style="font-weight: 600">Group: </span
                   >{{ team[0]._.table }}</span
                 >
               </h1>
