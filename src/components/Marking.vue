@@ -78,16 +78,30 @@
       <div class="column">
         <h2 class="score">
           Overall score:
-          <input
-            class="score-i-2"
-            v-if="selectedOptions !== this.defaultOPTION"
-            :placeholder="totalScore"
-            type="text"
-            maxLength="3"
-            id="score-val"
-            v-on:keydown="checkScore"
-            disabled
-          />
+          <b-tooltip 
+            label="Warning: Changing the total score manually will override individual rubric scores." 
+            type="is-dark"
+            position="is-right" 
+            multilined
+            v-if="selectedOptions != this.defaultOPTION"
+          >
+            <b-button label="?" type="is-dark" />
+          </b-tooltip>
+          <div class="total-div" v-if="selectedOptions != this.defaultOPTION">
+            <span>
+              <input
+                class="totalscore"
+                onClick="this.select();"
+                type="number"
+                @input="totalInputChange"
+                @change="editScores"
+                v-model.number="total"
+                max="100"
+                min="0"
+              />
+              <span style="font-size: 50px">{{ " / " + 100}}</span>
+            </span>
+          </div>
           <div v-else>Please Select Category</div>
         </h2>
       </div>
@@ -135,7 +149,7 @@
                 :max="criteria.max"
                 :min="0"
               />
-              <span class="mark-f-2">{{ "/" + criteria.max }}</span>
+              <span class="mark-f-2">{{ "/" + criteria.max}}</span>
             </span>
           </div>
         </div>
@@ -256,6 +270,7 @@ export default Vue.extend({
       judge: {},
       cats: [],
       marks: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      total: 0,
       notes: "",
       debounce: null
     };
@@ -405,8 +420,8 @@ export default Vue.extend({
       }
     },
     checkScore() {
-      console.log(this.totalScore);
-      if (Number(this.totalScore > 100)) {
+      console.log(this.total);
+      if (Number(this.total > 100)) {
         alert("Mark must be between 0 and 100.");
       }
     },
@@ -420,7 +435,26 @@ export default Vue.extend({
       {
         this.marks[i] = 0;
       }
-    }
+    },
+    totalInputChange() {
+      if (this.total > 100){ this.total = 100; }
+      else if (this.total < 0 
+        || this.total === undefined 
+        || this.total === "") 
+      {
+        this.total = 0;
+      }
+    },
+    editScores() {
+      let scores = this.total
+      this.marks = new Array(this.marks.length).fill(0)
+      this.marking_criteria.forEach((item, i) => {
+        while (this.marks[i] < item.max && scores > 0) {
+          this.marks[i]++;
+          scores--;
+        }
+      }); 
+    },
   },
   async mounted() {
     await this.getTableID();
@@ -435,10 +469,12 @@ export default Vue.extend({
         ? "projects"
         : "projects";
   },
-  computed: {
-    totalScore() {
-      return this.marks.reduce((x, y) => x + y);
+  watch: {
+    marks(val) {
+      this.total = val.reduce((x, y) => x + y);
     },
+  },
+  computed: {
     getDemoVideoEmbedUrl() {
       let regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
       let match = this.tableDoc.profiles.youtube.match(regExp);
@@ -594,6 +630,24 @@ li {
   font-weight: 700;
   font-family: "Montserrat", sans-serif;
   font-size: 60px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.total-div {
+  margin: none;
+  padding: none;
+}
+
+.totalscore {
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  border-radius: 0;
+  background-color: transparent;
+  font-weight: 700;
+  font-family: "Montserrat", sans-serif;
+  font-size: 100px;
   color: rgba(255, 255, 255, 0.6);
 }
 
