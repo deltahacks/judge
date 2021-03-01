@@ -81,7 +81,7 @@
         />
       </div>
 
-      <div class="input-container"> 
+      <div class="input-container">
         <i class="fab fa-discord" id="discord"></i>
         <input
           class="input-field"
@@ -122,13 +122,20 @@
 
       <select v-model="role" class="role-dropdown" required>
         <option disabled selected value="">Select desired role</option>
-        <option value="volunteer">Volunteer</option>
+        <!-- <option value="volunteer">Volunteer</option> -->
         <option value="mentor">Mentor</option>
         <option value="judge">Judge</option>
+        <option value="sponsor">Sponsor</option>
       </select>
 
       <div v-if="role === 'judge'" class="multi-container">
-        <b-dropdown class="cat-dropdown" v-model="categories" multiple aria-role="list" required>
+        <b-dropdown
+          class="cat-dropdown"
+          v-model="categories"
+          multiple
+          aria-role="list"
+          required
+        >
           <button class="button" type="button" slot="trigger">
             <span style="padding-top:20px; padding-bottom: 20px;"
               >Categories: ({{ categories.length }})
@@ -193,7 +200,7 @@ export default Vue.extend({
       showError: false,
       error: "",
       cats: [],
-      loading: false,
+      loading: false
     };
   },
   methods: {
@@ -232,7 +239,7 @@ export default Vue.extend({
           this.error = e;
           this.showError = true;
         } finally {
-          this.loading = false
+          this.loading = false;
         }
       }
     },
@@ -247,7 +254,9 @@ export default Vue.extend({
       }
     },
     gotoLogin() {
-      if (!this.loading) { this.$router.push("Login"); }
+      if (!this.loading) {
+        this.$router.push("Login");
+      }
     }
   },
   async created() {
@@ -293,7 +302,7 @@ export default Vue.extend({
   width: 100%;
   margin-bottom: 5px;
 }
-#discord{
+#discord {
   padding: 13px;
 }
 
@@ -315,7 +324,7 @@ export default Vue.extend({
   text-align: center;
 }
 
-.cat-dropdown /deep/ .dropdown-menu{
+.cat-dropdown /deep/ .dropdown-menu {
   max-height: 11vh;
   overflow-y: auto;
 }
@@ -346,8 +355,12 @@ export default Vue.extend({
   animation: spin 2s linear infinite;
 }
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .input-field {
