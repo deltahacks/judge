@@ -73,44 +73,44 @@
           <div :style="{ marginLeft: '30px', fontSize: '20px' }">
             Project Notes
           </div>
-                  <b-input
-          class="notes"
-          maxlength="200"
-          type="textarea"
-          placeholder="Add your notes here..."
-          v-model="notes"
-          @input="onSubmit()"
-        ></b-input>
-      </div>
-      <div class="column">
-        <h2 class="score">
-          Overall score:
-          <b-tooltip 
-            label="Warning: Changing the total score manually will override individual rubric scores." 
-            type="is-dark"
-            position="is-right" 
-            multilined
-            v-if="selectedOptions != this.defaultOPTION"
-          >
-            <b-button label="?" type="is-dark" />
-          </b-tooltip>
-          <div class="total-div" v-if="selectedOptions != this.defaultOPTION">
-            <span>
-              <input
-                class="totalscore"
-                onClick="this.select();"
-                type="number"
-                @input="totalInputChange"
-                @change="editScores"
-                v-model.number="total"
-                max="100"
-                min="0"
-              />
-              <span style="font-size: 50px">{{ " / " + 100}}</span>
-            </span>
-          </div>
-          <div v-else>Please Select Category</div>
-        </h2>
+          <b-input
+            class="notes"
+            maxlength="200"
+            type="textarea"
+            placeholder="Add your notes here..."
+            v-model="notes"
+            @input="onSubmit()"
+          ></b-input>
+        </div>
+        <div class="column">
+          <h2 class="score">
+            Overall score:
+            <b-tooltip
+              label="Warning: Changing the total score manually will override individual rubric scores."
+              type="is-dark"
+              position="is-right"
+              multilined
+              v-if="selectedOptions != this.defaultOPTION"
+            >
+              <b-button label="?" type="is-dark" />
+            </b-tooltip>
+            <div class="total-div" v-if="selectedOptions != this.defaultOPTION">
+              <span>
+                <input
+                  class="totalscore"
+                  onClick="this.select();"
+                  type="number"
+                  @input="totalInputChange"
+                  @change="editScores"
+                  v-model.number="total"
+                  max="100"
+                  min="0"
+                />
+                <span style="font-size: 50px">{{ " / " + 100 }}</span>
+              </span>
+            </div>
+            <div v-else>Please Select Category</div>
+          </h2>
         </div>
       </div>
       <ul
@@ -444,24 +444,26 @@ export default Vue.extend({
       }
     },
     totalInputChange() {
-      if (this.total > 100){ this.total = 100; }
-      else if (this.total < 0 
-        || this.total === undefined 
-        || this.total === "") 
-      {
+      if (this.total > 100) {
+        this.total = 100;
+      } else if (
+        this.total < 0 ||
+        this.total === undefined ||
+        this.total === ""
+      ) {
         this.total = 0;
       }
     },
     editScores() {
-      let scores = this.total
-      this.marks = new Array(this.marks.length).fill(0)
+      let scores = this.total;
+      this.marks = new Array(this.marks.length).fill(0);
       this.marking_criteria.forEach((item, i) => {
         while (this.marks[i] < item.max && scores > 0) {
           this.marks[i]++;
           scores--;
         }
-      }); 
-    },
+      });
+    }
   },
   async mounted() {
     await this.getTableID();
@@ -474,12 +476,12 @@ export default Vue.extend({
     this.projects =
       firebase.auth().currentUser.email != "judge@deltahacks.com"
         ? "projects"
-        : "projects";
+        : "projects stage";
   },
   watch: {
     marks(val) {
       this.total = val.reduce((x, y) => x + y);
-    },
+    }
   },
   computed: {
     getDemoVideoEmbedUrl() {
