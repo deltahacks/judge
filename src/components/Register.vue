@@ -325,7 +325,7 @@ export default Vue.extend({
 }
 
 .cat-dropdown /deep/ .dropdown-menu {
-  max-height: 11vh;
+  max-height: 18vh;
   overflow-y: auto;
 }
 
