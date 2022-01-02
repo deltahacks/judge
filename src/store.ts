@@ -15,6 +15,6 @@ interface StoreState {
 export default new Vuex.Store({
   // Vuex state variables appended with vuex in front
   state: {
-    currentHackathon: 'DH7',
+    currentHackathon: 'DH8',
   } as StoreState,
 });
