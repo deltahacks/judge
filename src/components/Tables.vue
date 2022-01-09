@@ -6,6 +6,33 @@
       rel="stylesheet"
     />
     <div class="blurb">
+      <span v-if="!this.$store.state.checkedIn">
+        <span v-if="this.$store.state.checkinCode">
+          <h2 class="checkin">
+            Join our
+            <a href="https://discord.gg/6HvMQAnMgb">Discord Server</a> using the
+            code:
+            <u>{{ this.$store.state.checkinCode }}</u>
+          </h2>
+          <p>
+            Please contact us via the support channels on Discord if further
+            assistance is needed.
+          </p>
+          <hr />
+        </span>
+        <span v-else>
+          <h2 class="checkin">
+            Your check-in code will be updated here when DeltaHacks 8 has
+            started.
+          </h2>
+          <!-- <h2 class="checkin">
+          Please contact us via the support channels on our
+          <a href="https://discord.gg/6HvMQAnMgb">Discord server</a> for your
+          check-in code.
+        </h2> -->
+          <hr />
+        </span>
+      </span>
       <p>
         Here are the teams you will be judging today. Click on a group to see
         their rubric and start marking.
@@ -48,10 +75,10 @@
               class="team"
               :style="
                 'background: linear-gradient(90deg,' +
-                  colors[i % 5][0] +
-                  ' 0%,' +
-                  colors[i % 5][1] +
-                  ' 120%)'
+                colors[i % 5][0] +
+                ' 0%,' +
+                colors[i % 5][1] +
+                ' 120%)'
               "
             >
               <div v-if="!doneMarking(team._.table)" class="team-div">
@@ -81,7 +108,7 @@
                       >
                       {{ team.name.project }}
                     </strike>
-                    <span style="color: #7FFF00;"> ✔</span>
+                    <span style="color: #7fff00"> ✔</span>
                   </div>
                   <ul class="stacked" style="font-weight: 600">
                     <li
@@ -104,7 +131,7 @@
 
 <script>
 import Vue from "vue";
-import { auth } from "firebase/app";
+import { auth, functions } from "firebase/app";
 import db from "../firebaseinit";
 import LoginHeader from "@/components/LoginHeader.vue";
 import { getCategoriesMap } from "../types";
@@ -112,7 +139,7 @@ import { getCategoriesMap } from "../types";
 export default Vue.extend({
   name: "Home",
   components: {
-    LoginHeader
+    LoginHeader,
   },
   props: {},
   data() {
@@ -125,12 +152,12 @@ export default Vue.extend({
         ["#F54FA1", "#fa96a8"],
         ["#18BDD9", "#267aed"],
         ["#7419E6", "#e619ce"],
-        ["#42E596", "#42d7e5"]
+        ["#42E596", "#42d7e5"],
       ],
       judge: {},
       selectedCat: "general",
       currentProjects: [],
-      categories: []
+      categories: [],
     };
   },
   methods: {
@@ -151,20 +178,20 @@ export default Vue.extend({
     },
     getCategories() {
       return this.judge.categories
-        ? this.judge.categories.map(cat => cat.toLowerCase())
+        ? this.judge.categories.map((cat) => cat.toLowerCase())
         : [];
     },
     getProjectCatsNames(team) {
       return Object.keys(team._.categories)
-        .filter(each => {
+        .filter((each) => {
           return (
             this.getCategories().includes(each.toLowerCase()) &&
-            team._.categories[each.toLowerCase()].filter(judge => {
+            team._.categories[each.toLowerCase()].filter((judge) => {
               return judge.email === this.getUUID();
             }).length
           );
         })
-        .map(each => {
+        .map((each) => {
           let lookup = this.catMap;
           each = lookup[each];
           console.log(each);
@@ -179,20 +206,20 @@ export default Vue.extend({
         .doc("hackathon")
         .collection(this.projects)
         .get();
-      let projects = doc.docs.filter(project => {
-        return Object.keys(project.data()._.categories).filter(each => {
+      let projects = doc.docs.filter((project) => {
+        return Object.keys(project.data()._.categories).filter((each) => {
           return (
             this.getCategories().includes(each) &&
             project
               .data()
               ._.categories[each].filter(
-                judge => judge.email === this.getUUID()
+                (judge) => judge.email === this.getUUID()
               ).length
           );
         }).length;
       });
       this.currentProjects = projects
-        .map(proj => proj.data())
+        .map((proj) => proj.data())
         .sort((proja, projb) => proja._.table - projb._.table);
       console.log(this.currentProjects);
     },
@@ -224,7 +251,34 @@ export default Vue.extend({
         }
       }
       return score;
-    }
+    },
+    async isCheckedIn() {
+      const checkedInSnapshot = await db
+        .collection(this.$store.state.currentHackathon)
+        .doc("hackathon")
+        .collection("checked in")
+        .doc(this.getUUID())
+        .get();
+      if (checkedInSnapshot.data()) {
+        this.$store.state.checkedIn = true;
+        return true;
+      }
+      return false;
+    },
+    async getCode() {
+      const checkincode = await functions().httpsCallable("getPersonalCode")({
+        email: this.getUUID(),
+      });
+      if (checkincode.data.code) {
+        this.$store.state.checkinCode = checkincode.data.code;
+      }
+    },
+    async updateCheckInCode() {
+      const isCheckedIn = await this.isCheckedIn();
+      if (!isCheckedIn) {
+        this.getCode();
+      }
+    },
   },
   async mounted() {
     this.categoriesMap = await getCategoriesMap();
@@ -232,6 +286,7 @@ export default Vue.extend({
     await this.getJudge();
     await this.getTables();
     this.categories = this.getCategories();
+    this.updateCheckInCode();
   },
   async beforeMount() {
     this.projects =
@@ -240,7 +295,7 @@ export default Vue.extend({
         : "projects stage";
     console.log(auth().currentUser.email, this.projects, "A");
     this.catMap = await getCategoriesMap();
-  }
+  },
 });
 </script>
 
@@ -265,6 +320,12 @@ export default Vue.extend({
 .team {
   height: 150px;
 }
+
+.checkin {
+  font-size: 35px;
+  color: #3e6195;
+}
+
 .blurb {
   font-size: 20px;
   text-align: center;

@@ -16,5 +16,7 @@ export default new Vuex.Store({
   // Vuex state variables appended with vuex in front
   state: {
     currentHackathon: 'DH8',
+    checkinCode: null,
+    checkedIn: false,
   } as StoreState,
 });
