@@ -54,6 +54,7 @@ export default Vue.extend({
     },
     logout() {
       auth().signOut();
+      this.$store.state.checkinCode = null;
       this.$router.push({ name: "Login" });
     }
   }
