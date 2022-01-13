@@ -86,7 +86,7 @@
         <input
           class="input-field"
           type="text"
-          placeholder="Discord Username"
+          placeholder="Discord Username (eg Name#1234)"
           name="discord"
           v-model="discord"
           pattern="^.{3,32}#[0-9]{4}$"
