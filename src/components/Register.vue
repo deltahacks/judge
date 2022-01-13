@@ -137,10 +137,10 @@
           required
         >
           <button class="button" type="button" slot="trigger">
-            <span style="padding-top:20px; padding-bottom: 20px;"
+            <span style="padding-top: 20px; padding-bottom: 20px"
               >Categories: ({{ categories.length }})
             </span>
-            <b-icon style="padding-bottom: 20px;" icon="menu-down"></b-icon>
+            <b-icon style="padding-bottom: 20px" icon="menu-down"></b-icon>
           </button>
           <b-dropdown-item
             v-for="category in cats"
@@ -153,12 +153,22 @@
         </b-dropdown>
       </div>
 
+      <div
+        v-if="role === 'mentor' || role === 'sponsor'"
+        class="multi-container"
+      >
+        <p style="color: red">
+          Kindly sign up as a judge instead if you will be judging any
+          submissions. Once checked in, DM any of the organizers to get the
+          {{ role }} role.
+        </p>
+      </div>
       <b-notification
         type="is-danger"
         :active.sync="showError"
         aria-close-label="Close notification"
         role="alert"
-        style="margin-top: 30px;"
+        style="margin-top: 30px"
       >
         {{ this.error }}
       </b-notification>
