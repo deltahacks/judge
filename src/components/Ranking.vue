@@ -193,7 +193,7 @@ export default Vue.extend({
   beforeMount() {
     this.projects =
       firebase.auth().currentUser.email != "judge@deltahacks.com"
-        ? "projects"
+        ? "projects stage"
         : "projects stage";
   },
   watch: {

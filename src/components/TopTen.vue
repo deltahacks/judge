@@ -92,7 +92,7 @@ export default Vue.extend({
     getJudgesCategories() {
       db.collection(this.$store.state.currentHackathon)
         .doc("hackathon")
-        .collection("projects")
+        .collection("projects stage")
         .get()
         .then(snapshot => {
           snapshot.forEach(element => {
@@ -118,7 +118,7 @@ export default Vue.extend({
       let category = this.selectedOptions;
       db.collection(this.$store.state.currentHackathon)
         .doc("hackathon")
-        .collection("projects")
+        .collection("projects stage")
         .get()
         .then(snapshot => {
           snapshot.forEach(element => {

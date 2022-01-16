@@ -291,7 +291,7 @@ export default Vue.extend({
   async beforeMount() {
     this.projects =
       auth().currentUser.email != "judge@deltahacks.com"
-        ? "projects"
+        ? "projects stage"
         : "projects stage";
     console.log(auth().currentUser.email, this.projects, "A");
     this.catMap = await getCategoriesMap();
